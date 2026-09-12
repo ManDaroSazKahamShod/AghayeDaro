@@ -2,7 +2,8 @@
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<meta name="theme-color" content="#0a0a0f">
 <title>Konkur Planner Pro | پلنر هفتگی کنکور</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap');
@@ -30,11 +31,10 @@
     --radius-sm: 10px;
 }
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
 html, body {
-    height: 100%;
-    overflow: hidden;
+    min-height: 100%;
 }
 
 body {
@@ -47,15 +47,15 @@ body {
         radial-gradient(circle at 85% 90%, rgba(225,29,72,0.08), transparent 45%),
         radial-gradient(circle at 50% 50%, rgba(139,92,246,0.05), transparent 60%);
     background-attachment: fixed;
+    -webkit-text-size-adjust: 100%;
 }
 
 .app-layout {
-    height: 100vh;
     display: flex;
     flex-direction: column;
     padding: 12px 16px;
     gap: 10px;
-    overflow: hidden;
+    min-height: 100vh;
 }
 
 /* ============== TOP BAR ============== */
@@ -93,6 +93,7 @@ body {
     justify-content: center;
     font-size: 1.3rem;
     box-shadow: 0 6px 22px var(--red-glow);
+    flex-shrink: 0;
 }
 
 .brand-text h1 {
@@ -124,18 +125,8 @@ body {
     gap: 5px;
 }
 
-.btn:hover {
-    border-color: var(--red);
-    color: var(--red-light);
-    transform: translateY(-1px);
-}
-
-.btn-danger:hover {
-    background: rgba(225,29,72,0.15);
-    border-color: var(--red);
-    color: var(--red-light);
-}
-
+.btn:hover { border-color: var(--red); color: var(--red-light); }
+.btn-danger:hover { background: rgba(225,29,72,0.15); border-color: var(--red); color: var(--red-light); }
 .btn-primary {
     background: linear-gradient(135deg, var(--red), var(--red-dark));
     border-color: var(--red);
@@ -161,12 +152,7 @@ body {
     box-shadow: 0 0 18px rgba(251,191,36,0.25);
 }
 
-.edit-toggle .toggle-label {
-    font-size: 0.72rem;
-    font-weight: 700;
-    color: var(--text-dim);
-}
-
+.edit-toggle .toggle-label { font-size: 0.72rem; font-weight: 700; color: var(--text-dim); }
 .edit-toggle.on .toggle-label { color: var(--gold); }
 
 .toggle-switch {
@@ -206,11 +192,6 @@ body {
     grid-template-columns: 1.1fr 1fr 0.9fr;
     gap: 10px;
     flex-shrink: 0;
-}
-
-@media (max-width: 1200px) {
-    .dashboard { grid-template-columns: 1fr 1fr; }
-    .dashboard .dash-card:first-child { grid-column: 1 / -1; }
 }
 
 .dash-card {
@@ -311,6 +292,7 @@ body {
     width: 6px; height: 6px;
     border-radius: 50%;
     box-shadow: 0 0 6px currentColor;
+    flex-shrink: 0;
 }
 
 .score-row .bar {
@@ -351,8 +333,6 @@ body {
     border: 1px solid var(--border);
     transition: all 0.25s;
 }
-
-.summary-box:hover { border-color: var(--red); }
 
 .summary-box .val {
     font-size: 1rem;
@@ -411,8 +391,6 @@ body {
     background: linear-gradient(90deg, transparent, var(--red), transparent);
 }
 
-.weekly-chart-card .card-title { margin-bottom: 6px; }
-
 .chart-canvas-wrap {
     position: relative;
     width: 100%;
@@ -441,6 +419,7 @@ canvas { max-width: 100%; display: block; }
     display: inline-block;
 }
 
+/* ============== DAYS NAV ============== */
 .days-nav {
     display: flex;
     gap: 6px;
@@ -451,6 +430,7 @@ canvas { max-width: 100%; display: block; }
     overflow-x: auto;
     scrollbar-width: thin;
     flex-shrink: 0;
+    -webkit-overflow-scrolling: touch;
 }
 
 .days-nav::-webkit-scrollbar { height: 4px; }
@@ -474,10 +454,7 @@ canvas { max-width: 100%; display: block; }
     flex-shrink: 0;
 }
 
-.day-nav-btn:hover {
-    border-color: var(--red);
-    color: var(--red-light);
-}
+.day-nav-btn:hover { border-color: var(--red); color: var(--red-light); }
 
 .day-nav-btn.active {
     background: linear-gradient(135deg, var(--red), var(--red-dark));
@@ -496,9 +473,9 @@ canvas { max-width: 100%; display: block; }
 }
 
 .day-nav-btn.active .nav-pct { background: rgba(0,0,0,0.3); }
-
 .day-nav-btn .nav-day-icon { font-size: 0.85rem; }
 
+/* ============== MODE BANNER ============== */
 .mode-banner {
     display: flex;
     align-items: center;
@@ -521,10 +498,10 @@ canvas { max-width: 100%; display: block; }
 
 .mode-banner .banner-icon { font-size: 0.95rem; }
 
+/* ============== DAY CARD ============== */
 #daysContainer {
-    flex: 1;
-    min-height: 0;
-    overflow: hidden;
+    display: flex;
+    flex-direction: column;
 }
 
 .day-card {
@@ -534,14 +511,10 @@ canvas { max-width: 100%; display: block; }
     overflow: hidden;
     position: relative;
     display: none;
-    height: 100%;
     flex-direction: column;
 }
 
-.day-card.active {
-    display: flex;
-    height: 100%;
-}
+.day-card.active { display: flex; }
 
 .day-card::before {
     content: '';
@@ -563,11 +536,7 @@ canvas { max-width: 100%; display: block; }
     flex-shrink: 0;
 }
 
-.day-title {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
+.day-title { display: flex; align-items: center; gap: 10px; }
 
 .day-title-text {
     font-size: 1rem;
@@ -633,15 +602,6 @@ canvas { max-width: 100%; display: block; }
     grid-template-columns: repeat(5, 1fr);
     flex: 1;
     min-height: 0;
-    overflow: hidden;
-}
-
-@media (max-width: 1300px) {
-    .subjects-row { grid-template-columns: repeat(3, 1fr); }
-}
-
-@media (max-width: 900px) {
-    .subjects-row { grid-template-columns: repeat(2, 1fr); }
 }
 
 .subject-col {
@@ -650,7 +610,6 @@ canvas { max-width: 100%; display: block; }
     display: flex;
     flex-direction: column;
     min-height: 0;
-    overflow: hidden;
 }
 
 .subject-col:first-child { border-left: none; }
@@ -691,13 +650,7 @@ canvas { max-width: 100%; display: block; }
     gap: 6px;
     flex: 1;
     min-height: 0;
-    overflow-y: auto;
-    scrollbar-width: thin;
-    padding-left: 4px;
 }
-
-.tasks-list::-webkit-scrollbar { width: 5px; }
-.tasks-list::-webkit-scrollbar-thumb { background: var(--red); border-radius: 10px; }
 
 /* ============== TASK ITEM ============== */
 .task-item {
@@ -708,20 +661,17 @@ canvas { max-width: 100%; display: block; }
     transition: all 0.25s;
 }
 
-.task-item:hover {
-    border-color: var(--red);
-}
+.task-item:hover { border-color: var(--red); }
 
 .task-item.done {
     background: linear-gradient(135deg, rgba(16,185,129,0.13), rgba(16,185,129,0.03));
     border-color: rgba(16,185,129,0.4);
 }
 
-/* NEW: skipped state (نداشتم) */
 .task-item.skipped {
     background: linear-gradient(135deg, rgba(107,114,128,0.15), rgba(107,114,128,0.03));
     border-color: rgba(107,114,128,0.4);
-    opacity: 0.7;
+    opacity: 0.75;
 }
 
 .task-item.skipped .task-text,
@@ -755,13 +705,8 @@ canvas { max-width: 100%; display: block; }
     flex-shrink: 0;
 }
 
-.task-item.done .task-num {
-    background: linear-gradient(135deg, var(--success), #059669);
-}
-
-.task-item.skipped .task-num {
-    background: linear-gradient(135deg, var(--gray), #4b5563);
-}
+.task-item.done .task-num { background: linear-gradient(135deg, var(--success), #059669); }
+.task-item.skipped .task-num { background: linear-gradient(135deg, var(--gray), #4b5563); }
 
 .task-label {
     font-size: 0.65rem;
@@ -802,7 +747,6 @@ canvas { max-width: 100%; display: block; }
     color: white;
 }
 
-/* Skip button */
 .task-skip {
     background: rgba(107,114,128,0.15);
     border: 1.5px solid rgba(107,114,128,0.3);
@@ -820,7 +764,6 @@ canvas { max-width: 100%; display: block; }
     background: var(--gray);
     border-color: var(--gray);
     color: white;
-    box-shadow: 0 3px 10px rgba(107,114,128,0.5);
 }
 
 .task-text {
@@ -851,10 +794,7 @@ canvas { max-width: 100%; display: block; }
     color: var(--text-dim);
 }
 
-body:not(.edit-mode) .task-text {
-    cursor: default;
-    resize: none;
-}
+body:not(.edit-mode) .task-text { cursor: default; resize: none; }
 
 body.edit-mode .task-text {
     background: rgba(251,191,36,0.04);
@@ -918,27 +858,15 @@ body.edit-mode .task-text:focus {
 .task-field.time .task-input { color: var(--cyan); background: rgba(6,182,212,0.08); }
 .task-field.tests .task-input { color: var(--blue); background: rgba(59,130,246,0.08); }
 
-.task-input:focus {
-    border-color: currentColor;
-    background: rgba(255,255,255,0.08);
-}
+.task-input:focus { border-color: currentColor; background: rgba(255,255,255,0.08); }
 
-.task-input::placeholder {
-    color: rgba(255,255,255,0.2);
-    font-size: 0.65rem;
-}
+.task-input::placeholder { color: rgba(255,255,255,0.2); font-size: 0.65rem; }
 
 .task-input::-webkit-outer-spin-button,
-.task-input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-}
-
+.task-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
 .task-input[type=number] { -moz-appearance: textfield; }
 
-body:not(.edit-mode) .task-input {
-    cursor: default;
-}
+body:not(.edit-mode) .task-input { cursor: default; }
 
 .task-review {
     background: transparent;
@@ -958,11 +886,7 @@ body:not(.edit-mode) .task-input {
 
 .task-review:hover { background: rgba(251,191,36,0.15); }
 
-.task-review .rev-dots {
-    display: flex;
-    gap: 2px;
-    align-items: center;
-}
+.task-review .rev-dots { display: flex; gap: 2px; align-items: center; }
 
 .task-review .rev-dot {
     width: 6px; height: 6px;
@@ -996,23 +920,20 @@ body:not(.edit-mode) .task-input {
     display: flex;
     align-items: center;
     gap: 7px;
+    max-width: 90vw;
 }
 
 .toast.show { transform: translateX(-50%) translateY(0); }
+.toast.edit-toast { background: linear-gradient(135deg, var(--gold), #d97706); }
+.toast.skip-toast { background: linear-gradient(135deg, var(--gray), #4b5563); }
 
-.toast.edit-toast {
-    background: linear-gradient(135deg, var(--gold), #d97706);
-}
-
-.toast.skip-toast {
-    background: linear-gradient(135deg, var(--gray), #4b5563);
-}
-
+/* ============== MODAL ============== */
 .modal-overlay {
     position: fixed;
     inset: 0;
     background: rgba(0,0,0,0.75);
     backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
     display: none;
     align-items: center;
     justify-content: center;
@@ -1036,6 +957,7 @@ body:not(.edit-mode) .task-input {
 .modal p { font-size: 0.8rem; color: var(--text-dim); margin-bottom: 16px; }
 .modal-actions { display: flex; gap: 8px; justify-content: center; }
 
+/* ============== FOOTER ============== */
 .footer-bar {
     text-align: center;
     padding: 6px;
@@ -1045,6 +967,299 @@ body:not(.edit-mode) .task-input {
 }
 
 .footer-bar strong { color: var(--red); font-weight: 700; }
+
+/* ====================================================
+   DESKTOP: چیدمان بدون اسکرول (فقط از 1025px به بالا)
+==================================================== */
+@media (min-width: 1025px) {
+    html, body {
+        height: 100%;
+        overflow: hidden;
+    }
+
+    .app-layout {
+        height: 100vh;
+        overflow: hidden;
+    }
+
+    .dashboard { grid-template-columns: 1.1fr 1fr 0.9fr; }
+
+    #daysContainer {
+        flex: 1;
+        min-height: 0;
+        overflow: hidden;
+    }
+
+    .day-card.active {
+        height: 100%;
+    }
+
+    .subjects-row {
+        grid-template-columns: repeat(5, 1fr);
+        flex: 1;
+        min-height: 0;
+    }
+
+    .tasks-list {
+        overflow-y: auto;
+        scrollbar-width: thin;
+        padding-left: 4px;
+    }
+
+    .tasks-list::-webkit-scrollbar { width: 5px; }
+    .tasks-list::-webkit-scrollbar-thumb { background: var(--red); border-radius: 10px; }
+}
+
+/* ====================================================
+   TABLET (601px - 1024px)
+==================================================== */
+@media (min-width: 601px) and (max-width: 1024px) {
+    .dashboard {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .dashboard .dash-card:first-child {
+        grid-column: 1 / -1;
+    }
+
+    .weekly-charts {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .subjects-row {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .subject-col {
+        border-bottom: 1px solid var(--border);
+    }
+
+    /* حذف border چپ اضافی */
+    .subject-col:nth-child(3n+1) {
+        border-left: none;
+    }
+
+    .chart-canvas-wrap { height: 140px; }
+
+    .btn {
+        font-size: 0.8rem;
+        padding: 8px 16px;
+    }
+}
+
+/* ====================================================
+   MOBILE (تا 600px) — ریسپانسیو کامل
+==================================================== */
+@media (max-width: 600px) {
+    .app-layout {
+        padding: 8px 10px;
+        gap: 8px;
+    }
+
+    /* Top bar */
+    .top-bar {
+        padding: 10px 12px;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+    }
+
+    .brand { justify-content: center; }
+
+    .brand-logo {
+        width: 38px; height: 38px;
+        font-size: 1.15rem;
+    }
+
+    .brand-text h1 { font-size: 1rem; }
+    .brand-text p { font-size: 0.62rem; }
+
+    .header-actions {
+        justify-content: center;
+        gap: 6px;
+    }
+
+    .btn {
+        font-size: 0.72rem;
+        padding: 7px 12px;
+        flex: 1;
+        justify-content: center;
+        min-width: 0;
+    }
+
+    .edit-toggle {
+        order: -1;
+        width: 100%;
+        justify-content: space-between;
+        padding: 6px 12px;
+    }
+
+    .edit-toggle .toggle-label { font-size: 0.72rem; }
+
+    /* Mode banner */
+    .mode-banner {
+        font-size: 0.68rem;
+        padding: 6px 10px;
+        text-align: right;
+        line-height: 1.5;
+    }
+
+    /* Dashboard — همه زیر هم */
+    .dashboard {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+
+    .dashboard .dash-card:first-child { grid-column: auto; }
+
+    .dash-card { padding: 12px 14px; }
+
+    .big-percent { font-size: 2rem; }
+    .overall-meta p { font-size: 0.68rem; }
+
+    /* Weekly charts — زیر هم */
+    .weekly-charts {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+
+    .chart-canvas-wrap { height: 150px; }
+    .chart-canvas-wrap.small { height: 140px; }
+
+    /* Days nav */
+    .days-nav {
+        gap: 5px;
+        padding: 5px;
+    }
+
+    .day-nav-btn {
+        font-size: 0.7rem;
+        padding: 7px 12px;
+    }
+
+    /* Day header */
+    .day-card-header {
+        padding: 8px 12px;
+        gap: 8px;
+    }
+
+    .day-title-text { font-size: 0.9rem; }
+
+    .day-stats {
+        gap: 4px;
+        width: 100%;
+        justify-content: flex-start;
+    }
+
+    .stat-pill {
+        font-size: 0.62rem;
+        padding: 2px 7px;
+    }
+
+    /* Subjects row — زیر هم در موبایل */
+    .subjects-row {
+        grid-template-columns: 1fr;
+    }
+
+    .subject-col {
+        border-left: none;
+        border-bottom: 1px solid var(--border);
+        padding: 12px;
+    }
+
+    .subject-col:last-child { border-bottom: none; }
+
+    .subject-col-header {
+        margin-bottom: 10px;
+        padding-bottom: 8px;
+    }
+
+    .subject-col-title { font-size: 0.9rem; }
+    .subject-col-title .sub-icon { font-size: 1.05rem; }
+
+    .subject-col-pct { font-size: 0.72rem; }
+
+    .tasks-list { gap: 8px; }
+
+    /* Task item — بزرگ‌تر برای لمس */
+    .task-item {
+        border-radius: 12px;
+    }
+
+    .task-top {
+        padding: 7px 9px;
+        gap: 6px;
+    }
+
+    .task-num {
+        width: 30px;
+        height: 30px;
+        font-size: 0.78rem;
+    }
+
+    .task-label { font-size: 0.7rem; }
+
+    .task-check, .task-skip {
+        width: 36px;
+        height: 36px;
+        border-radius: 10px;
+        font-size: 1.15rem;
+    }
+
+    .task-text {
+        font-size: 0.85rem;
+        min-height: 65px;
+        padding: 10px 12px;
+        line-height: 1.65;
+    }
+
+    .task-text::placeholder { font-size: 0.78rem; }
+
+    /* Task bottom */
+    .task-field {
+        padding: 8px 4px;
+        gap: 3px;
+    }
+
+    .task-field-label { font-size: 0.62rem; }
+
+    .task-input {
+        font-size: 0.82rem;
+        max-width: 70px;
+        padding: 4px 6px;
+    }
+
+    .task-review { padding: 8px 4px; }
+    .task-review .rev-dot { width: 8px; height: 8px; }
+
+    /* Footer */
+    .footer-bar { font-size: 0.65rem; padding: 8px 4px; }
+
+    /* Modal */
+    .modal { padding: 18px; }
+    .modal h3 { font-size: 0.95rem; }
+    .modal p { font-size: 0.75rem; }
+}
+
+/* ====================================================
+   MOBILE خیلی کوچک (تا 360px)
+==================================================== */
+@media (max-width: 360px) {
+    .btn { font-size: 0.68rem; padding: 6px 10px; }
+    .brand-text h1 { font-size: 0.9rem; }
+    .task-check, .task-skip { width: 32px; height: 32px; font-size: 1rem; }
+    .task-text { font-size: 0.8rem; }
+}
+
+/* ====================================================
+   حالت افقی موبایل
+==================================================== */
+@media (max-height: 500px) and (orientation: landscape) {
+    .dashboard,
+    .weekly-charts { display: none; }
+
+    .app-layout { padding: 6px 8px; }
+}
 </style>
 </head>
 <body>
@@ -1068,6 +1283,15 @@ body:not(.edit-mode) .task-input {
             <button class="btn btn-danger" id="resetBtn">🗑️ پاک کردن</button>
         </div>
     </div>
+
+    <div class="mode-banner" id="modeBanner">
+        <span class="banner-icon" id="bannerIcon">👁️</span>
+        <span id="bannerText">حالت مرور فعال است — تیک، تست، مرور و ساعت مطالعه رو ثبت کن.</span>
+    </div>
+
+    <div class="days-nav" id="daysNav"></div>
+
+    <div id="daysContainer"></div>
 
     <div class="dashboard">
         <div class="dash-card">
@@ -1150,14 +1374,6 @@ body:not(.edit-mode) .task-input {
             </div>
         </div>
     </div>
-
-    <div class="mode-banner" id="modeBanner">
-        <span class="banner-icon" id="bannerIcon">👁️</span>
-        <span id="bannerText">حالت مرور فعال است — تیک، تست، مرور و ساعت مطالعه رو ثبت کن.</span>
-    </div>
-
-    <div class="days-nav" id="daysNav"></div>
-    <div id="daysContainer"></div>
 
     <div class="footer-bar">
         ساخته شده با ❤️ برای <strong>برنده بیرون میام</strong> — Konkur Planner Pro
@@ -1398,6 +1614,9 @@ function renderDaysNav() {
         btn.addEventListener('click', () => {
             currentDay = d.id;
             renderAll();
+            if (window.innerWidth <= 1024) {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
         });
         nav.appendChild(btn);
     });
@@ -1500,13 +1719,11 @@ function buildSubjectColumn(dayId, day, sub, dayNum) {
     label.className = 'task-label';
     label.textContent = 'باکس ' + toPersian(dayNum);
 
-    // Skip button (نداشتم)
     const skip = document.createElement('div');
     skip.className = 'task-skip';
     skip.textContent = '🚫';
     skip.title = 'امروز این درس رو نداشتم';
 
-    // Check button (انجام شد)
     const check = document.createElement('div');
     check.className = 'task-check';
     check.textContent = t.done ? '☑' : '☐';
@@ -1519,9 +1736,7 @@ function buildSubjectColumn(dayId, day, sub, dayNum) {
 
     skip.addEventListener('click', () => {
         t.skipped = !t.skipped;
-        if (t.skipped) {
-            t.done = false; // اگه «نداشتم» بزنی، تیک انجام پاک می‌شه
-        }
+        if (t.skipped) t.done = false;
         saveState();
         item.classList.toggle('skipped', t.skipped);
         item.classList.toggle('done', t.done);
@@ -1536,7 +1751,6 @@ function buildSubjectColumn(dayId, day, sub, dayNum) {
 
     check.addEventListener('click', () => {
         if (t.skipped) {
-            // اگه اسکیپ بود، اول تیک رو بردار
             t.skipped = false;
             item.classList.remove('skipped');
         }
@@ -1670,7 +1884,6 @@ function updateDayHeaderStats(dayId) {
     if (pills[2]) pills[2].innerHTML = `🧪 <strong>${toPersian(s.tests)}</strong>`;
     if (pills[3]) pills[3].innerHTML = `🔁 <strong>${toPersian(s.reviews)}</strong>`;
 
-    // Skip pill — ممکنه باشه یا نباشه
     let skipPill = card.querySelector('.stat-pill.gray');
     if (s.skipped > 0) {
         if (!skipPill) {
@@ -1683,7 +1896,6 @@ function updateDayHeaderStats(dayId) {
         skipPill.remove();
     }
 
-    // آخرین pill = درصد
     const allPills = card.querySelectorAll('.stat-pill');
     const lastPill = allPills[allPills.length - 1];
     if (lastPill && !lastPill.classList.contains('gray')) {
@@ -2127,6 +2339,15 @@ window.addEventListener('resize', () => {
         drawWeeklyTimeChart();
         drawWeeklyTestsChart();
     }, 150);
+});
+
+window.addEventListener('orientationchange', () => {
+    setTimeout(() => {
+        drawBarChart();
+        drawDonutChart();
+        drawWeeklyTimeChart();
+        drawWeeklyTestsChart();
+    }, 300);
 });
 </script>
 </body>
