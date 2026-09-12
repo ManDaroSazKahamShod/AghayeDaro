@@ -1,0 +1,2133 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Konkur Planner Pro | پلنر هفتگی کنکور</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap');
+
+:root {
+    --red: #e11d48;
+    --red-light: #fb7185;
+    --red-dark: #9f1239;
+    --red-glow: rgba(225, 29, 72, 0.45);
+    --black: #0a0a0f;
+    --black-2: #12121a;
+    --black-3: #1c1c26;
+    --black-4: #26262f;
+    --border: #2a2a35;
+    --text: #f5f5f7;
+    --text-dim: #a1a1aa;
+    --text-dimmer: #6b6b76;
+    --success: #10b981;
+    --gold: #fbbf24;
+    --blue: #3b82f6;
+    --purple: #8b5cf6;
+    --cyan: #06b6d4;
+    --gray: #6b7280;
+    --radius: 16px;
+    --radius-sm: 10px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+    height: 100%;
+    overflow: hidden;
+}
+
+body {
+    font-family: 'Vazirmatn', sans-serif;
+    background: var(--black);
+    color: var(--text);
+    line-height: 1.6;
+    background-image:
+        radial-gradient(circle at 15% 10%, rgba(225,29,72,0.14), transparent 45%),
+        radial-gradient(circle at 85% 90%, rgba(225,29,72,0.08), transparent 45%),
+        radial-gradient(circle at 50% 50%, rgba(139,92,246,0.05), transparent 60%);
+    background-attachment: fixed;
+}
+
+.app-layout {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding: 12px 16px;
+    gap: 10px;
+    overflow: hidden;
+}
+
+/* ============== TOP BAR ============== */
+.top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 10px 18px;
+    background: linear-gradient(135deg, var(--black-2) 0%, var(--black-3) 100%);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    position: relative;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.top-bar::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 5px; height: 100%;
+    background: linear-gradient(180deg, var(--red), var(--gold));
+}
+
+.brand { display: flex; align-items: center; gap: 10px; }
+
+.brand-logo {
+    width: 42px; height: 42px;
+    background: linear-gradient(135deg, var(--red), var(--red-dark));
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    box-shadow: 0 6px 22px var(--red-glow);
+}
+
+.brand-text h1 {
+    font-size: 1.1rem;
+    font-weight: 900;
+    background: linear-gradient(90deg, #fff, var(--red-light), var(--gold));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: -0.5px;
+}
+
+.brand-text p { font-size: 0.68rem; color: var(--text-dim); }
+
+.header-actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+
+.btn {
+    padding: 7px 14px;
+    border-radius: 50px;
+    border: 1px solid var(--border);
+    background: var(--black-3);
+    color: var(--text);
+    font-family: inherit;
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.btn:hover {
+    border-color: var(--red);
+    color: var(--red-light);
+    transform: translateY(-1px);
+}
+
+.btn-danger:hover {
+    background: rgba(225,29,72,0.15);
+    border-color: var(--red);
+    color: var(--red-light);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--red), var(--red-dark));
+    border-color: var(--red);
+    color: white;
+    box-shadow: 0 4px 14px var(--red-glow);
+}
+
+.edit-toggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--black-4);
+    border: 1.5px solid var(--border);
+    padding: 4px 6px 4px 12px;
+    border-radius: 50px;
+    transition: all 0.3s;
+    cursor: pointer;
+}
+
+.edit-toggle.on {
+    border-color: var(--gold);
+    background: rgba(251,191,36,0.08);
+    box-shadow: 0 0 18px rgba(251,191,36,0.25);
+}
+
+.edit-toggle .toggle-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--text-dim);
+}
+
+.edit-toggle.on .toggle-label { color: var(--gold); }
+
+.toggle-switch {
+    position: relative;
+    width: 40px;
+    height: 22px;
+    background: var(--black-3);
+    border-radius: 50px;
+    border: 1px solid var(--border);
+}
+
+.toggle-switch::after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    width: 16px;
+    height: 16px;
+    background: var(--text-dimmer);
+    border-radius: 50%;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.edit-toggle.on .toggle-switch {
+    background: linear-gradient(135deg, var(--gold), #d97706);
+    border-color: var(--gold);
+}
+
+.edit-toggle.on .toggle-switch::after {
+    right: 20px;
+    background: white;
+}
+
+/* ============== DASHBOARD ============== */
+.dashboard {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr 0.9fr;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+@media (max-width: 1200px) {
+    .dashboard { grid-template-columns: 1fr 1fr; }
+    .dashboard .dash-card:first-child { grid-column: 1 / -1; }
+}
+
+.dash-card {
+    background: linear-gradient(135deg, var(--black-2) 0%, var(--black-3) 100%);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 12px 14px;
+    position: relative;
+    overflow: hidden;
+}
+
+.dash-card::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--red), transparent);
+}
+
+.card-title {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.card-title .icon {
+    width: 24px; height: 24px;
+    background: rgba(225,29,72,0.15);
+    border-radius: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+}
+
+.overall-score {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px dashed var(--border);
+}
+
+.big-percent {
+    font-size: 2.2rem;
+    font-weight: 900;
+    background: linear-gradient(135deg, #fff, var(--red));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    line-height: 1;
+    letter-spacing: -1.5px;
+    min-width: 90px;
+}
+
+.overall-meta { flex: 1; }
+.overall-meta p { font-size: 0.7rem; color: var(--text-dim); }
+.overall-meta strong { color: var(--text); font-weight: 700; }
+
+.overall-progress {
+    height: 8px;
+    background: var(--black-4);
+    border-radius: 50px;
+    overflow: hidden;
+    margin-top: 5px;
+}
+
+.overall-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--red), var(--red-light), var(--gold));
+    width: 0%;
+    border-radius: 50px;
+    transition: width 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 0 14px var(--red-glow);
+}
+
+.subject-scores { display: flex; flex-direction: column; gap: 6px; }
+
+.score-row {
+    display: grid;
+    grid-template-columns: 75px 1fr 45px;
+    align-items: center;
+    gap: 8px;
+}
+
+.score-row .name {
+    font-size: 0.72rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.score-row .dot-sub {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    box-shadow: 0 0 6px currentColor;
+}
+
+.score-row .bar {
+    height: 6px;
+    background: var(--black-4);
+    border-radius: 50px;
+    overflow: hidden;
+}
+
+.score-row .bar-fill {
+    height: 100%;
+    width: 0%;
+    border-radius: 50px;
+    transition: width 0.7s;
+}
+
+.score-row .pct {
+    font-size: 0.72rem;
+    font-weight: 800;
+    text-align: left;
+    font-variant-numeric: tabular-nums;
+}
+
+.week-summary {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px dashed var(--border);
+}
+
+.summary-box {
+    background: var(--black-4);
+    border-radius: 8px;
+    padding: 6px 4px;
+    text-align: center;
+    border: 1px solid var(--border);
+    transition: all 0.25s;
+}
+
+.summary-box:hover { border-color: var(--red); }
+
+.summary-box .val {
+    font-size: 1rem;
+    font-weight: 900;
+    display: block;
+    line-height: 1.2;
+    font-variant-numeric: tabular-nums;
+}
+
+.summary-box .lbl {
+    font-size: 0.6rem;
+    color: var(--text-dim);
+    margin-top: 2px;
+    font-weight: 600;
+}
+
+.summary-box.time .val {
+    background: linear-gradient(135deg, var(--cyan), #0891b2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.summary-box.tests .val {
+    background: linear-gradient(135deg, var(--blue), #1d4ed8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.summary-box.reviews .val {
+    background: linear-gradient(135deg, var(--gold), #d97706);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.weekly-charts {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+.weekly-chart-card {
+    background: linear-gradient(135deg, var(--black-2) 0%, var(--black-3) 100%);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 10px 14px;
+    position: relative;
+    overflow: hidden;
+}
+
+.weekly-chart-card::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--red), transparent);
+}
+
+.weekly-chart-card .card-title { margin-bottom: 6px; }
+
+.chart-canvas-wrap {
+    position: relative;
+    width: 100%;
+    height: 110px;
+}
+
+.chart-canvas-wrap.small { height: 130px; }
+
+canvas { max-width: 100%; display: block; }
+
+.chart-legend {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 6px;
+    font-size: 0.7rem;
+    color: var(--text-dim);
+    flex-wrap: wrap;
+}
+
+.chart-legend span { display: flex; align-items: center; gap: 5px; }
+
+.legend-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.days-nav {
+    display: flex;
+    gap: 6px;
+    padding: 6px;
+    background: var(--black-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow-x: auto;
+    scrollbar-width: thin;
+    flex-shrink: 0;
+}
+
+.days-nav::-webkit-scrollbar { height: 4px; }
+.days-nav::-webkit-scrollbar-thumb { background: var(--red); border-radius: 10px; }
+
+.day-nav-btn {
+    padding: 7px 14px;
+    border-radius: 50px;
+    border: 1.5px solid var(--border);
+    background: var(--black-3);
+    color: var(--text-dim);
+    font-family: inherit;
+    font-size: 0.75rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.25s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.day-nav-btn:hover {
+    border-color: var(--red);
+    color: var(--red-light);
+}
+
+.day-nav-btn.active {
+    background: linear-gradient(135deg, var(--red), var(--red-dark));
+    border-color: var(--red);
+    color: white;
+    box-shadow: 0 4px 14px var(--red-glow);
+}
+
+.day-nav-btn .nav-pct {
+    font-size: 0.62rem;
+    background: rgba(255,255,255,0.18);
+    padding: 1px 6px;
+    border-radius: 50px;
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+}
+
+.day-nav-btn.active .nav-pct { background: rgba(0,0,0,0.3); }
+
+.day-nav-btn .nav-day-icon { font-size: 0.85rem; }
+
+.mode-banner {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    background: linear-gradient(135deg, rgba(16,185,129,0.12), rgba(16,185,129,0.04));
+    border: 1px solid rgba(16,185,129,0.3);
+    border-radius: var(--radius-sm);
+    font-size: 0.72rem;
+    color: var(--success);
+    font-weight: 600;
+    flex-shrink: 0;
+}
+
+.mode-banner.edit {
+    background: linear-gradient(135deg, rgba(251,191,36,0.12), rgba(251,191,36,0.04));
+    border-color: rgba(251,191,36,0.4);
+    color: var(--gold);
+}
+
+.mode-banner .banner-icon { font-size: 0.95rem; }
+
+#daysContainer {
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+}
+
+.day-card {
+    background: linear-gradient(135deg, var(--black-2) 0%, var(--black-3) 100%);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    position: relative;
+    display: none;
+    height: 100%;
+    flex-direction: column;
+}
+
+.day-card.active {
+    display: flex;
+    height: 100%;
+}
+
+.day-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--red), transparent);
+}
+
+.day-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 10px 16px;
+    background: rgba(225,29,72,0.05);
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+}
+
+.day-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.day-title-text {
+    font-size: 1rem;
+    font-weight: 900;
+    color: var(--text);
+}
+
+.day-badge {
+    background: linear-gradient(135deg, var(--red), var(--red-dark));
+    color: white;
+    width: 32px; height: 32px;
+    border-radius: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 0.85rem;
+    box-shadow: 0 4px 12px var(--red-glow);
+}
+
+.day-stats {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.stat-pill {
+    background: var(--black-4);
+    border: 1px solid var(--border);
+    padding: 3px 9px;
+    border-radius: 50px;
+    font-size: 0.68rem;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-variant-numeric: tabular-nums;
+    font-weight: 600;
+}
+
+.stat-pill strong { color: var(--red-light); font-weight: 800; }
+.stat-pill.gold strong { color: var(--gold); }
+.stat-pill.blue strong { color: var(--blue); }
+.stat-pill.cyan strong { color: var(--cyan); }
+.stat-pill.gray strong { color: var(--gray); }
+
+.day-progress-bar {
+    height: 3px;
+    background: var(--black-4);
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.day-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--success), #4dd4ac);
+    width: 0%;
+    transition: width 0.6s;
+}
+
+.subjects-row {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+}
+
+@media (max-width: 1300px) {
+    .subjects-row { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (max-width: 900px) {
+    .subjects-row { grid-template-columns: repeat(2, 1fr); }
+}
+
+.subject-col {
+    border-left: 1px solid var(--border);
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    overflow: hidden;
+}
+
+.subject-col:first-child { border-left: none; }
+
+.subject-col-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    padding-bottom: 6px;
+    border-bottom: 1px dashed var(--border);
+    flex-shrink: 0;
+}
+
+.subject-col-title {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 700;
+    font-size: 0.82rem;
+}
+
+.subject-col-title .sub-icon { font-size: 0.95rem; }
+
+.subject-col-pct {
+    font-size: 0.68rem;
+    font-weight: 800;
+    color: var(--red-light);
+    background: rgba(225,29,72,0.12);
+    padding: 2px 8px;
+    border-radius: 50px;
+    font-variant-numeric: tabular-nums;
+}
+
+.tasks-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    padding-left: 4px;
+}
+
+.tasks-list::-webkit-scrollbar { width: 5px; }
+.tasks-list::-webkit-scrollbar-thumb { background: var(--red); border-radius: 10px; }
+
+/* ============== TASK ITEM ============== */
+.task-item {
+    background: var(--black-4);
+    border: 1px solid transparent;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 0.25s;
+}
+
+.task-item:hover {
+    border-color: var(--red);
+}
+
+.task-item.done {
+    background: linear-gradient(135deg, rgba(16,185,129,0.13), rgba(16,185,129,0.03));
+    border-color: rgba(16,185,129,0.4);
+}
+
+/* NEW: skipped state (نداشتم) */
+.task-item.skipped {
+    background: linear-gradient(135deg, rgba(107,114,128,0.15), rgba(107,114,128,0.03));
+    border-color: rgba(107,114,128,0.4);
+    opacity: 0.7;
+}
+
+.task-item.skipped .task-text,
+.task-item.skipped .task-input {
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+.task-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px 7px;
+    background: rgba(0,0,0,0.2);
+    border-bottom: 1px solid var(--border);
+    gap: 4px;
+}
+
+.task-num {
+    background: linear-gradient(135deg, var(--red), var(--red-dark));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.72rem;
+    font-weight: 900;
+    color: white;
+    width: 26px;
+    height: 26px;
+    border-radius: 7px;
+    font-variant-numeric: tabular-nums;
+    flex-shrink: 0;
+}
+
+.task-item.done .task-num {
+    background: linear-gradient(135deg, var(--success), #059669);
+}
+
+.task-item.skipped .task-num {
+    background: linear-gradient(135deg, var(--gray), #4b5563);
+}
+
+.task-label {
+    font-size: 0.65rem;
+    color: var(--text-dimmer);
+    font-weight: 700;
+    margin-right: auto;
+    margin-left: 6px;
+}
+
+.task-check, .task-skip {
+    width: 30px;
+    height: 30px;
+    border-radius: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 1.05rem;
+    transition: all 0.2s;
+    user-select: none;
+    flex-shrink: 0;
+}
+
+.task-check {
+    background: rgba(225,29,72,0.1);
+    border: 1.5px solid rgba(225,29,72,0.3);
+    color: var(--red-light);
+}
+
+.task-check:hover {
+    background: rgba(225,29,72,0.25);
+    transform: scale(1.05);
+}
+
+.task-item.done .task-check {
+    background: var(--success);
+    border-color: var(--success);
+    color: white;
+}
+
+/* Skip button */
+.task-skip {
+    background: rgba(107,114,128,0.15);
+    border: 1.5px solid rgba(107,114,128,0.3);
+    color: var(--gray);
+    font-size: 0.9rem;
+}
+
+.task-skip:hover {
+    background: rgba(107,114,128,0.3);
+    color: #9ca3af;
+    transform: scale(1.05);
+}
+
+.task-item.skipped .task-skip {
+    background: var(--gray);
+    border-color: var(--gray);
+    color: white;
+    box-shadow: 0 3px 10px rgba(107,114,128,0.5);
+}
+
+.task-text {
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--text);
+    font-family: inherit;
+    font-size: 0.78rem;
+    padding: 8px 10px;
+    width: 100%;
+    min-height: 50px;
+    max-height: 120px;
+    resize: vertical;
+    line-height: 1.6;
+    transition: background 0.2s;
+    display: block;
+}
+
+.task-text::placeholder {
+    color: var(--text-dimmer);
+    font-style: italic;
+    font-size: 0.72rem;
+}
+
+.task-item.done .task-text {
+    text-decoration: line-through;
+    color: var(--text-dim);
+}
+
+body:not(.edit-mode) .task-text {
+    cursor: default;
+    resize: none;
+}
+
+body.edit-mode .task-text {
+    background: rgba(251,191,36,0.04);
+    border-bottom: 1px dashed rgba(251,191,36,0.3);
+}
+
+body.edit-mode .task-text:focus {
+    background: rgba(251,191,36,0.08);
+    border-bottom-color: var(--gold);
+}
+
+.task-bottom {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    border-top: 1px solid var(--border);
+    background: rgba(0,0,0,0.15);
+}
+
+.task-field {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 5px 3px;
+    border-left: 1px solid var(--border);
+    gap: 2px;
+    transition: background 0.2s;
+}
+
+.task-field:first-child { border-left: none; }
+
+.task-field-label {
+    font-size: 0.58rem;
+    color: var(--text-dimmer);
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 3px;
+}
+
+.task-field.time .task-field-label { color: var(--cyan); }
+.task-field.tests .task-field-label { color: var(--blue); }
+.task-field.reviews .task-field-label { color: var(--gold); }
+
+.task-input {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid transparent;
+    border-radius: 6px;
+    outline: none;
+    font-family: inherit;
+    font-size: 0.72rem;
+    font-weight: 800;
+    text-align: center;
+    width: 100%;
+    max-width: 60px;
+    padding: 2px 4px;
+    font-variant-numeric: tabular-nums;
+    transition: all 0.2s;
+}
+
+.task-field.time .task-input { color: var(--cyan); background: rgba(6,182,212,0.08); }
+.task-field.tests .task-input { color: var(--blue); background: rgba(59,130,246,0.08); }
+
+.task-input:focus {
+    border-color: currentColor;
+    background: rgba(255,255,255,0.08);
+}
+
+.task-input::placeholder {
+    color: rgba(255,255,255,0.2);
+    font-size: 0.65rem;
+}
+
+.task-input::-webkit-outer-spin-button,
+.task-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.task-input[type=number] { -moz-appearance: textfield; }
+
+body:not(.edit-mode) .task-input {
+    cursor: default;
+}
+
+.task-review {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: inherit;
+    color: var(--text-dimmer);
+    font-weight: 600;
+    transition: all 0.2s;
+    gap: 2px;
+    padding: 5px 3px;
+}
+
+.task-review:hover { background: rgba(251,191,36,0.15); }
+
+.task-review .rev-dots {
+    display: flex;
+    gap: 2px;
+    align-items: center;
+}
+
+.task-review .rev-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--black-3);
+    border: 1.5px solid var(--text-dimmer);
+    transition: all 0.2s;
+}
+
+.task-review .rev-dot.filled {
+    background: var(--gold);
+    border-color: var(--gold);
+    box-shadow: 0 0 6px rgba(251,191,36,0.8);
+}
+
+/* ============== TOAST ============== */
+.toast {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: linear-gradient(135deg, var(--red), var(--red-dark));
+    color: white;
+    padding: 10px 20px;
+    border-radius: 50px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    box-shadow: 0 10px 30px var(--red-glow);
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.toast.show { transform: translateX(-50%) translateY(0); }
+
+.toast.edit-toast {
+    background: linear-gradient(135deg, var(--gold), #d97706);
+}
+
+.toast.skip-toast {
+    background: linear-gradient(135deg, var(--gray), #4b5563);
+}
+
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.75);
+    backdrop-filter: blur(4px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 9998;
+    padding: 20px;
+}
+
+.modal-overlay.show { display: flex; }
+
+.modal {
+    background: var(--black-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 22px;
+    max-width: 380px;
+    width: 100%;
+    text-align: center;
+}
+
+.modal h3 { font-size: 1rem; margin-bottom: 8px; }
+.modal p { font-size: 0.8rem; color: var(--text-dim); margin-bottom: 16px; }
+.modal-actions { display: flex; gap: 8px; justify-content: center; }
+
+.footer-bar {
+    text-align: center;
+    padding: 6px;
+    color: var(--text-dimmer);
+    font-size: 0.68rem;
+    flex-shrink: 0;
+}
+
+.footer-bar strong { color: var(--red); font-weight: 700; }
+</style>
+</head>
+<body>
+
+<div class="app-layout">
+
+    <div class="top-bar">
+        <div class="brand">
+            <div class="brand-logo">🎯</div>
+            <div class="brand-text">
+                <h1>Konkur Planner Pro</h1>
+                <p>پلنر هفتگی — ساعت مطالعه + تست + مرور</p>
+            </div>
+        </div>
+        <div class="header-actions">
+            <div class="edit-toggle" id="editToggle">
+                <span class="toggle-label" id="toggleLabel">🔒 حالت مرور</span>
+                <div class="toggle-switch"></div>
+            </div>
+            <button class="btn" id="exportBtn">📥 خروجی</button>
+            <button class="btn btn-danger" id="resetBtn">🗑️ پاک کردن</button>
+        </div>
+    </div>
+
+    <div class="dashboard">
+        <div class="dash-card">
+            <div class="card-title">
+                <div class="icon">📊</div>
+                <span>داشبورد پیشرفت</span>
+            </div>
+            <div class="overall-score">
+                <div class="big-percent" id="overallPercent">۰٪</div>
+                <div class="overall-meta">
+                    <p>پیشرفت کل هفته</p>
+                    <p style="margin-top:2px;">
+                        <strong id="doneCount">۰</strong> از <strong id="totalCount">۰</strong> باکس فعال
+                    </p>
+                    <div class="overall-progress">
+                        <div class="overall-progress-fill" id="overallBar"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="subject-scores" id="subjectScores"></div>
+        </div>
+
+        <div class="dash-card">
+            <div class="card-title">
+                <div class="icon">📈</div>
+                <span>مقایسه پیشرفت دروس</span>
+            </div>
+            <div class="chart-canvas-wrap">
+                <canvas id="barChart"></canvas>
+            </div>
+            <div class="week-summary">
+                <div class="summary-box time">
+                    <span class="val" id="totalTime">۰</span>
+                    <div class="lbl">⏱️ ساعت</div>
+                </div>
+                <div class="summary-box tests">
+                    <span class="val" id="totalTests">۰</span>
+                    <div class="lbl">🧪 تست</div>
+                </div>
+                <div class="summary-box reviews">
+                    <span class="val" id="totalReviews">۰</span>
+                    <div class="lbl">🔁 مرور</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="dash-card">
+            <div class="card-title">
+                <div class="icon">🍩</div>
+                <span>وضعیت کلی</span>
+            </div>
+            <div class="chart-canvas-wrap small">
+                <canvas id="donutChart"></canvas>
+            </div>
+            <div class="chart-legend">
+                <span><span class="legend-dot" style="background:#10b981;"></span> انجام</span>
+                <span><span class="legend-dot" style="background:#e11d48;"></span> باقی</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="weekly-charts">
+        <div class="weekly-chart-card">
+            <div class="card-title">
+                <div class="icon">⏱️</div>
+                <span>ساعت مطالعه در هر روز هفته</span>
+            </div>
+            <div class="chart-canvas-wrap">
+                <canvas id="weeklyTimeChart"></canvas>
+            </div>
+        </div>
+
+        <div class="weekly-chart-card">
+            <div class="card-title">
+                <div class="icon">🧪</div>
+                <span>تست زده‌شده در هر روز هفته</span>
+            </div>
+            <div class="chart-canvas-wrap">
+                <canvas id="weeklyTestsChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div class="mode-banner" id="modeBanner">
+        <span class="banner-icon" id="bannerIcon">👁️</span>
+        <span id="bannerText">حالت مرور فعال است — تیک، تست، مرور و ساعت مطالعه رو ثبت کن.</span>
+    </div>
+
+    <div class="days-nav" id="daysNav"></div>
+    <div id="daysContainer"></div>
+
+    <div class="footer-bar">
+        ساخته شده با ❤️ برای <strong>برنده بیرون میام</strong> — Konkur Planner Pro
+    </div>
+</div>
+
+<div class="toast" id="toast">
+    <span id="toastIcon">✓</span>
+    <span id="toastMsg">ذخیره شد</span>
+</div>
+
+<div class="modal-overlay" id="modalOverlay">
+    <div class="modal">
+        <h3>⚠️ پاک کردن همه داده‌ها</h3>
+        <p>همه روزها، مبحث‌ها، تست‌ها، مرورها، ساعت‌ها و تیک‌ها پاک می‌شن. مطمئنی؟</p>
+        <div class="modal-actions">
+            <button class="btn" id="modalCancel">انصراف</button>
+            <button class="btn btn-primary" id="modalConfirm">بله، پاک کن</button>
+        </div>
+    </div>
+</div>
+
+<script>
+const SUBJECTS = [
+    { id: 'math', name: 'ریاضی',        icon: '📐', color: '#e11d48' },
+    { id: 'chem', name: 'شیمی',         icon: '🧪', color: '#fbbf24' },
+    { id: 'phys', name: 'فیزیک',        icon: '⚛️', color: '#3b82f6' },
+    { id: 'bio',  name: 'زیست',         icon: '🧬', color: '#10b981' },
+    { id: 'geo',  name: 'زمین‌شناسی',   icon: '🌍', color: '#8b5cf6' }
+];
+
+const WEEK_DAYS = [
+    { id: 'sat', name: 'شنبه',    icon: '📅', num: 1 },
+    { id: 'sun', name: 'یکشنبه',  icon: '📅', num: 2 },
+    { id: 'mon', name: 'دوشنبه',  icon: '📅', num: 3 },
+    { id: 'tue', name: 'سه‌شنبه', icon: '📅', num: 4 },
+    { id: 'wed', name: 'چهارشنبه', icon: '📅', num: 5 },
+    { id: 'thu', name: 'پنجشنبه', icon: '📅', num: 6 },
+    { id: 'fri', name: 'جمعه',    icon: '📅', num: 7 }
+];
+
+const STORAGE_KEY = 'konkurPlannerWeek_v7';
+const EDIT_MODE_KEY = 'konkurPlannerEditMode_v7';
+
+let state = { days: {} };
+let currentDay = 'sat';
+let editMode = false;
+
+function makeSubjectTask() {
+    return { text: '', time: '', tests: '', reviews: 0, done: false, skipped: false };
+}
+
+function makeWeek() {
+    const days = {};
+    WEEK_DAYS.forEach(d => {
+        const subjects = {};
+        SUBJECTS.forEach(s => { subjects[s.id] = makeSubjectTask(); });
+        days[d.id] = { subjects };
+    });
+    return { days };
+}
+
+function loadState() {
+    try {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (saved) {
+            const parsed = JSON.parse(saved);
+            if (parsed && parsed.days) {
+                state = parsed;
+                WEEK_DAYS.forEach(d => {
+                    if (!state.days[d.id]) {
+                        const subjects = {};
+                        SUBJECTS.forEach(s => { subjects[s.id] = makeSubjectTask(); });
+                        state.days[d.id] = { subjects };
+                    }
+                    SUBJECTS.forEach(s => {
+                        const t = state.days[d.id].subjects[s.id];
+                        if (!t) state.days[d.id].subjects[s.id] = makeSubjectTask();
+                        else {
+                            if (typeof t.text !== 'string') t.text = '';
+                            if (typeof t.time !== 'string' && typeof t.time !== 'number') t.time = '';
+                            if (typeof t.tests !== 'string' && typeof t.tests !== 'number') t.tests = '';
+                            if (typeof t.reviews !== 'number') t.reviews = 0;
+                            if (typeof t.done !== 'boolean') t.done = false;
+                            if (typeof t.skipped !== 'boolean') t.skipped = false;
+                        }
+                    });
+                });
+                return;
+            }
+        }
+    } catch(e) {}
+    state = makeWeek();
+}
+
+function saveState() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+}
+
+function toPersian(n) {
+    return String(n).replace(/\d/g, d => '۰۱۲۳۴۵۶۷۸۹'[d]);
+}
+
+function overallSubjectPercent(subId) {
+    let done = 0, active = 0;
+    WEEK_DAYS.forEach(d => {
+        const t = state.days[d.id].subjects[subId];
+        if (t && !t.skipped) {
+            active++;
+            if (t.done) done++;
+        }
+    });
+    return active > 0 ? Math.round((done / active) * 100) : 0;
+}
+
+function dayOverallPercent(dayId) {
+    let done = 0, active = 0;
+    SUBJECTS.forEach(s => {
+        const t = state.days[dayId].subjects[s.id];
+        if (t && !t.skipped) {
+            active++;
+            if (t.done) done++;
+        }
+    });
+    return active > 0 ? Math.round((done / active) * 100) : 0;
+}
+
+function overallStats() {
+    let totalDone = 0, totalActive = 0, totalSkipped = 0;
+    WEEK_DAYS.forEach(d => {
+        SUBJECTS.forEach(s => {
+            const t = state.days[d.id].subjects[s.id];
+            if (t.skipped) {
+                totalSkipped++;
+            } else {
+                totalActive++;
+                if (t.done) totalDone++;
+            }
+        });
+    });
+    return {
+        done: totalDone,
+        total: totalActive,
+        skipped: totalSkipped,
+        percent: totalActive > 0 ? Math.round((totalDone / totalActive) * 100) : 0
+    };
+}
+
+function totalsForTimeTestsReviews() {
+    let time = 0, tests = 0, reviews = 0;
+    WEEK_DAYS.forEach(d => {
+        SUBJECTS.forEach(s => {
+            const t = state.days[d.id].subjects[s.id];
+            if (t && !t.skipped) {
+                const tm = parseFloat(t.time);
+                if (!isNaN(tm) && tm > 0) time += tm;
+                const num = parseInt(t.tests, 10);
+                if (!isNaN(num) && num > 0) tests += num;
+                if (t.reviews) reviews += t.reviews;
+            }
+        });
+    });
+    return { time, tests, reviews };
+}
+
+function dayStats(dayId) {
+    let done = 0, active = 0, skipped = 0, time = 0, tests = 0, reviews = 0;
+    SUBJECTS.forEach(s => {
+        const t = state.days[dayId].subjects[s.id];
+        if (t) {
+            if (t.skipped) {
+                skipped++;
+            } else {
+                active++;
+                if (t.done) done++;
+                const tm = parseFloat(t.time);
+                if (!isNaN(tm) && tm > 0) time += tm;
+                const num = parseInt(t.tests, 10);
+                if (!isNaN(num) && num > 0) tests += num;
+                if (t.reviews) reviews += t.reviews;
+            }
+        }
+    });
+    return { done, active, skipped, time, tests, reviews, total: SUBJECTS.length };
+}
+
+function showToast(msg, type = 'default') {
+    const t = document.getElementById('toast');
+    const icon = document.getElementById('toastIcon');
+    document.getElementById('toastMsg').textContent = msg;
+    t.classList.remove('edit-toast', 'skip-toast');
+    if (type === 'edit') { t.classList.add('edit-toast'); icon.textContent = '✏️'; }
+    else if (type === 'skip') { t.classList.add('skip-toast'); icon.textContent = '🚫'; }
+    else { icon.textContent = '✓'; }
+    t.classList.add('show');
+    clearTimeout(t._timer);
+    t._timer = setTimeout(() => t.classList.remove('show'), 2000);
+}
+
+function setEditMode(on) {
+    editMode = on;
+    document.body.classList.toggle('edit-mode', on);
+    document.getElementById('editToggle').classList.toggle('on', on);
+
+    const label = document.getElementById('toggleLabel');
+    const banner = document.getElementById('modeBanner');
+    const bannerIcon = document.getElementById('bannerIcon');
+    const bannerText = document.getElementById('bannerText');
+
+    if (on) {
+        label.textContent = '✏️ حالت ادیت';
+        banner.classList.add('edit');
+        bannerIcon.textContent = '✏️';
+        bannerText.textContent = 'حالت ادیت فعال است — متن مبحث را ویرایش کن.';
+    } else {
+        label.textContent = '🔒 حالت مرور';
+        banner.classList.remove('edit');
+        bannerIcon.textContent = '👁️';
+        bannerText.textContent = 'حالت مرور فعال است — تیک، تست، مرور و ساعت مطالعه رو ثبت کن.';
+    }
+    localStorage.setItem(EDIT_MODE_KEY, on ? '1' : '0');
+}
+
+function renderDaysNav() {
+    const nav = document.getElementById('daysNav');
+    nav.innerHTML = '';
+    WEEK_DAYS.forEach(d => {
+        const s = dayStats(d.id);
+        const pct = s.active > 0 ? Math.round((s.done / s.active) * 100) : 0;
+        const btn = document.createElement('button');
+        btn.className = 'day-nav-btn' + (d.id === currentDay ? ' active' : '');
+        btn.dataset.day = d.id;
+        btn.innerHTML = `
+            <span class="nav-day-icon">${d.icon}</span>
+            <span>${d.name}</span>
+            <span class="nav-pct">${toPersian(pct)}٪</span>
+        `;
+        btn.addEventListener('click', () => {
+            currentDay = d.id;
+            renderAll();
+        });
+        nav.appendChild(btn);
+    });
+}
+
+function renderDayCards() {
+    const container = document.getElementById('daysContainer');
+    container.innerHTML = '';
+    WEEK_DAYS.forEach(d => {
+        const card = buildDayCard(d);
+        card.classList.toggle('active', d.id === currentDay);
+        container.appendChild(card);
+    });
+}
+
+function buildDayCard(dayObj) {
+    const dayId = dayObj.id;
+    const day = state.days[dayId];
+
+    const card = document.createElement('div');
+    card.className = 'day-card';
+    card.dataset.day = dayId;
+
+    const s = dayStats(dayId);
+    const dayPercent = s.active > 0 ? Math.round((s.done / s.active) * 100) : 0;
+
+    const header = document.createElement('div');
+    header.className = 'day-card-header';
+    header.innerHTML = `
+        <div class="day-title">
+            <div class="day-badge">${toPersian(dayObj.num)}</div>
+            <span class="day-title-text">${dayObj.name}</span>
+        </div>
+        <div class="day-stats">
+            <div class="stat-pill">✓ <strong>${toPersian(s.done)}</strong>/${toPersian(s.active)}</div>
+            <div class="stat-pill cyan">⏱️ <strong>${toPersian(formatTime(s.time))}</strong></div>
+            <div class="stat-pill blue">🧪 <strong>${toPersian(s.tests)}</strong></div>
+            <div class="stat-pill gold">🔁 <strong>${toPersian(s.reviews)}</strong></div>
+            ${s.skipped > 0 ? `<div class="stat-pill gray">🚫 <strong>${toPersian(s.skipped)}</strong></div>` : ''}
+            <div class="stat-pill">📊 <strong>${toPersian(dayPercent)}٪</strong></div>
+        </div>
+    `;
+    card.appendChild(header);
+
+    const dayBar = document.createElement('div');
+    dayBar.className = 'day-progress-bar';
+    dayBar.innerHTML = `<div class="day-progress-fill" style="width:${dayPercent}%"></div>`;
+    card.appendChild(dayBar);
+
+    const row = document.createElement('div');
+    row.className = 'subjects-row';
+    SUBJECTS.forEach(sub => {
+        row.appendChild(buildSubjectColumn(dayId, day, sub, dayObj.num));
+    });
+    card.appendChild(row);
+
+    return card;
+}
+
+function formatTime(t) {
+    if (!t || t <= 0) return '۰';
+    const h = Math.floor(t);
+    const m = Math.round((t - h) * 60);
+    if (m === 0) return toPersian(h) + 'س';
+    return toPersian(h) + ':' + toPersian(String(m).padStart(2, '0'));
+}
+
+function buildSubjectColumn(dayId, day, sub, dayNum) {
+    const col = document.createElement('div');
+    col.className = 'subject-col';
+
+    const t = day.subjects[sub.id];
+    const pct = t.skipped ? 0 : (t.done ? 100 : 0);
+
+    const header = document.createElement('div');
+    header.className = 'subject-col-header';
+    header.innerHTML = `
+        <div class="subject-col-title">
+            <span class="sub-icon">${sub.icon}</span>
+            <span>${sub.name}</span>
+        </div>
+        <span class="subject-col-pct">${t.skipped ? '—' : toPersian(pct) + '٪'}</span>
+    `;
+    col.appendChild(header);
+
+    const list = document.createElement('div');
+    list.className = 'tasks-list';
+
+    const item = document.createElement('div');
+    item.className = 'task-item' + (t.done ? ' done' : '') + (t.skipped ? ' skipped' : '');
+
+    const top = document.createElement('div');
+    top.className = 'task-top';
+
+    const num = document.createElement('div');
+    num.className = 'task-num';
+    num.textContent = toPersian(dayNum);
+
+    const label = document.createElement('span');
+    label.className = 'task-label';
+    label.textContent = 'باکس ' + toPersian(dayNum);
+
+    // Skip button (نداشتم)
+    const skip = document.createElement('div');
+    skip.className = 'task-skip';
+    skip.textContent = '🚫';
+    skip.title = 'امروز این درس رو نداشتم';
+
+    // Check button (انجام شد)
+    const check = document.createElement('div');
+    check.className = 'task-check';
+    check.textContent = t.done ? '☑' : '☐';
+
+    function refreshPct() {
+        const newPct = t.skipped ? '—' : toPersian(t.done ? 100 : 0) + '٪';
+        const pctEl = header.querySelector('.subject-col-pct');
+        if (pctEl) pctEl.textContent = newPct;
+    }
+
+    skip.addEventListener('click', () => {
+        t.skipped = !t.skipped;
+        if (t.skipped) {
+            t.done = false; // اگه «نداشتم» بزنی، تیک انجام پاک می‌شه
+        }
+        saveState();
+        item.classList.toggle('skipped', t.skipped);
+        item.classList.toggle('done', t.done);
+        check.textContent = t.done ? '☑' : '☐';
+        refreshPct();
+
+        updateDayHeaderStats(dayId);
+        updateDayNavPct(dayId);
+        refreshDashboard();
+        if (t.skipped) showToast('این باکس از محاسبه حذف شد', 'skip');
+    });
+
+    check.addEventListener('click', () => {
+        if (t.skipped) {
+            // اگه اسکیپ بود، اول تیک رو بردار
+            t.skipped = false;
+            item.classList.remove('skipped');
+        }
+        t.done = !t.done;
+        saveState();
+        item.classList.toggle('done', t.done);
+        check.textContent = t.done ? '☑' : '☐';
+        refreshPct();
+
+        updateDayHeaderStats(dayId);
+        updateDayNavPct(dayId);
+        refreshDashboard();
+    });
+
+    top.appendChild(num);
+    top.appendChild(label);
+    top.appendChild(skip);
+    top.appendChild(check);
+
+    const text = document.createElement('textarea');
+    text.className = 'task-text';
+    text.placeholder = 'مبحث یا توضیح...';
+    text.value = t.text;
+
+    function autoGrow() {
+        text.style.height = 'auto';
+        text.style.height = Math.min(120, Math.max(50, text.scrollHeight)) + 'px';
+    }
+    setTimeout(autoGrow, 0);
+
+    text.addEventListener('keydown', (e) => {
+        if (!editMode) e.preventDefault();
+    });
+    text.addEventListener('focus', () => {
+        if (!editMode) text.blur();
+    });
+    text.addEventListener('input', () => {
+        if (!editMode) return;
+        t.text = text.value;
+        autoGrow();
+        saveState();
+    });
+
+    const bottom = document.createElement('div');
+    bottom.className = 'task-bottom';
+
+    const timeField = document.createElement('div');
+    timeField.className = 'task-field time';
+    timeField.innerHTML = `<span class="task-field-label">⏱️ ساعت</span>`;
+    const timeInput = document.createElement('input');
+    timeInput.type = 'number';
+    timeInput.className = 'task-input';
+    timeInput.placeholder = '۰';
+    timeInput.min = '0';
+    timeInput.step = '0.25';
+    timeInput.value = t.time;
+    timeInput.addEventListener('input', () => {
+        t.time = timeInput.value;
+        saveState();
+        refreshDashboard();
+        updateDayHeaderStats(dayId);
+        updateDayNavPct(dayId);
+    });
+    timeField.appendChild(timeInput);
+
+    const testsField = document.createElement('div');
+    testsField.className = 'task-field tests';
+    testsField.innerHTML = `<span class="task-field-label">🧪 تست</span>`;
+    const testsInput = document.createElement('input');
+    testsInput.type = 'number';
+    testsInput.className = 'task-input';
+    testsInput.placeholder = '۰';
+    testsInput.min = '0';
+    testsInput.value = t.tests;
+    testsInput.addEventListener('input', () => {
+        t.tests = testsInput.value;
+        saveState();
+        refreshDashboard();
+        updateDayHeaderStats(dayId);
+        updateDayNavPct(dayId);
+    });
+    testsField.appendChild(testsInput);
+
+    const reviewsField = document.createElement('button');
+    reviewsField.className = 'task-field reviews task-review';
+    reviewsField.title = 'مرور (کلیک کن)';
+
+    function renderReview() {
+        reviewsField.innerHTML = `
+            <span class="task-field-label">🔁 مرور</span>
+            <div class="rev-dots">
+                <span class="rev-dot ${t.reviews >= 1 ? 'filled' : ''}"></span>
+                <span class="rev-dot ${t.reviews >= 2 ? 'filled' : ''}"></span>
+                <span class="rev-dot ${t.reviews >= 3 ? 'filled' : ''}"></span>
+            </div>
+        `;
+    }
+    renderReview();
+
+    reviewsField.addEventListener('click', () => {
+        t.reviews = (t.reviews + 1) % 4;
+        renderReview();
+        saveState();
+        refreshDashboard();
+        updateDayHeaderStats(dayId);
+        updateDayNavPct(dayId);
+    });
+
+    bottom.appendChild(timeField);
+    bottom.appendChild(testsField);
+    bottom.appendChild(reviewsField);
+
+    item.appendChild(top);
+    item.appendChild(text);
+    item.appendChild(bottom);
+    list.appendChild(item);
+
+    col.appendChild(list);
+    return col;
+}
+
+function updateDayHeaderStats(dayId) {
+    const card = document.querySelector(`.day-card[data-day="${dayId}"]`);
+    if (!card) return;
+    const s = dayStats(dayId);
+    const dayPercent = s.active > 0 ? Math.round((s.done / s.active) * 100) : 0;
+
+    const pills = card.querySelectorAll('.stat-pill');
+    if (pills[0]) pills[0].innerHTML = `✓ <strong>${toPersian(s.done)}</strong>/${toPersian(s.active)}`;
+    if (pills[1]) pills[1].innerHTML = `⏱️ <strong>${toPersian(formatTime(s.time))}</strong>`;
+    if (pills[2]) pills[2].innerHTML = `🧪 <strong>${toPersian(s.tests)}</strong>`;
+    if (pills[3]) pills[3].innerHTML = `🔁 <strong>${toPersian(s.reviews)}</strong>`;
+
+    // Skip pill — ممکنه باشه یا نباشه
+    let skipPill = card.querySelector('.stat-pill.gray');
+    if (s.skipped > 0) {
+        if (!skipPill) {
+            skipPill = document.createElement('div');
+            skipPill.className = 'stat-pill gray';
+            pills[3].parentNode.insertBefore(skipPill, pills[4]);
+        }
+        skipPill.innerHTML = `🚫 <strong>${toPersian(s.skipped)}</strong>`;
+    } else if (skipPill) {
+        skipPill.remove();
+    }
+
+    // آخرین pill = درصد
+    const allPills = card.querySelectorAll('.stat-pill');
+    const lastPill = allPills[allPills.length - 1];
+    if (lastPill && !lastPill.classList.contains('gray')) {
+        lastPill.innerHTML = `📊 <strong>${toPersian(dayPercent)}٪</strong>`;
+    } else if (allPills[allPills.length - 2]) {
+        allPills[allPills.length - 2].innerHTML = `📊 <strong>${toPersian(dayPercent)}٪</strong>`;
+    }
+
+    const fill = card.querySelector('.day-progress-fill');
+    if (fill) fill.style.width = dayPercent + '%';
+}
+
+function updateDayNavPct(dayId) {
+    const btn = document.querySelector(`.day-nav-btn[data-day="${dayId}"]`);
+    if (!btn) return;
+    const s = dayStats(dayId);
+    const pct = s.active > 0 ? Math.round((s.done / s.active) * 100) : 0;
+    const pctEl = btn.querySelector('.nav-pct');
+    if (pctEl) pctEl.textContent = toPersian(pct) + '٪';
+}
+
+function refreshDashboard() {
+    const ov = overallStats();
+    document.getElementById('overallPercent').textContent = toPersian(ov.percent) + '٪';
+    document.getElementById('overallBar').style.width = ov.percent + '%';
+    document.getElementById('doneCount').textContent = toPersian(ov.done);
+    document.getElementById('totalCount').textContent = toPersian(ov.total);
+
+    const scoresBox = document.getElementById('subjectScores');
+    scoresBox.innerHTML = '';
+    SUBJECTS.forEach(sub => {
+        const p = overallSubjectPercent(sub.id);
+        const row = document.createElement('div');
+        row.className = 'score-row';
+        row.innerHTML = `
+            <div class="name">
+                <span class="dot-sub" style="background:${sub.color};color:${sub.color};"></span>
+                ${sub.name}
+            </div>
+            <div class="bar">
+                <div class="bar-fill" style="width:${p}%; background:linear-gradient(90deg, ${sub.color}, ${sub.color}aa);"></div>
+            </div>
+            <div class="pct" style="color:${sub.color};">${toPersian(p)}٪</div>
+        `;
+        scoresBox.appendChild(row);
+    });
+
+    const tr = totalsForTimeTestsReviews();
+    document.getElementById('totalTime').textContent = toPersian(formatTime(tr.time));
+    document.getElementById('totalTests').textContent = toPersian(tr.tests);
+    document.getElementById('totalReviews').textContent = toPersian(tr.reviews);
+
+    drawBarChart();
+    drawDonutChart();
+    drawWeeklyTimeChart();
+    drawWeeklyTestsChart();
+}
+
+function drawBarChart() {
+    const canvas = document.getElementById('barChart');
+    if (!canvas) return;
+    const dpr = window.devicePixelRatio || 1;
+    const wrap = canvas.parentElement;
+    const W = wrap.clientWidth;
+    const H = wrap.clientHeight;
+    canvas.width = W * dpr;
+    canvas.height = H * dpr;
+    canvas.style.width = W + 'px';
+    canvas.style.height = H + 'px';
+
+    const ctx = canvas.getContext('2d');
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, W, H);
+
+    const padding = { top: 14, right: 8, bottom: 28, left: 32 };
+    const chartW = W - padding.left - padding.right;
+    const chartH = H - padding.top - padding.bottom;
+
+    const values = SUBJECTS.map(s => overallSubjectPercent(s.id));
+    const maxVal = 100;
+
+    ctx.strokeStyle = 'rgba(255,255,255,0.06)';
+    ctx.lineWidth = 1;
+    ctx.font = '9px Vazirmatn';
+    ctx.fillStyle = '#6b6b76';
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'middle';
+
+    for (let i = 0; i <= 4; i++) {
+        const val = (maxVal / 4) * i;
+        const y = padding.top + chartH - (val / maxVal) * chartH;
+        ctx.beginPath();
+        ctx.moveTo(padding.left, y);
+        ctx.lineTo(padding.left + chartW, y);
+        ctx.stroke();
+        ctx.fillText(toPersian(Math.round(val)) + '٪', 3, y);
+    }
+
+    const barCount = SUBJECTS.length;
+    const gap = 8;
+    const barW = (chartW - gap * (barCount + 1)) / barCount;
+
+    SUBJECTS.forEach((sub, i) => {
+        const val = values[i];
+        const x = padding.left + gap + i * (barW + gap);
+        const barH = (val / maxVal) * chartH;
+        const y = padding.top + chartH - barH;
+
+        ctx.fillStyle = 'rgba(255,255,255,0.04)';
+        roundRect(ctx, x, padding.top, barW, chartH, 5);
+        ctx.fill();
+
+        if (barH > 0) {
+            const grad = ctx.createLinearGradient(0, y, 0, padding.top + chartH);
+            grad.addColorStop(0, sub.color);
+            grad.addColorStop(1, sub.color + '60');
+            ctx.fillStyle = grad;
+            ctx.shadowColor = sub.color;
+            ctx.shadowBlur = 8;
+            roundRect(ctx, x, y, barW, barH, 5);
+            ctx.fill();
+            ctx.shadowBlur = 0;
+        }
+
+        ctx.fillStyle = sub.color;
+        ctx.font = 'bold 9px Vazirmatn';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'bottom';
+        ctx.fillText(toPersian(val) + '٪', x + barW / 2, y - 2);
+
+        ctx.fillStyle = '#a1a1aa';
+        ctx.font = '600 9px Vazirmatn';
+        ctx.textBaseline = 'top';
+        ctx.fillText(sub.name, x + barW / 2, padding.top + chartH + 6);
+    });
+}
+
+function drawWeeklyTimeChart() {
+    const canvas = document.getElementById('weeklyTimeChart');
+    if (!canvas) return;
+    const dpr = window.devicePixelRatio || 1;
+    const wrap = canvas.parentElement;
+    const W = wrap.clientWidth;
+    const H = wrap.clientHeight;
+    canvas.width = W * dpr;
+    canvas.height = H * dpr;
+    canvas.style.width = W + 'px';
+    canvas.style.height = H + 'px';
+
+    const ctx = canvas.getContext('2d');
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, W, H);
+
+    const padding = { top: 14, right: 8, bottom: 26, left: 32 };
+    const chartW = W - padding.left - padding.right;
+    const chartH = H - padding.top - padding.bottom;
+
+    const values = WEEK_DAYS.map(d => dayStats(d.id).time);
+    const maxVal = Math.max(...values, 1);
+
+    ctx.strokeStyle = 'rgba(255,255,255,0.06)';
+    ctx.lineWidth = 1;
+    ctx.font = '9px Vazirmatn';
+    ctx.fillStyle = '#6b6b76';
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'middle';
+
+    for (let i = 0; i <= 4; i++) {
+        const val = (maxVal / 4) * i;
+        const y = padding.top + chartH - (val / maxVal) * chartH;
+        ctx.beginPath();
+        ctx.moveTo(padding.left, y);
+        ctx.lineTo(padding.left + chartW, y);
+        ctx.stroke();
+        ctx.fillText(toPersian(Math.round(val)) + 'س', 3, y);
+    }
+
+    const barCount = WEEK_DAYS.length;
+    const gap = 6;
+    const barW = (chartW - gap * (barCount + 1)) / barCount;
+
+    WEEK_DAYS.forEach((d, i) => {
+        const val = values[i];
+        const x = padding.left + gap + i * (barW + gap);
+        const barH = (val / maxVal) * chartH;
+        const y = padding.top + chartH - barH;
+
+        ctx.fillStyle = 'rgba(255,255,255,0.04)';
+        roundRect(ctx, x, padding.top, barW, chartH, 5);
+        ctx.fill();
+
+        if (barH > 0) {
+            const grad = ctx.createLinearGradient(0, y, 0, padding.top + chartH);
+            grad.addColorStop(0, '#22d3ee');
+            grad.addColorStop(1, '#0891b2');
+            ctx.fillStyle = grad;
+            ctx.shadowColor = '#06b6d4';
+            ctx.shadowBlur = 8;
+            roundRect(ctx, x, y, barW, barH, 5);
+            ctx.fill();
+            ctx.shadowBlur = 0;
+        }
+
+        ctx.fillStyle = '#22d3ee';
+        ctx.font = 'bold 9px Vazirmatn';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'bottom';
+        if (val > 0) ctx.fillText(toPersian(formatTime(val)), x + barW / 2, y - 2);
+
+        ctx.fillStyle = '#a1a1aa';
+        ctx.font = '600 9px Vazirmatn';
+        ctx.textBaseline = 'top';
+        ctx.fillText(d.name, x + barW / 2, padding.top + chartH + 6);
+    });
+}
+
+function drawWeeklyTestsChart() {
+    const canvas = document.getElementById('weeklyTestsChart');
+    if (!canvas) return;
+    const dpr = window.devicePixelRatio || 1;
+    const wrap = canvas.parentElement;
+    const W = wrap.clientWidth;
+    const H = wrap.clientHeight;
+    canvas.width = W * dpr;
+    canvas.height = H * dpr;
+    canvas.style.width = W + 'px';
+    canvas.style.height = H + 'px';
+
+    const ctx = canvas.getContext('2d');
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, W, H);
+
+    const padding = { top: 14, right: 8, bottom: 26, left: 32 };
+    const chartW = W - padding.left - padding.right;
+    const chartH = H - padding.top - padding.bottom;
+
+    const values = WEEK_DAYS.map(d => dayStats(d.id).tests);
+    const maxVal = Math.max(...values, 1);
+
+    ctx.strokeStyle = 'rgba(255,255,255,0.06)';
+    ctx.lineWidth = 1;
+    ctx.font = '9px Vazirmatn';
+    ctx.fillStyle = '#6b6b76';
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'middle';
+
+    for (let i = 0; i <= 4; i++) {
+        const val = (maxVal / 4) * i;
+        const y = padding.top + chartH - (val / maxVal) * chartH;
+        ctx.beginPath();
+        ctx.moveTo(padding.left, y);
+        ctx.lineTo(padding.left + chartW, y);
+        ctx.stroke();
+        ctx.fillText(toPersian(Math.round(val)), 3, y);
+    }
+
+    const barCount = WEEK_DAYS.length;
+    const gap = 6;
+    const barW = (chartW - gap * (barCount + 1)) / barCount;
+
+    WEEK_DAYS.forEach((d, i) => {
+        const val = values[i];
+        const x = padding.left + gap + i * (barW + gap);
+        const barH = (val / maxVal) * chartH;
+        const y = padding.top + chartH - barH;
+
+        ctx.fillStyle = 'rgba(255,255,255,0.04)';
+        roundRect(ctx, x, padding.top, barW, chartH, 5);
+        ctx.fill();
+
+        if (barH > 0) {
+            const grad = ctx.createLinearGradient(0, y, 0, padding.top + chartH);
+            grad.addColorStop(0, '#60a5fa');
+            grad.addColorStop(1, '#1d4ed8');
+            ctx.fillStyle = grad;
+            ctx.shadowColor = '#3b82f6';
+            ctx.shadowBlur = 8;
+            roundRect(ctx, x, y, barW, barH, 5);
+            ctx.fill();
+            ctx.shadowBlur = 0;
+        }
+
+        ctx.fillStyle = '#60a5fa';
+        ctx.font = 'bold 9px Vazirmatn';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'bottom';
+        if (val > 0) ctx.fillText(toPersian(val), x + barW / 2, y - 2);
+
+        ctx.fillStyle = '#a1a1aa';
+        ctx.font = '600 9px Vazirmatn';
+        ctx.textBaseline = 'top';
+        ctx.fillText(d.name, x + barW / 2, padding.top + chartH + 6);
+    });
+}
+
+function roundRect(ctx, x, y, w, h, r) {
+    if (h < 2 * r) r = h / 2;
+    if (w < 2 * r) r = w / 2;
+    ctx.beginPath();
+    ctx.moveTo(x + r, y);
+    ctx.arcTo(x + w, y, x + w, y + h, r);
+    ctx.arcTo(x + w, y + h, x, y + h, r);
+    ctx.arcTo(x, y + h, x, y, r);
+    ctx.arcTo(x, y, x + w, y, r);
+    ctx.closePath();
+}
+
+function drawDonutChart() {
+    const canvas = document.getElementById('donutChart');
+    if (!canvas) return;
+    const dpr = window.devicePixelRatio || 1;
+    const wrap = canvas.parentElement;
+    const W = wrap.clientWidth;
+    const H = wrap.clientHeight;
+    canvas.width = W * dpr;
+    canvas.height = H * dpr;
+    canvas.style.width = W + 'px';
+    canvas.style.height = H + 'px';
+
+    const ctx = canvas.getContext('2d');
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, W, H);
+
+    const cx = W / 2;
+    const cy = H / 2;
+    const radius = Math.min(W, H) / 2 - 14;
+    const lineWidth = 18;
+
+    const ov = overallStats();
+    const doneRatio = ov.total > 0 ? ov.done / ov.total : 0;
+
+    ctx.beginPath();
+    ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+    ctx.strokeStyle = '#e11d48';
+    ctx.lineWidth = lineWidth;
+    ctx.stroke();
+
+    if (doneRatio > 0) {
+        const startAngle = -Math.PI / 2;
+        const endAngle = startAngle + doneRatio * Math.PI * 2;
+        ctx.beginPath();
+        ctx.arc(cx, cy, radius, startAngle, endAngle);
+        ctx.strokeStyle = '#10b981';
+        ctx.lineWidth = lineWidth;
+        ctx.lineCap = 'round';
+        ctx.shadowColor = 'rgba(16,185,129,0.6)';
+        ctx.shadowBlur = 12;
+        ctx.stroke();
+        ctx.shadowBlur = 0;
+    }
+
+    ctx.fillStyle = '#ffffff';
+    ctx.font = '900 20px Vazirmatn';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(toPersian(ov.percent) + '٪', cx, cy - 4);
+
+    ctx.fillStyle = '#a1a1aa';
+    ctx.font = '600 9px Vazirmatn';
+    ctx.fillText('پیشرفت کل', cx, cy + 14);
+}
+
+document.getElementById('editToggle').addEventListener('click', () => {
+    setEditMode(!editMode);
+});
+
+const modalOverlay = document.getElementById('modalOverlay');
+document.getElementById('resetBtn').addEventListener('click', () => modalOverlay.classList.add('show'));
+document.getElementById('modalCancel').addEventListener('click', () => modalOverlay.classList.remove('show'));
+document.getElementById('modalConfirm').addEventListener('click', () => {
+    localStorage.removeItem(STORAGE_KEY);
+    state = makeWeek();
+    saveState();
+    renderAll();
+    modalOverlay.classList.remove('show');
+    showToast('همه چیز پاک شد');
+});
+
+document.getElementById('exportBtn').addEventListener('click', () => {
+    let txt = '📚 Konkur Planner Pro — خروجی هفتگی\n';
+    txt += '='.repeat(55) + '\n\n';
+
+    let grandTime = 0, grandTests = 0, grandReviews = 0;
+
+    WEEK_DAYS.forEach(d => {
+        const s = dayStats(d.id);
+        grandTime += s.time;
+        grandTests += s.tests;
+        grandReviews += s.reviews;
+
+        txt += `📅 ${d.name} (باکس ${d.num})\n`;
+        txt += `✓ ${s.done}/${s.active}`;
+        if (s.skipped > 0) txt += ` | 🚫 ${s.skipped}`;
+        txt += ` | ⏱️ ${formatTime(s.time)} | 🧪 ${s.tests} | 🔁 ${s.reviews}\n`;
+        txt += '-'.repeat(55) + '\n';
+
+        SUBJECTS.forEach(sub => {
+            const t = state.days[d.id].subjects[sub.id];
+            if (t.skipped) {
+                txt += `\n  🚫 ${sub.name}: امروز نداشتم\n`;
+            } else {
+                txt += `\n  ${t.done ? '☑' : '☐'} ${sub.name}:\n`;
+                txt += `     ${t.text || '(بدون مبحث)'}\n`;
+                txt += `     ⏱️ ${t.time || 0} ساعت | 🧪 ${t.tests || 0} تست | 🔁 ${t.reviews} مرور\n`;
+            }
+        });
+        txt += '\n' + '='.repeat(55) + '\n\n';
+    });
+
+    txt += `🎯 خلاصه کل هفته:\n`;
+    txt += `   ⏱️ ساعت مطالعه: ${formatTime(grandTime)} (${grandTime} ساعت)\n`;
+    txt += `   🧪 تست: ${grandTests}\n`;
+    txt += `   🔁 مرور: ${grandReviews}\n`;
+
+    const blob = new Blob([txt], { type: 'text/plain;charset=utf-8' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'konkur-planner-weekly.txt';
+    a.click();
+    URL.revokeObjectURL(a.href);
+    showToast('خروجی دانلود شد');
+});
+
+function renderAll() {
+    renderDaysNav();
+    renderDayCards();
+    refreshDashboard();
+}
+
+loadState();
+const savedEdit = localStorage.getItem(EDIT_MODE_KEY);
+setEditMode(savedEdit === '1');
+renderAll();
+
+let resizeTimer;
+window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+        drawBarChart();
+        drawDonutChart();
+        drawWeeklyTimeChart();
+        drawWeeklyTestsChart();
+    }, 150);
+});
+</script>
+</body>
+</html>
