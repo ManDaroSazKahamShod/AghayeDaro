@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>💊 شمارش معکوس تا داروسازی</title>
+<title>💊 دانیال — شمارش معکوس تا داروسازی</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap');
 
@@ -24,7 +24,6 @@
     --border: #2a2a35;
     --text: #f5f5f7;
     --text-dim: #a1a1aa;
-    --radius: 24px;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -55,7 +54,7 @@ body {
     position: relative;
     max-width: 950px;
     width: 100%;
-    border-radius: var(--radius);
+    border-radius: 24px;
     padding: 3px;
     overflow: hidden;
     animation: wrapperFloat 6s ease-in-out infinite;
@@ -67,7 +66,6 @@ body {
     50% { transform: translateY(-6px); }
 }
 
-/* حاشیه گرادیانی چرخان */
 .countdown-wrapper::before {
     content: '';
     position: absolute;
@@ -107,8 +105,6 @@ body {
 /* ============================================
    لایه‌های پس‌زمینه انیمیشنی
 ============================================ */
-
-/* ۱. ذرات شناور */
 .particles-layer {
     position: absolute;
     inset: 0;
@@ -123,7 +119,6 @@ body {
     animation: particleFloat linear infinite;
     filter: drop-shadow(0 0 8px currentColor);
     will-change: transform;
-    font-size: 16px;
 }
 
 @keyframes particleFloat {
@@ -140,7 +135,6 @@ body {
     }
 }
 
-/* ۲. امواج نور Aurora */
 .aurora-layer {
     position: absolute;
     inset: 0;
@@ -197,7 +191,6 @@ body {
     50% { transform: translate(-50%, -50%) scale(2); opacity: 0.5; }
 }
 
-/* ۳. ستاره‌های چشمک‌زن */
 .stars-layer {
     position: absolute;
     inset: 0;
@@ -227,11 +220,101 @@ body {
     z-index: 2;
     display: flex;
     flex-direction: column;
-    gap: 24px;
+    gap: 22px;
     text-align: center;
 }
 
-/* هدر — آیکون + عنوان */
+/* ============================================
+   بج اسم دانیال
+============================================ */
+.name-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 0 auto 4px;
+    padding: 10px 26px;
+    background: linear-gradient(135deg, rgba(225,29,72,0.15), rgba(251,191,36,0.08), rgba(139,92,246,0.1));
+    background-size: 200% 200%;
+    border: 1.5px solid rgba(251,191,36,0.5);
+    border-radius: 50px;
+    position: relative;
+    overflow: hidden;
+    animation: nameBgMove 4s ease infinite;
+    box-shadow: 
+        0 8px 30px rgba(225,29,72,0.25),
+        inset 0 0 20px rgba(251,191,36,0.05);
+}
+
+@keyframes nameBgMove {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+}
+
+.name-badge::before {
+    content: '';
+    position: absolute;
+    inset: -50%;
+    background: conic-gradient(from 0deg, transparent, rgba(251,191,36,0.4), transparent 30%);
+    animation: rotateBorder 4s linear infinite;
+    pointer-events: none;
+}
+
+.name-badge::after {
+    content: '';
+    position: absolute;
+    inset: 1px;
+    background: linear-gradient(135deg, #0a0a0f, #1a1a2e);
+    border-radius: 50px;
+    z-index: 1;
+}
+
+.name-badge .crown {
+    position: relative;
+    z-index: 2;
+    font-size: 1.2rem;
+    animation: crownFloat 2s ease-in-out infinite;
+    filter: drop-shadow(0 0 8px rgba(251,191,36,0.8));
+}
+
+@keyframes crownFloat {
+    0%, 100% { transform: translateY(0) rotate(-5deg); }
+    50% { transform: translateY(-4px) rotate(5deg); }
+}
+
+.name-badge .name-text {
+    position: relative;
+    z-index: 2;
+    font-size: 1.15rem;
+    font-weight: 900;
+    letter-spacing: 0.5px;
+    background: linear-gradient(90deg, var(--gold-light), var(--red-light), var(--gold), var(--red-light), var(--gold-light));
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: textShine 3s linear infinite;
+    text-shadow: 0 0 20px rgba(251,191,36,0.4);
+}
+
+.name-badge .sparkle {
+    position: relative;
+    z-index: 2;
+    font-size: 0.95rem;
+    animation: sparkleAnim 1.5s ease-in-out infinite;
+}
+
+@keyframes sparkleAnim {
+    0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.7; }
+    50% { transform: scale(1.3) rotate(180deg); opacity: 1; }
+}
+
+@keyframes textShine {
+    to { background-position: 200% center; }
+}
+
+/* ============================================
+   هدر — آیکون + عنوان
+============================================ */
 .header {
     display: flex;
     flex-direction: column;
@@ -239,7 +322,6 @@ body {
     gap: 14px;
 }
 
-/* آیکون دارو */
 .hero-icon-wrap {
     position: relative;
     width: 90px; height: 90px;
@@ -280,7 +362,6 @@ body {
     50% { transform: translateY(-8px) scale(1.1); }
 }
 
-/* حلقه‌های دور آیکون */
 .hero-ring {
     position: absolute;
     inset: -10px;
@@ -297,11 +378,6 @@ body {
     animation: rotateBorder 12s linear infinite;
 }
 
-@keyframes rotateBorder {
-    to { transform: rotate(360deg); }
-}
-
-/* عنوان */
 .title {
     font-size: 2rem;
     font-weight: 900;
@@ -312,10 +388,6 @@ body {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     animation: textShine 3s linear infinite;
-}
-
-@keyframes textShine {
-    to { background-position: 200% center; }
 }
 
 .subtitle {
@@ -394,31 +466,11 @@ body {
 
 .time-card:hover::after { opacity: 1; }
 
-/* روز */
-.time-card.days {
-    --accent: var(--red);
-    --accent-glow: rgba(225,29,72,0.4);
-}
+.time-card.days { --accent: var(--red); --accent-glow: rgba(225,29,72,0.4); }
+.time-card.hours { --accent: var(--gold); --accent-glow: rgba(251,191,36,0.4); }
+.time-card.mins { --accent: var(--cyan); --accent-glow: rgba(6,182,212,0.4); }
+.time-card.secs { --accent: var(--purple); --accent-glow: rgba(139,92,246,0.4); }
 
-/* ساعت */
-.time-card.hours {
-    --accent: var(--gold);
-    --accent-glow: rgba(251,191,36,0.4);
-}
-
-/* دقیقه */
-.time-card.mins {
-    --accent: var(--cyan);
-    --accent-glow: rgba(6,182,212,0.4);
-}
-
-/* ثانیه */
-.time-card.secs {
-    --accent: var(--purple);
-    --accent-glow: rgba(139,92,246,0.4);
-}
-
-/* عدد */
 .time-number {
     display: block;
     font-size: 3.4rem;
@@ -435,7 +487,6 @@ body {
     z-index: 2;
 }
 
-/* لرزش لحظه‌ای عدد */
 .time-number.tick {
     animation: tickNumber 0.5s ease;
 }
@@ -447,7 +498,6 @@ body {
     100% { transform: scale(1); }
 }
 
-/* برچسب */
 .time-label {
     display: block;
     font-size: 0.82rem;
@@ -457,13 +507,6 @@ body {
     letter-spacing: 1px;
     position: relative;
     z-index: 2;
-}
-
-/* جداکننده بین کارت‌ها — فقط روی دسکتاپ */
-.timer-grid::before,
-.timer-grid::after {
-    content: '';
-    display: none;
 }
 
 /* ============================================
@@ -582,25 +625,8 @@ body {
     100% { transform: translateX(100%); }
 }
 
-/* درخشش روی نوار */
-.progress-glow {
-    position: absolute;
-    top: 50%; transform: translateY(-50%);
-    width: 20px; height: 20px;
-    border-radius: 50%;
-    background: radial-gradient(circle, var(--gold-light), transparent 70%);
-    pointer-events: none;
-    animation: glowMove 3s ease-in-out infinite;
-    filter: blur(4px);
-}
-
-@keyframes glowMove {
-    0%, 100% { opacity: 0.5; }
-    50% { opacity: 1; }
-}
-
 /* ============================================
-   کارت‌های آمار پایین
+   کارت‌های آمار
 ============================================ */
 .stats-row {
     display: grid;
@@ -659,7 +685,7 @@ body {
 }
 
 /* ============================================
-   جمله انگیزشی با تایپ متحرک
+   جمله انگیزشی
 ============================================ */
 .quote-box {
     margin-top: 10px;
@@ -706,7 +732,7 @@ body {
 }
 
 /* ============================================
-   حالت رسیدن — جشن
+   حالت جشن
 ============================================ */
 .celebrate-view {
     display: none;
@@ -755,13 +781,14 @@ body {
     color: var(--text-dim);
 }
 
-/* کاغذرنگی‌های جشن */
 .confetti {
     position: absolute;
     width: 10px; height: 10px;
     top: -20px;
     animation: confettiFall linear infinite;
     opacity: 0.9;
+    z-index: 100;
+    pointer-events: none;
 }
 
 @keyframes confettiFall {
@@ -788,6 +815,11 @@ body {
 @media (max-width: 600px) {
     body { padding: 12px; }
     .countdown-card { padding: 24px 16px; border-radius: 18px; }
+    
+    .name-badge { padding: 8px 20px; }
+    .name-badge .name-text { font-size: 1rem; }
+    .name-badge .crown { font-size: 1.05rem; }
+    .name-badge .sparkle { font-size: 0.8rem; }
     
     .hero-icon-wrap { width: 70px; height: 70px; }
     .hero-icon { font-size: 2rem; }
@@ -845,6 +877,15 @@ body {
         <!-- ============ حالت شمارش ============ -->
         <div class="content" id="countdownView">
 
+            <!-- بج اسم دانیال -->
+            <div class="name-badge">
+                <span class="sparkle">✨</span>
+                <span class="crown">👑</span>
+                <span class="name-text">دانیال</span>
+                <span class="crown">👑</span>
+                <span class="sparkle">✨</span>
+            </div>
+
             <div class="header">
                 <div class="hero-icon-wrap">
                     <div class="hero-ring"></div>
@@ -877,18 +918,17 @@ body {
             </div>
 
             <div class="dream-box">
-                <div class="dream-text">داروساز می‌شم 💊✨</div>
+                <div class="dream-text">دانیال، داروساز می‌شه 💊✨</div>
                 <div class="dream-sub">هر لحظه، یه قدم نزدیک‌تر به این لحظه</div>
             </div>
 
             <div class="progress-wrap">
                 <div class="progress-header">
-                    <span class="label">📈 مسیر تا رسیدن</span>
+                    <span class="label">📈 مسیر دانیال تا رسیدن</span>
                     <span class="percent" id="progressPercent">۰٪</span>
                 </div>
                 <div class="progress-bg">
                     <div class="progress-fill" id="progressFill"></div>
-                    <div class="progress-glow" id="progressGlow"></div>
                 </div>
             </div>
 
@@ -915,8 +955,8 @@ body {
         <!-- ============ حالت جشن ============ -->
         <div class="celebrate-view" id="celebrateView">
             <div class="celebrate-icon">🎓</div>
-            <h2 class="celebrate-title">داروساز شدم!</h2>
-            <p class="celebrate-sub">آرزوت محقق شد 💚✨<br>به خودت افتخار کن</p>
+            <h2 class="celebrate-title">دانیال، داروساز شد!</h2>
+            <p class="celebrate-sub">آرزوت محقق شد 💚✨<br>به خودت افتخار کن، دانیال</p>
         </div>
     </div>
 </div>
@@ -924,14 +964,11 @@ body {
 <script>
 /* ============================================================
    تاریخ‌ها
+   شروع: ۲۲ شهریور ۱۴۰۵ = 13 September 2026
+   هدف: ۱ آذر ۱۴۰۶ = 22 November 2027
 ============================================================ */
-// تاریخ شروع: ۲۲ شهریور ۱۴۰۵ = 13 September 2026
-const START_DATE = new Date(2026, 8, 13, 0, 0, 0); // ماه ۸ = سپتامبر (0-indexed)
-
-// تاریخ هدف: ۱ آذر ۱۴۰۶ = 22 November 2027
-const TARGET_DATE = new Date(2027, 10, 22, 0, 0, 0); // ماه ۱۰ = نوامبر
-
-// کل مدت زمان
+const START_DATE = new Date(2026, 8, 13, 0, 0, 0);
+const TARGET_DATE = new Date(2027, 10, 22, 0, 0, 0);
 const TOTAL_DURATION = TARGET_DATE - START_DATE;
 
 /* ============================================================
@@ -980,7 +1017,6 @@ function createStars() {
         s.style.animationDelay = (Math.random() * 3) + 's';
         s.style.animationDuration = (1.5 + Math.random() * 2) + 's';
         
-        // بعضی ستاره‌ها رنگی باشن
         if (Math.random() > 0.7) {
             const colors = ['#fbbf24', '#fb7185', '#a78bfa', '#34d399'];
             const c = colors[Math.floor(Math.random() * colors.length)];
@@ -1001,7 +1037,6 @@ const elMins = document.getElementById('cd-mins');
 const elSecs = document.getElementById('cd-secs');
 const elPercent = document.getElementById('progressPercent');
 const elFill = document.getElementById('progressFill');
-const elGlow = document.getElementById('progressGlow');
 const elWeeks = document.getElementById('statWeeks');
 const elMonths = document.getElementById('statMonths');
 const elStatDays = document.getElementById('statDays');
@@ -1016,7 +1051,6 @@ function updateCountdown() {
     const diff = TARGET_DATE - now;
     
     if (diff <= 0) {
-        // رسید! جشن
         document.getElementById('countdownView').style.display = 'none';
         document.getElementById('celebrateView').classList.add('active');
         launchConfetti();
@@ -1029,7 +1063,6 @@ function updateCountdown() {
     const mins = Math.floor((totalSecs % 3600) / 60);
     const secs = totalSecs % 60;
     
-    // آپدیت اعداد + انیمیشن tick
     if (days !== lastDays) {
         elDays.textContent = toPersian(days);
         tick(elDays);
@@ -1055,41 +1088,35 @@ function updateCountdown() {
         lastSecs = secs;
     }
     
-    // آمار
     const weeks = Math.floor(days / 7);
     const months = Math.floor(days / 30);
     elWeeks.textContent = toPersian(weeks);
     elMonths.textContent = toPersian(months);
     
-    // پیشرفت
     const elapsed = now - START_DATE;
     let percent = Math.max(0, Math.min(100, (elapsed / TOTAL_DURATION) * 100));
     elPercent.textContent = toPersian(Math.floor(percent)) + '٪';
     elFill.style.width = percent + '%';
-    
-    // درخشش روی نوار پیشرفت
-    elGlow.style.right = (100 - percent) + '%';
 }
 
 function tick(el) {
     el.classList.remove('tick');
-    // force reflow
     void el.offsetWidth;
     el.classList.add('tick');
 }
 
 /* ============================================================
-   جمله انگیزشی با تایپ متحرک
+   جملات انگیزشی — مخصوص دانیال
 ============================================================ */
 const quotes = [
-    'هر تست، یه قدم به داروسازی نزدیک‌تره 💊',
-    'تلاش امروز، لبخند فرداست ✨',
-    'مسیر سخته، ولی تو از سختی قوی‌تری 💪',
-    'یه روز، این لحظه رو با افتخار یاد می‌کنی 🏆',
-    'تو می‌تونی، فقط ادامه بده 🔥',
-    'هر صفحه، یه پله به سمت رویاست 📚',
-    'آرزوت بزرگ‌تر از سختی‌هاست ⭐',
-    'وقتی خسته شدی، یادت باشه چرا شروع کردی 💚'
+    'دانیال، هر تست یه قدم به داروسازی نزدیک‌تره 💊',
+    'دانیال، تلاش امروز، لبخند فرداست ✨',
+    'دانیال، مسیر سخته ولی تو قوی‌تری 💪',
+    'دانیال، یه روز این لحظه رو با افتخار یاد می‌کنی 🏆',
+    'دانیال، تو می‌تونی، فقط ادامه بده 🔥',
+    'دانیال، هر صفحه یه پله به سمت رویاست 📚',
+    'دانیال، آرزوت بزرگ‌تر از سختی‌هاست ⭐',
+    'دانیال، وقتی خسته شدی یادت باشه چرا شروع کردی 💚'
 ];
 
 let currentQuote = '';
@@ -1102,7 +1129,6 @@ function typeQuote() {
     const fullQuote = quotes[quoteIndex];
     
     if (!isDeleting) {
-        // تایپ
         currentQuote = fullQuote.substring(0, charIndex + 1);
         charIndex++;
         
@@ -1113,7 +1139,6 @@ function typeQuote() {
             return;
         }
     } else {
-        // پاک کردن
         currentQuote = fullQuote.substring(0, charIndex - 1);
         charIndex--;
         
@@ -1129,7 +1154,7 @@ function typeQuote() {
 }
 
 /* ============================================================
-   جشن (کاغذرنگی)
+   جشن
 ============================================================ */
 function launchConfetti() {
     const colors = ['#e11d48', '#fbbf24', '#8b5cf6', '#3b82f6', '#10b981', '#06b6d4', '#fb7185'];
