@@ -33,9 +33,7 @@
 
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
-html, body {
-    min-height: 100%;
-}
+html, body { min-height: 100%; }
 
 body {
     font-family: 'Vazirmatn', sans-serif;
@@ -133,6 +131,12 @@ body {
     color: white;
     box-shadow: 0 4px 14px var(--red-glow);
 }
+
+/* دکمه‌های بکاپ و بازیابی */
+.btn-backup { border-color: rgba(16,185,129,0.4); color: var(--success); }
+.btn-backup:hover { background: rgba(16,185,129,0.15); border-color: var(--success); color: #34d399; }
+.btn-restore { border-color: rgba(139,92,246,0.4); color: var(--purple); }
+.btn-restore:hover { background: rgba(139,92,246,0.15); border-color: var(--purple); color: #a78bfa; }
 
 .edit-toggle {
     display: flex;
@@ -926,6 +930,7 @@ body:not(.edit-mode) .task-input { cursor: default; }
 .toast.show { transform: translateX(-50%) translateY(0); }
 .toast.edit-toast { background: linear-gradient(135deg, var(--gold), #d97706); }
 .toast.skip-toast { background: linear-gradient(135deg, var(--gray), #4b5563); }
+.toast.success-toast { background: linear-gradient(135deg, var(--success), #059669); }
 
 /* ============== MODAL ============== */
 .modal-overlay {
@@ -969,281 +974,99 @@ body:not(.edit-mode) .task-input { cursor: default; }
 .footer-bar strong { color: var(--red); font-weight: 700; }
 
 /* ====================================================
-   DESKTOP: چیدمان بدون اسکرول (فقط از 1025px به بالا)
+   DESKTOP
 ==================================================== */
 @media (min-width: 1025px) {
-    html, body {
-        height: 100%;
-        overflow: hidden;
-    }
-
-    .app-layout {
-        height: 100vh;
-        overflow: hidden;
-    }
-
+    html, body { height: 100%; overflow: hidden; }
+    .app-layout { height: 100vh; overflow: hidden; }
     .dashboard { grid-template-columns: 1.1fr 1fr 0.9fr; }
-
-    #daysContainer {
-        flex: 1;
-        min-height: 0;
-        overflow: hidden;
-    }
-
-    .day-card.active {
-        height: 100%;
-    }
-
-    .subjects-row {
-        grid-template-columns: repeat(5, 1fr);
-        flex: 1;
-        min-height: 0;
-    }
-
-    .tasks-list {
-        overflow-y: auto;
-        scrollbar-width: thin;
-        padding-left: 4px;
-    }
-
+    #daysContainer { flex: 1; min-height: 0; overflow: hidden; }
+    .day-card.active { height: 100%; }
+    .subjects-row { grid-template-columns: repeat(5, 1fr); flex: 1; min-height: 0; }
+    .tasks-list { overflow-y: auto; scrollbar-width: thin; padding-left: 4px; }
     .tasks-list::-webkit-scrollbar { width: 5px; }
     .tasks-list::-webkit-scrollbar-thumb { background: var(--red); border-radius: 10px; }
 }
 
 /* ====================================================
-   TABLET (601px - 1024px)
+   TABLET
 ==================================================== */
 @media (min-width: 601px) and (max-width: 1024px) {
-    .dashboard {
-        grid-template-columns: 1fr 1fr;
-    }
-
-    .dashboard .dash-card:first-child {
-        grid-column: 1 / -1;
-    }
-
-    .weekly-charts {
-        grid-template-columns: 1fr 1fr;
-    }
-
-    .subjects-row {
-        grid-template-columns: repeat(3, 1fr);
-    }
-
-    .subject-col {
-        border-bottom: 1px solid var(--border);
-    }
-
-    /* حذف border چپ اضافی */
-    .subject-col:nth-child(3n+1) {
-        border-left: none;
-    }
-
+    .dashboard { grid-template-columns: 1fr 1fr; }
+    .dashboard .dash-card:first-child { grid-column: 1 / -1; }
+    .weekly-charts { grid-template-columns: 1fr 1fr; }
+    .subjects-row { grid-template-columns: repeat(3, 1fr); }
+    .subject-col { border-bottom: 1px solid var(--border); }
+    .subject-col:nth-child(3n+1) { border-left: none; }
     .chart-canvas-wrap { height: 140px; }
-
-    .btn {
-        font-size: 0.8rem;
-        padding: 8px 16px;
-    }
+    .btn { font-size: 0.8rem; padding: 8px 16px; }
 }
 
 /* ====================================================
-   MOBILE (تا 600px) — ریسپانسیو کامل
+   MOBILE
 ==================================================== */
 @media (max-width: 600px) {
-    .app-layout {
-        padding: 8px 10px;
-        gap: 8px;
-    }
+    .app-layout { padding: 8px 10px; gap: 8px; }
 
-    /* Top bar */
-    .top-bar {
-        padding: 10px 12px;
-        flex-direction: column;
-        align-items: stretch;
-        gap: 10px;
-    }
-
+    .top-bar { padding: 10px 12px; flex-direction: column; align-items: stretch; gap: 10px; }
     .brand { justify-content: center; }
-
-    .brand-logo {
-        width: 38px; height: 38px;
-        font-size: 1.15rem;
-    }
-
+    .brand-logo { width: 38px; height: 38px; font-size: 1.15rem; }
     .brand-text h1 { font-size: 1rem; }
     .brand-text p { font-size: 0.62rem; }
 
-    .header-actions {
-        justify-content: center;
-        gap: 6px;
-    }
+    .header-actions { justify-content: center; gap: 6px; }
+    .btn { font-size: 0.72rem; padding: 7px 12px; flex: 1; justify-content: center; min-width: 0; }
 
-    .btn {
-        font-size: 0.72rem;
-        padding: 7px 12px;
-        flex: 1;
-        justify-content: center;
-        min-width: 0;
-    }
-
-    .edit-toggle {
-        order: -1;
-        width: 100%;
-        justify-content: space-between;
-        padding: 6px 12px;
-    }
-
+    .edit-toggle { order: -1; width: 100%; justify-content: space-between; padding: 6px 12px; }
     .edit-toggle .toggle-label { font-size: 0.72rem; }
 
-    /* Mode banner */
-    .mode-banner {
-        font-size: 0.68rem;
-        padding: 6px 10px;
-        text-align: right;
-        line-height: 1.5;
-    }
+    .mode-banner { font-size: 0.68rem; padding: 6px 10px; text-align: right; line-height: 1.5; }
 
-    /* Dashboard — همه زیر هم */
-    .dashboard {
-        grid-template-columns: 1fr;
-        gap: 8px;
-    }
-
+    .dashboard { grid-template-columns: 1fr; gap: 8px; }
     .dashboard .dash-card:first-child { grid-column: auto; }
-
     .dash-card { padding: 12px 14px; }
-
     .big-percent { font-size: 2rem; }
     .overall-meta p { font-size: 0.68rem; }
 
-    /* Weekly charts — زیر هم */
-    .weekly-charts {
-        grid-template-columns: 1fr;
-        gap: 8px;
-    }
-
+    .weekly-charts { grid-template-columns: 1fr; gap: 8px; }
     .chart-canvas-wrap { height: 150px; }
     .chart-canvas-wrap.small { height: 140px; }
 
-    /* Days nav */
-    .days-nav {
-        gap: 5px;
-        padding: 5px;
-    }
+    .days-nav { gap: 5px; padding: 5px; }
+    .day-nav-btn { font-size: 0.7rem; padding: 7px 12px; }
 
-    .day-nav-btn {
-        font-size: 0.7rem;
-        padding: 7px 12px;
-    }
-
-    /* Day header */
-    .day-card-header {
-        padding: 8px 12px;
-        gap: 8px;
-    }
-
+    .day-card-header { padding: 8px 12px; gap: 8px; }
     .day-title-text { font-size: 0.9rem; }
+    .day-stats { gap: 4px; width: 100%; justify-content: flex-start; }
+    .stat-pill { font-size: 0.62rem; padding: 2px 7px; }
 
-    .day-stats {
-        gap: 4px;
-        width: 100%;
-        justify-content: flex-start;
-    }
-
-    .stat-pill {
-        font-size: 0.62rem;
-        padding: 2px 7px;
-    }
-
-    /* Subjects row — زیر هم در موبایل */
-    .subjects-row {
-        grid-template-columns: 1fr;
-    }
-
-    .subject-col {
-        border-left: none;
-        border-bottom: 1px solid var(--border);
-        padding: 12px;
-    }
-
+    .subjects-row { grid-template-columns: 1fr; }
+    .subject-col { border-left: none; border-bottom: 1px solid var(--border); padding: 12px; }
     .subject-col:last-child { border-bottom: none; }
-
-    .subject-col-header {
-        margin-bottom: 10px;
-        padding-bottom: 8px;
-    }
-
+    .subject-col-header { margin-bottom: 10px; padding-bottom: 8px; }
     .subject-col-title { font-size: 0.9rem; }
     .subject-col-title .sub-icon { font-size: 1.05rem; }
-
     .subject-col-pct { font-size: 0.72rem; }
-
     .tasks-list { gap: 8px; }
 
-    /* Task item — بزرگ‌تر برای لمس */
-    .task-item {
-        border-radius: 12px;
-    }
-
-    .task-top {
-        padding: 7px 9px;
-        gap: 6px;
-    }
-
-    .task-num {
-        width: 30px;
-        height: 30px;
-        font-size: 0.78rem;
-    }
-
+    .task-top { padding: 7px 9px; gap: 6px; }
+    .task-num { width: 30px; height: 30px; font-size: 0.78rem; }
     .task-label { font-size: 0.7rem; }
-
-    .task-check, .task-skip {
-        width: 36px;
-        height: 36px;
-        border-radius: 10px;
-        font-size: 1.15rem;
-    }
-
-    .task-text {
-        font-size: 0.85rem;
-        min-height: 65px;
-        padding: 10px 12px;
-        line-height: 1.65;
-    }
-
+    .task-check, .task-skip { width: 36px; height: 36px; border-radius: 10px; font-size: 1.15rem; }
+    .task-text { font-size: 0.85rem; min-height: 65px; padding: 10px 12px; line-height: 1.65; }
     .task-text::placeholder { font-size: 0.78rem; }
-
-    /* Task bottom */
-    .task-field {
-        padding: 8px 4px;
-        gap: 3px;
-    }
-
+    .task-field { padding: 8px 4px; gap: 3px; }
     .task-field-label { font-size: 0.62rem; }
-
-    .task-input {
-        font-size: 0.82rem;
-        max-width: 70px;
-        padding: 4px 6px;
-    }
-
+    .task-input { font-size: 0.82rem; max-width: 70px; padding: 4px 6px; }
     .task-review { padding: 8px 4px; }
     .task-review .rev-dot { width: 8px; height: 8px; }
 
-    /* Footer */
     .footer-bar { font-size: 0.65rem; padding: 8px 4px; }
-
-    /* Modal */
     .modal { padding: 18px; }
     .modal h3 { font-size: 0.95rem; }
     .modal p { font-size: 0.75rem; }
 }
 
-/* ====================================================
-   MOBILE خیلی کوچک (تا 360px)
-==================================================== */
 @media (max-width: 360px) {
     .btn { font-size: 0.68rem; padding: 6px 10px; }
     .brand-text h1 { font-size: 0.9rem; }
@@ -1251,13 +1074,8 @@ body:not(.edit-mode) .task-input { cursor: default; }
     .task-text { font-size: 0.8rem; }
 }
 
-/* ====================================================
-   حالت افقی موبایل
-==================================================== */
 @media (max-height: 500px) and (orientation: landscape) {
-    .dashboard,
-    .weekly-charts { display: none; }
-
+    .dashboard, .weekly-charts { display: none; }
     .app-layout { padding: 6px 8px; }
 }
 </style>
@@ -1279,8 +1097,11 @@ body:not(.edit-mode) .task-input { cursor: default; }
                 <span class="toggle-label" id="toggleLabel">🔒 حالت مرور</span>
                 <div class="toggle-switch"></div>
             </div>
-            <button class="btn" id="exportBtn">📥 خروجی</button>
+            <button class="btn btn-backup" id="backupBtn">💾 بکاپ</button>
+            <button class="btn btn-restore" id="restoreBtn">📤 بازیابی</button>
+            <button class="btn" id="exportBtn">📥 خروجی متنی</button>
             <button class="btn btn-danger" id="resetBtn">🗑️ پاک کردن</button>
+            <input type="file" id="restoreInput" accept=".json,application/json" style="display:none;">
         </div>
     </div>
 
@@ -1397,6 +1218,9 @@ body:not(.edit-mode) .task-input { cursor: default; }
 </div>
 
 <script>
+/* ============================================================
+   CONFIG
+============================================================ */
 const SUBJECTS = [
     { id: 'math', name: 'ریاضی',        icon: '📐', color: '#e11d48' },
     { id: 'chem', name: 'شیمی',         icon: '🧪', color: '#fbbf24' },
@@ -1422,6 +1246,9 @@ let state = { days: {} };
 let currentDay = 'sat';
 let editMode = false;
 
+/* ============================================================
+   STATE HELPERS
+============================================================ */
 function makeSubjectTask() {
     return { text: '', time: '', tests: '', reviews: 0, done: false, skipped: false };
 }
@@ -1436,32 +1263,40 @@ function makeWeek() {
     return { days };
 }
 
+function repairState(input) {
+    if (!input || !input.days) return makeWeek();
+
+    const result = { days: {} };
+
+    WEEK_DAYS.forEach(d => {
+        result.days[d.id] = { subjects: {} };
+        SUBJECTS.forEach(s => {
+            result.days[d.id].subjects[s.id] = makeSubjectTask();
+            if (input.days[d.id] &&
+                input.days[d.id].subjects &&
+                input.days[d.id].subjects[s.id]) {
+                const t = input.days[d.id].subjects[s.id];
+                const task = result.days[d.id].subjects[s.id];
+                if (typeof t.text === 'string') task.text = t.text;
+                if (typeof t.time === 'number' || typeof t.time === 'string') task.time = t.time;
+                if (typeof t.tests === 'number' || typeof t.tests === 'string') task.tests = t.tests;
+                if (typeof t.reviews === 'number') task.reviews = Math.min(3, Math.max(0, t.reviews));
+                if (typeof t.done === 'boolean') task.done = t.done;
+                if (typeof t.skipped === 'boolean') task.skipped = t.skipped;
+            }
+        });
+    });
+
+    return result;
+}
+
 function loadState() {
     try {
         const saved = localStorage.getItem(STORAGE_KEY);
         if (saved) {
             const parsed = JSON.parse(saved);
             if (parsed && parsed.days) {
-                state = parsed;
-                WEEK_DAYS.forEach(d => {
-                    if (!state.days[d.id]) {
-                        const subjects = {};
-                        SUBJECTS.forEach(s => { subjects[s.id] = makeSubjectTask(); });
-                        state.days[d.id] = { subjects };
-                    }
-                    SUBJECTS.forEach(s => {
-                        const t = state.days[d.id].subjects[s.id];
-                        if (!t) state.days[d.id].subjects[s.id] = makeSubjectTask();
-                        else {
-                            if (typeof t.text !== 'string') t.text = '';
-                            if (typeof t.time !== 'string' && typeof t.time !== 'number') t.time = '';
-                            if (typeof t.tests !== 'string' && typeof t.tests !== 'number') t.tests = '';
-                            if (typeof t.reviews !== 'number') t.reviews = 0;
-                            if (typeof t.done !== 'boolean') t.done = false;
-                            if (typeof t.skipped !== 'boolean') t.skipped = false;
-                        }
-                    });
-                });
+                state = repairState(parsed);
                 return;
             }
         }
@@ -1473,10 +1308,24 @@ function saveState() {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
 }
 
+/* ============================================================
+   UTILS
+============================================================ */
 function toPersian(n) {
     return String(n).replace(/\d/g, d => '۰۱۲۳۴۵۶۷۸۹'[d]);
 }
 
+function formatTime(t) {
+    if (!t || t <= 0) return '۰';
+    const h = Math.floor(t);
+    const m = Math.round((t - h) * 60);
+    if (m === 0) return toPersian(h) + 'س';
+    return toPersian(h) + ':' + toPersian(String(m).padStart(2, '0'));
+}
+
+/* ============================================================
+   STATS
+============================================================ */
 function overallSubjectPercent(subId) {
     let done = 0, active = 0;
     WEEK_DAYS.forEach(d => {
@@ -1560,19 +1409,26 @@ function dayStats(dayId) {
     return { done, active, skipped, time, tests, reviews, total: SUBJECTS.length };
 }
 
+/* ============================================================
+   TOAST
+============================================================ */
 function showToast(msg, type = 'default') {
     const t = document.getElementById('toast');
     const icon = document.getElementById('toastIcon');
     document.getElementById('toastMsg').textContent = msg;
-    t.classList.remove('edit-toast', 'skip-toast');
+    t.classList.remove('edit-toast', 'skip-toast', 'success-toast');
     if (type === 'edit') { t.classList.add('edit-toast'); icon.textContent = '✏️'; }
     else if (type === 'skip') { t.classList.add('skip-toast'); icon.textContent = '🚫'; }
+    else if (type === 'success') { t.classList.add('success-toast'); icon.textContent = '✓'; }
     else { icon.textContent = '✓'; }
     t.classList.add('show');
     clearTimeout(t._timer);
     t._timer = setTimeout(() => t.classList.remove('show'), 2000);
 }
 
+/* ============================================================
+   EDIT MODE
+============================================================ */
 function setEditMode(on) {
     editMode = on;
     document.body.classList.toggle('edit-mode', on);
@@ -1597,6 +1453,9 @@ function setEditMode(on) {
     localStorage.setItem(EDIT_MODE_KEY, on ? '1' : '0');
 }
 
+/* ============================================================
+   RENDER
+============================================================ */
 function renderDaysNav() {
     const nav = document.getElementById('daysNav');
     nav.innerHTML = '';
@@ -1674,14 +1533,6 @@ function buildDayCard(dayObj) {
     card.appendChild(row);
 
     return card;
-}
-
-function formatTime(t) {
-    if (!t || t <= 0) return '۰';
-    const h = Math.floor(t);
-    const m = Math.round((t - h) * 60);
-    if (m === 0) return toPersian(h) + 'س';
-    return toPersian(h) + ':' + toPersian(String(m).padStart(2, '0'));
 }
 
 function buildSubjectColumn(dayId, day, sub, dayNum) {
@@ -1954,6 +1805,21 @@ function refreshDashboard() {
     drawWeeklyTestsChart();
 }
 
+/* ============================================================
+   CHARTS
+============================================================ */
+function roundRect(ctx, x, y, w, h, r) {
+    if (h < 2 * r) r = h / 2;
+    if (w < 2 * r) r = w / 2;
+    ctx.beginPath();
+    ctx.moveTo(x + r, y);
+    ctx.arcTo(x + w, y, x + w, y + h, r);
+    ctx.arcTo(x + w, y + h, x, y + h, r);
+    ctx.arcTo(x, y + h, x, y, r);
+    ctx.arcTo(x, y, x + w, y, r);
+    ctx.closePath();
+}
+
 function drawBarChart() {
     const canvas = document.getElementById('barChart');
     if (!canvas) return;
@@ -2191,18 +2057,6 @@ function drawWeeklyTestsChart() {
     });
 }
 
-function roundRect(ctx, x, y, w, h, r) {
-    if (h < 2 * r) r = h / 2;
-    if (w < 2 * r) r = w / 2;
-    ctx.beginPath();
-    ctx.moveTo(x + r, y);
-    ctx.arcTo(x + w, y, x + w, y + h, r);
-    ctx.arcTo(x + w, y + h, x, y + h, r);
-    ctx.arcTo(x, y + h, x, y, r);
-    ctx.arcTo(x, y, x + w, y, r);
-    ctx.closePath();
-}
-
 function drawDonutChart() {
     const canvas = document.getElementById('donutChart');
     if (!canvas) return;
@@ -2258,6 +2112,9 @@ function drawDonutChart() {
     ctx.fillText('پیشرفت کل', cx, cy + 14);
 }
 
+/* ============================================================
+   EVENTS
+============================================================ */
 document.getElementById('editToggle').addEventListener('click', () => {
     setEditMode(!editMode);
 });
@@ -2274,6 +2131,9 @@ document.getElementById('modalConfirm').addEventListener('click', () => {
     showToast('همه چیز پاک شد');
 });
 
+/* ============================================================
+   EXPORT TEXT
+============================================================ */
 document.getElementById('exportBtn').addEventListener('click', () => {
     let txt = '📚 Konkur Planner Pro — خروجی هفتگی\n';
     txt += '='.repeat(55) + '\n\n';
@@ -2319,12 +2179,105 @@ document.getElementById('exportBtn').addEventListener('click', () => {
     showToast('خروجی دانلود شد');
 });
 
+/* ============================================================
+   BACKUP (JSON)
+============================================================ */
+document.getElementById('backupBtn').addEventListener('click', () => {
+    const backupData = {
+        _meta: {
+            app: 'Konkur Planner Pro',
+            version: 'v7',
+            date: new Date().toISOString(),
+            dateLocal: new Date().toLocaleString('fa-IR')
+        },
+        data: state
+    };
+
+    const json = JSON.stringify(backupData, null, 2);
+    const blob = new Blob([json], { type: 'application/json;charset=utf-8' });
+
+    const a = document.createElement('a');
+    const now = new Date();
+    const dateStr = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
+    const timeStr = `${String(now.getHours()).padStart(2,'0')}-${String(now.getMinutes()).padStart(2,'0')}`;
+    a.href = URL.createObjectURL(blob);
+    a.download = `konkur-planner-backup-${dateStr}-${timeStr}.json`;
+    a.click();
+    URL.revokeObjectURL(a.href);
+    showToast('فایل بکاپ دانلود شد ✓', 'success');
+});
+
+/* ============================================================
+   RESTORE (JSON)
+============================================================ */
+document.getElementById('restoreBtn').addEventListener('click', () => {
+    document.getElementById('restoreInput').click();
+});
+
+document.getElementById('restoreInput').addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    if (!file.name.endsWith('.json')) {
+        showToast('فقط فایل JSON قبول می‌شه!', 'skip');
+        e.target.value = '';
+        return;
+    }
+
+    const reader = new FileReader();
+
+    reader.onload = (event) => {
+        try {
+            const content = event.target.result;
+            const parsed = JSON.parse(content);
+
+            let newData;
+            if (parsed && parsed.data && parsed.data.days) {
+                newData = parsed.data;
+            } else if (parsed && parsed.days) {
+                newData = parsed;
+            } else {
+                throw new Error('فرمت فایل ناشناخته');
+            }
+
+            const msg = `⚠️ بازیابی بکاپ\n\nهمه داده‌های فعلی پاک می‌شن و داده‌های فایل جایگزین می‌شن.\n\nمطمئنی؟`;
+            if (!confirm(msg)) {
+                e.target.value = '';
+                return;
+            }
+
+            const repaired = repairState(newData);
+            state = repaired;
+            saveState();
+            renderAll();
+            showToast('بکاپ با موفقیت بازیابی شد ✓', 'success');
+        } catch (err) {
+            console.error(err);
+            showToast('خطا: ' + err.message, 'skip');
+        }
+        e.target.value = '';
+    };
+
+    reader.onerror = () => {
+        showToast('خطا در خواندن فایل', 'skip');
+        e.target.value = '';
+    };
+
+    reader.readAsText(file, 'utf-8');
+});
+
+/* ============================================================
+   RENDER ALL
+============================================================ */
 function renderAll() {
     renderDaysNav();
     renderDayCards();
     refreshDashboard();
 }
 
+/* ============================================================
+   INIT
+============================================================ */
 loadState();
 const savedEdit = localStorage.getItem(EDIT_MODE_KEY);
 setEditMode(savedEdit === '1');
