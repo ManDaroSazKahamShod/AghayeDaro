@@ -90,6 +90,57 @@ body {
     to { transform: translate(-50%, -50%) rotate(360deg); }
 }
 
+@keyframes heartbeatGlow {
+    0%, 100% { box-shadow: 0 0 40px rgba(225,29,72,0.25), 0 0 80px rgba(139,92,246,0.1); }
+    45% { box-shadow: 0 0 70px rgba(225,29,72,0.55), 0 0 120px rgba(251,191,36,0.25); }
+    55% { box-shadow: 0 0 55px rgba(225,29,72,0.4), 0 0 100px rgba(139,92,246,0.2); }
+}
+
+@keyframes affirmGlow {
+    0%, 100% { text-shadow: 0 0 18px rgba(16,185,129,0.5), 0 0 40px rgba(6,182,212,0.25); }
+    50% { text-shadow: 0 0 30px rgba(16,185,129,0.9), 0 0 60px rgba(6,182,212,0.5); }
+}
+
+@keyframes affirmFloat {
+    0%, 100% { transform: translateY(0) rotate(-0.6deg); }
+    50% { transform: translateY(-5px) rotate(0.6deg); }
+}
+
+@keyframes glitchShift {
+    0%, 92%, 100% { clip-path: inset(0 0 0 0); transform: translate(0, 0); }
+    93% { clip-path: inset(10% 0 70% 0); transform: translate(-3px, 0); }
+    94% { clip-path: inset(60% 0 10% 0); transform: translate(3px, 0); }
+    95% { clip-path: inset(30% 0 40% 0); transform: translate(-2px, 0); }
+    96% { clip-path: inset(0 0 0 0); transform: translate(0, 0); }
+}
+
+@keyframes meteorShoot {
+    0% { transform: translate(0, 0) rotate(-35deg); opacity: 0; }
+    8% { opacity: 1; }
+    100% { transform: translate(-420px, 420px) rotate(-35deg); opacity: 0; }
+}
+
+@keyframes flipDigitIn {
+    0% { transform: perspective(400px) rotateX(-90deg); filter: brightness(2); }
+    60% { transform: perspective(400px) rotateX(15deg); }
+    100% { transform: perspective(400px) rotateX(0deg); filter: brightness(1); }
+}
+
+@keyframes progressDotPulse {
+    0%, 100% { box-shadow: 0 0 8px 3px rgba(255,255,255,0.7); transform: scale(1); }
+    50% { box-shadow: 0 0 16px 6px rgba(255,255,255,0.9); transform: scale(1.3); }
+}
+
+@keyframes crazyPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.015); }
+}
+
+@keyframes emojiBurstFall {
+    0% { transform: translate(0,0) rotate(0deg) scale(0.6); opacity: 1; }
+    100% { transform: translate(var(--dx,0px), var(--dy,150px)) rotate(var(--rot,360deg)) scale(1.1); opacity: 0; }
+}
+
 /* ============================================
    کارت اصلی
 ============================================ */
@@ -100,6 +151,8 @@ body {
     position: relative;
     overflow: hidden;
     isolation: isolate;
+    animation: heartbeatGlow 3.2s ease-in-out infinite;
+    cursor: pointer;
 }
 
 /* ============================================
@@ -196,6 +249,30 @@ body {
     inset: 0;
     pointer-events: none;
     z-index: 0;
+}
+
+.meteor {
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    background: linear-gradient(90deg, #fff, transparent);
+    border-radius: 50%;
+    box-shadow: 0 0 6px 1px #fff;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.meteor::after {
+    content: '';
+    position: absolute;
+    top: 50%; right: 100%;
+    width: 90px; height: 1.5px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.9));
+    transform: translateY(-50%);
+}
+
+.meteor {
+    animation: meteorShoot linear infinite;
 }
 
 .star {
@@ -313,6 +390,31 @@ body {
 }
 
 /* ============================================
+   بنر تاکید — قطعاً داروساز می‌شم
+============================================ */
+.affirm-banner {
+    position: relative;
+    margin: 2px auto 0;
+    padding: 12px 22px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, rgba(16,185,129,0.14), rgba(6,182,212,0.1));
+    border: 1.5px solid rgba(16,185,129,0.45);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 1.05rem;
+    font-weight: 900;
+    color: #6ee7b7;
+    animation: affirmFloat 3s ease-in-out infinite, affirmGlow 2.4s ease-in-out infinite;
+    letter-spacing: -0.3px;
+}
+
+.affirm-banner .pin {
+    font-size: 1.1rem;
+    animation: sparkleAnim 1.8s ease-in-out infinite;
+}
+
+/* ============================================
    هدر — آیکون + عنوان
 ============================================ */
 .header {
@@ -388,7 +490,10 @@ body {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     animation: textShine 3s linear infinite;
+    position: relative;
 }
+
+.title.glitching { animation: textShine 3s linear infinite, glitchShift 0.35s steps(1); }
 
 .subtitle {
     font-size: 0.95rem;
@@ -432,9 +537,11 @@ body {
     border-radius: 18px;
     padding: 22px 10px;
     overflow: hidden;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform 0.15s ease-out, border-color 0.4s, box-shadow 0.4s;
     isolation: isolate;
     cursor: default;
+    transform-style: preserve-3d;
+    will-change: transform;
 }
 
 .time-card::before {
@@ -488,7 +595,7 @@ body {
 }
 
 .time-number.tick {
-    animation: tickNumber 0.5s ease;
+    animation: flipDigitIn 0.55s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 @keyframes tickNumber {
@@ -618,6 +725,18 @@ body {
     inset: 0;
     background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
     animation: barShine 2s linear infinite;
+}
+
+.progress-dot {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    width: 14px; height: 14px;
+    background: #fff;
+    border-radius: 50%;
+    transform: translate(50%, -50%);
+    animation: progressDotPulse 1.2s ease-in-out infinite;
+    z-index: 2;
 }
 
 @keyframes barShine {
@@ -873,6 +992,7 @@ body {
         </div>
         <div class="particles-layer" id="particlesLayer"></div>
         <div class="stars-layer" id="starsLayer"></div>
+        <div class="meteors-layer" id="meteorsLayer" style="position:absolute; inset:0; pointer-events:none; overflow:hidden; z-index:0;"></div>
 
         <!-- ============ حالت شمارش ============ -->
         <div class="content" id="countdownView">
@@ -892,10 +1012,15 @@ body {
                     <div class="hero-ring-2"></div>
                     <div class="hero-icon">💊</div>
                 </div>
-                <h1 class="title">شمارش معکوس تا داروسازی</h1>
+                <h1 class="title" id="mainTitle">شمارش معکوس تا داروسازی</h1>
                 <p class="subtitle">
                     روزی که می‌گم <span class="highlight">داروساز شدم</span> 💚
                 </p>
+                <div class="affirm-banner">
+                    <span class="pin">🔥</span>
+                    <span>من قطعاً داروساز خواهم شد</span>
+                    <span class="pin">🔥</span>
+                </div>
             </div>
 
             <div class="timer-grid">
@@ -928,7 +1053,9 @@ body {
                     <span class="percent" id="progressPercent">۰٪</span>
                 </div>
                 <div class="progress-bg">
-                    <div class="progress-fill" id="progressFill"></div>
+                    <div class="progress-fill" id="progressFill">
+                        <span class="progress-dot"></span>
+                    </div>
                 </div>
             </div>
 
@@ -990,7 +1117,7 @@ function createParticles() {
     const icons = ['💊', '✨', '⭐', '💚', '🎯', '💫', '🌟', '🩺', '📚', '🎓'];
     const colors = ['#e11d48', '#fbbf24', '#8b5cf6', '#3b82f6', '#06b6d4', '#10b981'];
     
-    for (let i = 0; i < 25; i++) {
+    for (let i = 0; i < 40; i++) {
         const p = document.createElement('div');
         p.className = 'particle';
         p.textContent = icons[Math.floor(Math.random() * icons.length)];
@@ -1009,7 +1136,7 @@ function createParticles() {
 function createStars() {
     const container = document.getElementById('starsLayer');
     
-    for (let i = 0; i < 50; i++) {
+    for (let i = 0; i < 70; i++) {
         const s = document.createElement('div');
         s.className = 'star';
         s.style.left = Math.random() * 100 + '%';
@@ -1027,6 +1154,86 @@ function createStars() {
         container.appendChild(s);
     }
 }
+
+/* ============================================================
+   شهاب‌سنگ‌ها
+============================================================ */
+function createMeteors() {
+    const container = document.getElementById('meteorsLayer');
+    if (!container) return;
+    for (let i = 0; i < 4; i++) {
+        const m = document.createElement('div');
+        m.className = 'meteor';
+        m.style.top = (Math.random() * 40) + '%';
+        m.style.left = (60 + Math.random() * 40) + '%';
+        m.style.animationDuration = (3 + Math.random() * 4) + 's';
+        m.style.animationDelay = (Math.random() * 6) + 's';
+        container.appendChild(m);
+    }
+}
+
+/* ============================================================
+   جلوه‌ی خطای دیجیتال روی عنوان (Glitch)
+============================================================ */
+function startTitleGlitch() {
+    const title = document.getElementById('mainTitle');
+    if (!title) return;
+    setInterval(() => {
+        title.classList.add('glitching');
+        setTimeout(() => title.classList.remove('glitching'), 400);
+    }, 4500);
+}
+
+/* ============================================================
+   تیلت سه‌بعدی کارت‌های تایمر (فقط دسکتاپ)
+============================================================ */
+function initTilt() {
+    if (window.matchMedia('(hover: hover) and (pointer: fine)').matches !== true) return;
+    document.querySelectorAll('.time-card').forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+            const r = card.getBoundingClientRect();
+            const px = (e.clientX - r.left) / r.width - 0.5;
+            const py = (e.clientY - r.top) / r.height - 0.5;
+            card.style.transform = `perspective(600px) rotateX(${(-py * 14).toFixed(2)}deg) rotateY(${(px * 14).toFixed(2)}deg) translateY(-6px) scale(1.03)`;
+        });
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = '';
+        });
+    });
+}
+
+/* ============================================================
+   جرقه‌ی کلیک — بارش ایموجی انگیزشی
+============================================================ */
+function emojiBurst(x, y) {
+    const icons = ['💊', '✨', '💚', '🔥', '⭐', '🎯'];
+    for (let i = 0; i < 10; i++) {
+        const e = document.createElement('div');
+        e.textContent = icons[Math.floor(Math.random() * icons.length)];
+        e.style.position = 'fixed';
+        e.style.left = x + 'px';
+        e.style.top = y + 'px';
+        e.style.fontSize = (14 + Math.random() * 14) + 'px';
+        e.style.zIndex = 9999;
+        e.style.pointerEvents = 'none';
+        const dx = (Math.random() * 200 - 100) + 'px';
+        const dy = (100 + Math.random() * 120) + 'px';
+        const rot = (Math.random() * 720 - 360) + 'deg';
+        e.style.setProperty('--dx', dx);
+        e.style.setProperty('--dy', dy);
+        e.style.setProperty('--rot', rot);
+        e.style.animation = `emojiBurstFall ${0.8 + Math.random() * 0.6}s ease-in forwards`;
+        document.body.appendChild(e);
+        setTimeout(() => e.remove(), 1600);
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    const card = document.querySelector('.countdown-card');
+    if (card) {
+        card.addEventListener('click', (e) => emojiBurst(e.clientX, e.clientY));
+    }
+});
 
 /* ============================================================
    شمارش معکوس
@@ -1116,7 +1323,9 @@ const quotes = [
     'دانیال، تو می‌تونی، فقط ادامه بده 🔥',
     'دانیال، هر صفحه یه پله به سمت رویاست 📚',
     'دانیال، آرزوت بزرگ‌تر از سختی‌هاست ⭐',
-    'دانیال، وقتی خسته شدی یادت باشه چرا شروع کردی 💚'
+    'دانیال، وقتی خسته شدی یادت باشه چرا شروع کردی 💚',
+    'دانیال، این قطعیه، نه آرزو: داروساز می‌شی 🔥',
+    'دانیال، کنکور فقط یه پله‌ست، تو از پسش برمیای 🎯'
 ];
 
 let currentQuote = '';
@@ -1178,6 +1387,9 @@ function launchConfetti() {
 ============================================================ */
 createParticles();
 createStars();
+createMeteors();
+initTilt();
+startTitleGlitch();
 updateCountdown();
 setInterval(updateCountdown, 1000);
 setTimeout(typeQuote, 800);
