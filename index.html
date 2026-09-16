@@ -428,7 +428,7 @@ h1.title {
 .unit.s { --accent: var(--red-soft); --glow: rgba(251,113,133,0.55); }
 
 /* ============================================
-   تایمر کنکور
+   باکس کنکور
 ============================================ */
 .konkur-block {
   position: relative;
@@ -493,47 +493,122 @@ h1.title {
 .konkur-block.passed .head .ic { animation: none; }
 
 /* ============================================
-   🆕 نوار پیشرفت داخل کنکور
+   🆕 نوار پیشرفت داخل باکس‌ها
 ============================================ */
-.konkur-progress {
+.inner-progress {
   position: relative;
   z-index: 1;
-  margin-top: 14px;
-  padding-top: 14px;
+  margin-top: 16px;
+  padding-top: 16px;
   border-top: 1px dashed rgba(225,29,72,0.3);
 }
 
-.konkur-progress .progress-head {
-  color: rgba(251,113,133,0.85);
+.inner-progress .progress-head {
+  color: rgba(251,113,133,0.9);
+  font-size: 0.75rem;
 }
 
-.konkur-progress .progress-head .pct {
+.inner-progress .progress-head .pct {
   color: var(--red-soft);
+  font-size: 1.05rem;
   text-shadow: 0 0 12px rgba(251,113,133,0.6);
 }
 
-.konkur-progress .bar {
+.inner-progress .bar {
   background: rgba(0,0,0,0.55);
   border-color: rgba(225,29,72,0.3);
+  height: 10px;
 }
 
-.konkur-progress .bar-fill {
+.inner-progress .bar-fill {
   background: linear-gradient(90deg, var(--red-deep), var(--red), var(--red-soft));
   box-shadow: 0 0 20px rgba(225,29,72,0.6);
 }
 
-.konkur-block.passed .konkur-progress {
+.konkur-block.passed .inner-progress {
   border-top-color: rgba(52,211,153,0.3);
 }
 
-.konkur-block.passed .konkur-progress .progress-head .pct {
+.konkur-block.passed .inner-progress .progress-head {
+  color: rgba(52,211,153,0.9);
+}
+
+.konkur-block.passed .inner-progress .progress-head .pct {
   color: var(--mint);
   text-shadow: 0 0 12px rgba(52,211,153,0.6);
 }
 
-.konkur-block.passed .konkur-progress .bar-fill {
+.konkur-block.passed .inner-progress .bar-fill {
   background: linear-gradient(90deg, #059669, var(--mint));
   box-shadow: 0 0 20px rgba(52,211,153,0.6);
+}
+
+/* ============================================
+   باکس نهایی — داروسازی
+============================================ */
+.final-block {
+  position: relative;
+  padding: 20px 16px 18px;
+  background: linear-gradient(135deg, rgba(251,191,36,0.10), rgba(217,119,6,0.05));
+  border: 1.5px solid rgba(251,191,36,0.4);
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.final-block::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(251,191,36,0.14), transparent);
+  animation: konkurScan 5s linear infinite;
+  pointer-events: none;
+}
+
+.final-block .head {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 14px;
+  position: relative;
+  z-index: 1;
+}
+
+.final-block .head .ic {
+  font-size: 1.05rem;
+  animation: pulseIcon 2s ease-in-out infinite;
+}
+
+.final-block .head .ttl {
+  font-size: 0.92rem;
+  font-weight: 900;
+  color: var(--gold);
+}
+
+.final-block .timer { position: relative; z-index: 1; }
+.final-block .timer .unit { background: rgba(0,0,0,0.35); border-color: rgba(251,191,36,0.25); }
+
+.final-block .inner-progress {
+  border-top-color: rgba(251,191,36,0.3);
+}
+
+.final-block .inner-progress .progress-head {
+  color: rgba(251,191,36,0.9);
+}
+
+.final-block .inner-progress .progress-head .pct {
+  color: var(--gold);
+  text-shadow: 0 0 12px rgba(251,191,36,0.6);
+}
+
+.final-block .inner-progress .bar {
+  border-color: rgba(251,191,36,0.3);
+}
+
+.final-block .inner-progress .bar-fill {
+  background: linear-gradient(90deg, var(--gold-deep), var(--gold), var(--gold-soft));
+  box-shadow: 0 0 20px rgba(251,191,36,0.6);
 }
 
 /* ============================================
@@ -580,7 +655,7 @@ h1.title {
 }
 
 /* ============================================
-   پیشرفت (اصلی — نهایی)
+   پیشرفت عمومی
 ============================================ */
 .progress-head {
   display: flex;
@@ -727,12 +802,15 @@ h1.title {
   .subtitle { font-size: 0.78rem; }
   .claim { font-size: 0.78rem; padding: 7px 16px; }
   .section-title { font-size: 0.72rem; padding: 5px 14px; }
-  .konkur-block { padding: 16px 10px 14px; border-radius: 16px; }
-  .konkur-block .head .ttl { font-size: 0.8rem; }
+  .konkur-block, .final-block { padding: 16px 10px 14px; border-radius: 16px; }
+  .konkur-block .head .ttl, .final-block .head .ttl { font-size: 0.8rem; }
   .timer { gap: 6px; }
   .unit { padding: 12px 3px 10px; border-radius: 12px; }
   .num { font-size: 1.5rem; letter-spacing: -1px; }
   .lbl { font-size: 0.55rem; margin-top: 6px; letter-spacing: 0.2px; }
+  .inner-progress { margin-top: 12px; padding-top: 12px; }
+  .inner-progress .progress-head { font-size: 0.68rem; }
+  .inner-progress .progress-head .pct { font-size: 0.92rem; }
   .dream { padding: 14px; }
   .dream .big { font-size: 1rem; }
   .dream .small { font-size: 0.68rem; }
@@ -841,7 +919,7 @@ h1.title {
         </div>
 
         <!-- 🆕 نوار پیشرفت کنکور -->
-        <div class="konkur-progress">
+        <div class="inner-progress">
           <div class="progress-head">
             <span>📊 پیشرفت تا کنکور</span>
             <span class="pct" id="konkurPct">۰.۰۰٪</span>
@@ -858,50 +936,58 @@ h1.title {
         <span>مقصد نهایی — ۱ آذر ۱۴۰۶</span>
       </div>
 
-      <div class="timer gold">
-        <div class="unit y">
-          <span class="num" id="fy">۰</span>
-          <span class="lbl">سال</span>
+      <div class="final-block" id="finalBlock">
+        <div class="head">
+          <span class="ic">🎯</span>
+          <span class="ttl">فاصله تا داروساز شدن</span>
         </div>
-        <div class="unit mo">
-          <span class="num" id="fmo">۰</span>
-          <span class="lbl">ماه</span>
+
+        <div class="timer gold">
+          <div class="unit y">
+            <span class="num" id="fy">۰</span>
+            <span class="lbl">سال</span>
+          </div>
+          <div class="unit mo">
+            <span class="num" id="fmo">۰</span>
+            <span class="lbl">ماه</span>
+          </div>
+          <div class="unit w">
+            <span class="num" id="fw">۰</span>
+            <span class="lbl">هفته</span>
+          </div>
+          <div class="unit d">
+            <span class="num" id="fd">۰</span>
+            <span class="lbl">روز</span>
+          </div>
+          <div class="unit h">
+            <span class="num" id="fh">۰</span>
+            <span class="lbl">ساعت</span>
+          </div>
+          <div class="unit m">
+            <span class="num" id="fm">۰</span>
+            <span class="lbl">دقیقه</span>
+          </div>
+          <div class="unit s">
+            <span class="num" id="fs">۰</span>
+            <span class="lbl">ثانیه</span>
+          </div>
         </div>
-        <div class="unit w">
-          <span class="num" id="fw">۰</span>
-          <span class="lbl">هفته</span>
-        </div>
-        <div class="unit d">
-          <span class="num" id="fd">۰</span>
-          <span class="lbl">روز</span>
-        </div>
-        <div class="unit h">
-          <span class="num" id="fh">۰</span>
-          <span class="lbl">ساعت</span>
-        </div>
-        <div class="unit m">
-          <span class="num" id="fm">۰</span>
-          <span class="lbl">دقیقه</span>
-        </div>
-        <div class="unit s">
-          <span class="num" id="fs">۰</span>
-          <span class="lbl">ثانیه</span>
+
+        <!-- 🆕 نوار پیشرفت داروسازی -->
+        <div class="inner-progress">
+          <div class="progress-head">
+            <span>📈 مسیر دانیال تا رسیدن</span>
+            <span class="pct" id="finalPct">۰.۰۰٪</span>
+          </div>
+          <div class="bar">
+            <div class="bar-fill" id="finalBarFill"></div>
+          </div>
         </div>
       </div>
 
       <div class="dream">
         <div class="big">دانیال، داروساز می‌شه 💊✨</div>
         <div class="small">هر لحظه، یه قدم نزدیک‌تر به این لحظه</div>
-      </div>
-
-      <div>
-        <div class="progress-head">
-          <span>📈 مسیر دانیال تا رسیدن</span>
-          <span class="pct" id="pct">۰.۰۰٪</span>
-        </div>
-        <div class="bar">
-          <div class="bar-fill" id="barFill"></div>
-        </div>
       </div>
 
     </div>
@@ -954,8 +1040,8 @@ const START_DATE  = j2g(1405, 6, 22);
 const KONKUR_DATE = j2g(1406, 4, 10);
 const TARGET_DATE = j2g(1406, 9, 1);
 
-const TOTAL_KONKUR = KONKUR_DATE - START_DATE;   // مسیر تا کنکور
-const TOTAL_FINAL  = TARGET_DATE - START_DATE;   // مسیر تا داروسازی
+const TOTAL_KONKUR = KONKUR_DATE - START_DATE;
+const TOTAL_FINAL  = TARGET_DATE - START_DATE;
 
 /* ============================================================
    ابزار
@@ -1063,6 +1149,15 @@ function renderTimer(prefix, data) {
 }
 
 /* ============================================================
+   درصد اعشاری
+============================================================ */
+function pctText(pct) {
+  const str = pct.toFixed(2);
+  const [intPart, decPart] = str.split('.');
+  return fa(intPart) + '.' + fa(decPart) + '٪';
+}
+
+/* ============================================================
    تایمر کنکور + نوار پیشرفت کنکور
 ============================================================ */
 const elKonkurBlock = $('konkurBlock');
@@ -1082,7 +1177,7 @@ function updateKonkur() {
         const el = $(id);
         if (el) el.textContent = '۰';
       });
-      // نوار پر کن
+      elKonkurPct.textContent = '۱۰۰.۰۰٪';
       elKonkurBar.style.width = '100%';
     }
     return;
@@ -1090,21 +1185,19 @@ function updateKonkur() {
 
   renderTimer('k', data);
 
-  // 🆕 درصد پیشرفت کنکور
   const elapsed = now - START_DATE;
   const pct = Math.max(0, Math.min(100, (elapsed / TOTAL_KONKUR) * 100));
 
-  const pctStr = pct.toFixed(2);
-  const [intPart, decPart] = pctStr.split('.');
-  elKonkurPct.textContent = fa(intPart) + '.' + fa(decPart) + '٪';
-
+  elKonkurPct.textContent = pctText(pct);
   elKonkurBar.style.width = pct + '%';
 }
 
 /* ============================================================
-   تایمر نهایی + درصد اعشاری
+   تایمر نهایی + نوار پیشرفت داروسازی
 ============================================================ */
-const elPct = $('pct'), elBar = $('barFill');
+const elFinalBlock = $('finalBlock');
+const elFinalPct = $('finalPct');
+const elFinalBar = $('finalBarFill');
 let partyStarted = false;
 
 function updateFinal() {
@@ -1127,11 +1220,8 @@ function updateFinal() {
   const elapsed = now - START_DATE;
   const pct = Math.max(0, Math.min(100, (elapsed / TOTAL_FINAL) * 100));
 
-  const pctStr = pct.toFixed(2);
-  const [intPart, decPart] = pctStr.split('.');
-  elPct.textContent = fa(intPart) + '.' + fa(decPart) + '٪';
-
-  elBar.style.width = pct + '%';
+  elFinalPct.textContent = pctText(pct);
+  elFinalBar.style.width = pct + '%';
 }
 
 /* ============================================================
