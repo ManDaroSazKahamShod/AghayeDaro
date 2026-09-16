@@ -356,7 +356,7 @@ h1.title {
 .section-title .ic { font-size: 0.95rem; }
 
 /* ============================================
-   تایمر — مشترک
+   تایمر
 ============================================ */
 .timer {
   display: grid;
@@ -419,7 +419,6 @@ h1.title {
   white-space: nowrap;
 }
 
-/* رنگ‌های اختصاصی هر واحد */
 .unit.y { --accent: var(--violet); --glow: rgba(167,139,250,0.55); }
 .unit.mo { --accent: var(--gold); --glow: rgba(251,191,36,0.55); }
 .unit.w { --accent: var(--mint); --glow: rgba(52,211,153,0.55); }
@@ -429,7 +428,7 @@ h1.title {
 .unit.s { --accent: var(--red-soft); --glow: rgba(251,113,133,0.55); }
 
 /* ============================================
-   تایمر کنکور — تم قرمز
+   تایمر کنکور
 ============================================ */
 .konkur-block {
   position: relative;
@@ -670,39 +669,28 @@ h1.title {
 @media (max-width: 640px) {
   body { padding: 14px 10px; }
   .card { padding: 24px 14px 20px; border-radius: 20px; }
-
   .status-bar { font-size: 0.68rem; padding: 8px 14px; gap: 10px; }
   .status-bar .sep { height: 12px; }
   .status-bar .live { font-size: 0.62rem; }
-
   .brand { padding: 6px 16px; font-size: 0.9rem; }
-
   .hero { width: 60px; height: 60px; }
   .hero .emoji { font-size: 1.8rem; }
-
   h1.title { font-size: 1.25rem; letter-spacing: -0.4px; }
   .subtitle { font-size: 0.78rem; }
-
   .claim { font-size: 0.78rem; padding: 7px 16px; }
-
   .section-title { font-size: 0.72rem; padding: 5px 14px; }
-
   .konkur-block { padding: 16px 10px 14px; border-radius: 16px; }
   .konkur-block .head .ttl { font-size: 0.8rem; }
-
   .timer { gap: 6px; }
   .unit { padding: 12px 3px 10px; border-radius: 12px; }
   .num { font-size: 1.5rem; letter-spacing: -1px; }
   .lbl { font-size: 0.55rem; margin-top: 6px; letter-spacing: 0.2px; }
-
   .dream { padding: 14px; }
   .dream .big { font-size: 1rem; }
   .dream .small { font-size: 0.68rem; }
-
   .progress-head { font-size: 0.7rem; }
   .progress-head .pct { font-size: 0.88rem; }
   .bar { height: 10px; }
-
   .party .ic { font-size: 3.5rem; }
   .party h2 { font-size: 1.7rem; }
   .party p { font-size: 0.85rem; }
@@ -902,9 +890,9 @@ function j2g(jy, jm, jd) {
 /* ============================================================
    تاریخ‌های کلیدی
 ============================================================ */
-const START_DATE  = j2g(1405, 6, 22);   // ۲۲ شهریور ۱۴۰۵
-const KONKUR_DATE = j2g(1406, 4, 10);   // ۱۰ تیر ۱۴۰۶
-const TARGET_DATE = j2g(1406, 9, 1);    // ۱ آذر ۱۴۰۶
+const START_DATE  = j2g(1405, 6, 22);
+const KONKUR_DATE = j2g(1406, 4, 10);
+const TARGET_DATE = j2g(1406, 9, 1);
 const TOTAL = TARGET_DATE - START_DATE;
 
 /* ============================================================
@@ -918,7 +906,6 @@ const $ = id => document.getElementById(id);
 const MONTHS_FA = ['فروردین','اردیبهشت','خرداد','تیر','مرداد','شهریور','مهر','آبان','آذر','دی','بهمن','اسفند'];
 const WEEKDAYS_FA = ['یکشنبه','دوشنبه','سه‌شنبه','چهارشنبه','پنجشنبه','جمعه','شنبه'];
 
-/* گرفتن y/m/d شمسی از یه Date */
 function getJalaliYMD(date) {
   const parts = new Intl.DateTimeFormat('en-US-u-ca-persian', {
     year: 'numeric', month: 'numeric', day: 'numeric'
@@ -932,7 +919,9 @@ function getJalaliYMD(date) {
 }
 
 /* ============================================================
-   🔧 تقسیم زمان به واحدهای شمسی — نسخه‌ی اصلاح‌شده
+   🎯 تقسیم زمان — نسخه‌ی کاملاً اصلاح‌شده
+   کلیدی: ساعت/دقیقه/ثانیه از diffMs خام حساب می‌شن،
+   سال/ماه/هفته/روز از تاریخ شمسی.
 ============================================================ */
 function breakdown(targetDate) {
   const now = new Date();
@@ -942,7 +931,14 @@ function breakdown(targetDate) {
     return { y: 0, mo: 0, w: 0, d: 0, h: 0, m: 0, s: 0, passed: true };
   }
 
-  // ۱) محاسبه‌ی سال و ماه شمسی
+  const totalSec = Math.floor(diffMs / 1000);
+
+  // ─── ساعت/دقیقه/ثانیه — مستقیم از ثانیه‌های باقی‌مونده (زنده) ───
+  const h = Math.floor((totalSec % 86400) / 3600);
+  const m = Math.floor((totalSec % 3600) / 60);
+  const s = totalSec % 60;
+
+  // ─── سال و ماه شمسی ───
   const todayJ = getJalaliYMD(now);
   const targetJ = getJalaliYMD(targetDate);
 
@@ -952,21 +948,16 @@ function breakdown(targetDate) {
   if (targetJ.d < todayJ.d) dmo--;
   if (dmo < 0) { dmo += 12; dy--; }
 
-  // ۲) نقطه‌ی لنگر = امروز + dy سال + dmo ماه شمسی
+  // ─── نقطه‌ی لنگر = امروز + dy سال + dmo ماه ───
   const anchor = j2g(todayJ.y + dy, todayJ.mo + dmo, todayJ.d);
 
-  // ۳) باقی‌مونده‌ی زمان (میلی‌ثانیه) — این‌جا دقیق تقسیم می‌شه
-  let restMs = targetDate - anchor;
-  if (restMs < 0) restMs = 0;
+  // باقی‌مونده از لنگر تا هدف (فقط برای هفته/روز)
+  const restMs = Math.max(0, targetDate - anchor);
+  const restTotalSec = Math.floor(restMs / 1000);
+  const restDays = Math.floor(restTotalSec / 86400);
 
-  const totalSec = Math.floor(restMs / 1000);
-  const totalDays = Math.floor(totalSec / 86400);
-  const h = Math.floor((totalSec % 86400) / 3600);
-  const m = Math.floor((totalSec % 3600) / 60);
-  const s = totalSec % 60;
-
-  const w = Math.floor(totalDays / 7);
-  const d = totalDays % 7;
+  const w = Math.floor(restDays / 7);
+  const d = restDays % 7;
 
   return { y: dy, mo: dmo, w, d, h, m, s, passed: false };
 }
@@ -1000,7 +991,7 @@ function flip(el) {
 }
 
 /* ============================================================
-   رندر یه تایمر (۷ واحد) — زنده
+   رندر یه تایمر
 ============================================================ */
 function renderTimer(prefix, data) {
   const fields = ['y', 'mo', 'w', 'd', 'h', 'm', 's'];
@@ -1111,7 +1102,7 @@ function launchConfetti() {
 }
 
 /* ============================================================
-   🚀 راه‌اندازی + آپدیت زنده هر ۱ ثانیه
+   🚀 حلقه‌ی آپدیت — هر ۲۵۰ میلی‌ثانیه برای زنده‌بودن کامل
 ============================================================ */
 function tickAll() {
   updateLiveDateTime();
@@ -1122,14 +1113,8 @@ function tickAll() {
 createStars();
 tickAll();
 
-// آپدیت هر ۱ ثانیه — همگام با ثانیه‌ی واقعی ساعت
-setInterval(tickAll, 1000);
-
-// آپدیت اضافی هر ۲۰۰ میلی‌ثانیه برای این‌که ثانیه دقیقاً سر وقت عوض شه
-setInterval(() => {
-  updateKonkur();
-  updateFinal();
-}, 200);
+// هر ۲۵۰ میلی‌ثانیه → ثانیه‌شمار بدون تأخیر عوض می‌شه
+setInterval(tickAll, 250);
 </script>
 </body>
 </html>
