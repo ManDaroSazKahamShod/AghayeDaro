@@ -1,1412 +1,1053 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>💊 دانیال — شمارش معکوس تا داروسازی</title>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap');
-
-    :root {
-      --red: #e11d48;
-      --red-light: #fb7185;
-      --red-dark: #9f1239;
-      --gold: #fbbf24;
-      --gold-light: #fcd34d;
-      --gold-dark: #d97706;
-      --purple: #8b5cf6;
-      --blue: #3b82f6;
-      --cyan: #06b6d4;
-      --green: #10b981;
-      --black: #0a0a0f;
-      --black-2: #12121a;
-      --black-3: #1c1c26;
-      --border: #2a2a35;
-      --text: #f5f5f7;
-      --text-dim: #a1a1aa;
-    }
-
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-
-    html, body { min-height: 100%; overflow-x: hidden; }
-
-    body {
-      font-family: 'Vazirmatn', sans-serif;
-      background: var(--black);
-      color: var(--text);
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      line-height: 1.6;
-      background-image:
-        radial-gradient(circle at 15% 15%, rgba(225,29,72,0.14), transparent 45%),
-        radial-gradient(circle at 85% 85%, rgba(139,92,246,0.12), transparent 45%),
-        radial-gradient(circle at 50% 50%, rgba(251,191,36,0.03), transparent 60%);
-      background-attachment: fixed;
-      overflow-y: auto;
-    }
-
-    /* ============================================
-       کانتینر اصلی — هاله‌ی متحرک دور کارت
-    ============================================ */
-    .countdown-wrapper {
-      position: relative;
-      max-width: 960px;
-      width: 100%;
-      border-radius: 28px;
-      padding: 3px;
-      overflow: hidden;
-      animation: wrapperFloat 6s ease-in-out infinite;
-      z-index: 1;
-      box-shadow: 0 30px 60px -20px rgba(0,0,0,0.9);
-    }
-
-    @keyframes wrapperFloat {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-6px); }
-    }
-
-    .countdown-wrapper::before {
-      content: '';
-      position: absolute;
-      top: 50%; left: 50%;
-      width: 200%; height: 200%;
-      background: conic-gradient(
-        from 0deg,
-        var(--red) 0deg,
-        var(--gold) 60deg,
-        var(--purple) 120deg,
-        var(--blue) 180deg,
-        var(--cyan) 240deg,
-        var(--red) 360deg
-      );
-      transform: translate(-50%, -50%);
-      animation: rotateBorder 6s linear infinite;
-      z-index: -1;
-      filter: blur(1.5px);
-    }
-
-    @keyframes rotateBorder {
-      to { transform: translate(-50%, -50%) rotate(360deg); }
-    }
-
-    /* ============================================
-       کارت اصلی — درخشش ضربان قلب
-    ============================================ */
-    .countdown-card {
-      background: linear-gradient(135deg, #0a0a0f 0%, #12121a 40%, #1a1a2e 100%);
-      border-radius: 26px;
-      padding: 40px 32px;
-      position: relative;
-      overflow: hidden;
-      isolation: isolate;
-      animation: heartbeatGlow 3.6s ease-in-out infinite;
-      cursor: pointer;
-      transition: box-shadow 0.3s;
-    }
-
-    @keyframes heartbeatGlow {
-      0%, 100% { box-shadow: 0 0 40px rgba(225,29,72,0.22), 0 0 80px rgba(139,92,246,0.08), inset 0 0 30px rgba(0,0,0,0.5); }
-      45% { box-shadow: 0 0 80px rgba(225,29,72,0.5), 0 0 130px rgba(251,191,36,0.2), inset 0 0 30px rgba(0,0,0,0.5); }
-      55% { box-shadow: 0 0 60px rgba(225,29,72,0.35), 0 0 100px rgba(139,92,246,0.15), inset 0 0 30px rgba(0,0,0,0.5); }
-    }
-
-    /* ============================================
-       لایه‌های پس‌زمینه
-    ============================================ */
-    .aurora-layer {
-      position: absolute;
-      inset: 0;
-      overflow: hidden;
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    .aurora {
-      position: absolute;
-      border-radius: 50%;
-      filter: blur(70px);
-      opacity: 0.5;
-      mix-blend-mode: screen;
-      animation-timing-function: ease-in-out;
-      animation-iteration-count: infinite;
-    }
-
-    .aurora-1 {
-      width: 380px; height: 380px;
-      background: var(--red);
-      top: -120px; right: -80px;
-      animation: aurora1 13s infinite;
-    }
-
-    .aurora-2 {
-      width: 320px; height: 320px;
-      background: var(--purple);
-      bottom: -130px; left: -80px;
-      animation: aurora2 15s infinite;
-    }
-
-    .aurora-3 {
-      width: 280px; height: 280px;
-      background: var(--gold);
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      animation: aurora3 11s infinite;
-      opacity: 0.2;
-    }
-
-    @keyframes aurora1 {
-      0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.5; }
-      50% { transform: translate(-110px, 110px) scale(1.5); opacity: 0.75; }
-    }
-
-    @keyframes aurora2 {
-      0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.5; }
-      50% { transform: translate(130px, -90px) scale(1.35); opacity: 0.65; }
-    }
-
-    @keyframes aurora3 {
-      0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.2; }
-      50% { transform: translate(-50%, -50%) scale(2.2); opacity: 0.45; }
-    }
-
-    .particles-layer {
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      overflow: hidden;
-      z-index: 0;
-    }
-
-    .particle {
-      position: absolute;
-      opacity: 0.6;
-      animation: particleFloat linear infinite;
-      filter: drop-shadow(0 0 10px currentColor);
-      will-change: transform;
-    }
-
-    @keyframes particleFloat {
-      0% {
-        transform: translateY(110%) translateX(0) rotate(0deg) scale(0.3);
-        opacity: 0;
-      }
-      10% { opacity: 0.8; }
-      50% { opacity: 1; }
-      90% { opacity: 0.5; }
-      100% {
-        transform: translateY(-120%) translateX(70px) rotate(720deg) scale(1.5);
-        opacity: 0;
-      }
-    }
-
-    .stars-layer {
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    .star {
-      position: absolute;
-      width: 2px; height: 2px;
-      background: white;
-      border-radius: 50%;
-      animation: starTwinkle 2s ease-in-out infinite;
-      box-shadow: 0 0 8px white;
-    }
-
-    @keyframes starTwinkle {
-      0%, 100% { opacity: 0.15; transform: scale(1); }
-      50% { opacity: 1; transform: scale(1.6); }
-    }
-
-    .meteors-layer {
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      overflow: hidden;
-      z-index: 0;
-    }
-
-    .meteor {
-      position: absolute;
-      width: 3px;
-      height: 3px;
-      background: linear-gradient(90deg, #fff, transparent);
-      border-radius: 50%;
-      box-shadow: 0 0 8px 2px #fff;
-      z-index: 0;
-      pointer-events: none;
-      animation: meteorShoot linear infinite;
-    }
-
-    .meteor::after {
-      content: '';
-      position: absolute;
-      top: 50%; right: 100%;
-      width: 100px; height: 1.5px;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.9));
-      transform: translateY(-50%);
-    }
-
-    @keyframes meteorShoot {
-      0% { transform: translate(0, 0) rotate(-35deg); opacity: 0; }
-      8% { opacity: 1; }
-      100% { transform: translate(-480px, 480px) rotate(-35deg); opacity: 0; }
-    }
-
-    /* ============================================
-       محتوای اصلی
-    ============================================ */
-    .content {
-      position: relative;
-      z-index: 2;
-      display: flex;
-      flex-direction: column;
-      gap: 24px;
-      text-align: center;
-    }
-
-    /* ============================================
-       بج اسم دانیال
-    ============================================ */
-    .name-badge {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      margin: 0 auto 4px;
-      padding: 10px 28px;
-      background: linear-gradient(135deg, rgba(225,29,72,0.15), rgba(251,191,36,0.08), rgba(139,92,246,0.12));
-      background-size: 200% 200%;
-      border: 1.5px solid rgba(251,191,36,0.55);
-      border-radius: 60px;
-      position: relative;
-      overflow: hidden;
-      animation: nameBgMove 4s ease infinite;
-      box-shadow: 
-        0 10px 35px rgba(225,29,72,0.3),
-        inset 0 0 25px rgba(251,191,36,0.06);
-    }
-
-    @keyframes nameBgMove {
-      0%, 100% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-    }
-
-    .name-badge::before {
-      content: '';
-      position: absolute;
-      inset: -60%;
-      background: conic-gradient(from 0deg, transparent, rgba(251,191,36,0.45), transparent 30%);
-      animation: rotateBorder 4s linear infinite;
-      pointer-events: none;
-    }
-
-    .name-badge::after {
-      content: '';
-      position: absolute;
-      inset: 1.5px;
-      background: linear-gradient(135deg, #0a0a0f, #1a1a2e);
-      border-radius: 60px;
-      z-index: 1;
-    }
-
-    .name-badge .crown {
-      position: relative;
-      z-index: 2;
-      font-size: 1.2rem;
-      animation: crownFloat 2.2s ease-in-out infinite;
-      filter: drop-shadow(0 0 10px rgba(251,191,36,0.9));
-    }
-
-    @keyframes crownFloat {
-      0%, 100% { transform: translateY(0) rotate(-6deg); }
-      50% { transform: translateY(-5px) rotate(6deg); }
-    }
-
-    .name-badge .name-text {
-      position: relative;
-      z-index: 2;
-      font-size: 1.2rem;
-      font-weight: 900;
-      letter-spacing: 0.5px;
-      background: linear-gradient(90deg, var(--gold-light), var(--red-light), var(--gold), var(--red-light), var(--gold-light));
-      background-size: 200% auto;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      animation: textShine 3s linear infinite;
-      text-shadow: 0 0 25px rgba(251,191,36,0.5);
-    }
-
-    .name-badge .sparkle {
-      position: relative;
-      z-index: 2;
-      font-size: 0.95rem;
-      animation: sparkleAnim 1.6s ease-in-out infinite;
-    }
-
-    @keyframes sparkleAnim {
-      0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.7; }
-      50% { transform: scale(1.4) rotate(180deg); opacity: 1; }
-    }
-
-    @keyframes textShine {
-      to { background-position: 200% center; }
-    }
-
-    /* ============================================
-       بنر تاکید — من قطعاً داروساز خواهم شد
-    ============================================ */
-    .affirm-banner {
-      position: relative;
-      margin: 2px auto 0;
-      padding: 12px 26px;
-      border-radius: 18px;
-      background: linear-gradient(135deg, rgba(16,185,129,0.16), rgba(6,182,212,0.12));
-      border: 1.5px solid rgba(16,185,129,0.5);
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 1.05rem;
-      font-weight: 900;
-      color: #6ee7b7;
-      animation: affirmFloat 3s ease-in-out infinite, affirmGlow 2.6s ease-in-out infinite;
-      letter-spacing: -0.3px;
-      box-shadow: 0 8px 30px rgba(16,185,129,0.15);
-    }
-
-    @keyframes affirmGlow {
-      0%, 100% { text-shadow: 0 0 18px rgba(16,185,129,0.5), 0 0 40px rgba(6,182,212,0.2); }
-      50% { text-shadow: 0 0 35px rgba(16,185,129,0.9), 0 0 70px rgba(6,182,212,0.5); }
-    }
-
-    @keyframes affirmFloat {
-      0%, 100% { transform: translateY(0) rotate(-0.5deg); }
-      50% { transform: translateY(-5px) rotate(0.5deg); }
-    }
-
-    .affirm-banner .pin {
-      font-size: 1.15rem;
-      animation: sparkleAnim 1.8s ease-in-out infinite;
-    }
-
-    /* ============================================
-       هدر — آیکون + عنوان
-    ============================================ */
-    .header {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 16px;
-    }
-
-    .hero-icon-wrap {
-      position: relative;
-      width: 96px; height: 96px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .hero-icon-wrap::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      border-radius: 50%;
-      background: conic-gradient(from 0deg, var(--red), var(--gold), var(--purple), var(--cyan), var(--red));
-      animation: rotateBorder 4s linear infinite;
-      filter: blur(4px);
-    }
-
-    .hero-icon-wrap::after {
-      content: '';
-      position: absolute;
-      inset: 5px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #0a0a0f, #1a1a2e);
-      z-index: 1;
-    }
-
-    .hero-icon {
-      font-size: 2.8rem;
-      position: relative;
-      z-index: 2;
-      animation: iconBounce 2.6s ease-in-out infinite;
-      filter: drop-shadow(0 0 18px rgba(225,29,72,0.9));
-    }
-
-    @keyframes iconBounce {
-      0%, 100% { transform: translateY(0) scale(1); }
-      50% { transform: translateY(-9px) scale(1.12); }
-    }
-
-    .hero-ring {
-      position: absolute;
-      inset: -12px;
-      border: 2px dashed rgba(251,191,36,0.45);
-      border-radius: 50%;
-      animation: rotateBorder 9s linear infinite reverse;
-    }
-
-    .hero-ring-2 {
-      position: absolute;
-      inset: -24px;
-      border: 1px solid rgba(225,29,72,0.35);
-      border-radius: 50%;
-      animation: rotateBorder 14s linear infinite;
-    }
-
-    .title {
-      font-size: 2.2rem;
-      font-weight: 900;
-      letter-spacing: -1px;
-      line-height: 1.3;
-      background: linear-gradient(90deg, #fff, var(--red-light), var(--gold), var(--red-light), #fff);
-      background-size: 200% auto;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      animation: textShine 3s linear infinite;
-      position: relative;
-    }
-
-    .title.glitching { animation: textShine 3s linear infinite, glitchShift 0.35s steps(1); }
-
-    @keyframes glitchShift {
-      0%, 92%, 100% { clip-path: inset(0 0 0 0); transform: translate(0, 0); }
-      93% { clip-path: inset(10% 0 70% 0); transform: translate(-4px, 0); }
-      94% { clip-path: inset(60% 0 10% 0); transform: translate(4px, 0); }
-      95% { clip-path: inset(30% 0 40% 0); transform: translate(-3px, 0); }
-      96% { clip-path: inset(0 0 0 0); transform: translate(0, 0); }
-    }
-
-    .subtitle {
-      font-size: 1rem;
-      color: var(--text-dim);
-    }
-
-    .subtitle .highlight {
-      color: var(--gold);
-      font-weight: 800;
-      position: relative;
-    }
-
-    .subtitle .highlight::after {
-      content: '';
-      position: absolute;
-      bottom: -3px; left: 0; right: 0;
-      height: 2px;
-      background: linear-gradient(90deg, transparent, var(--gold), transparent);
-      animation: underlineShine 2s linear infinite;
-    }
-
-    @keyframes underlineShine {
-      0%, 100% { opacity: 0.5; transform: scaleX(0.8); }
-      50% { opacity: 1; transform: scaleX(1); }
-    }
-
-    /* ============================================
-       تایمر اصلی
-    ============================================ */
-    .timer-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 14px;
-      margin-top: 8px;
-    }
-
-    .time-card {
-      position: relative;
-      background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.01));
-      border: 1.5px solid var(--border);
-      border-radius: 20px;
-      padding: 24px 10px;
-      overflow: hidden;
-      transition: transform 0.15s ease-out, border-color 0.4s, box-shadow 0.4s;
-      isolation: isolate;
-      cursor: default;
-      transform-style: preserve-3d;
-      will-change: transform;
-    }
-
-    .time-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%; height: 3px;
-      background: linear-gradient(90deg, transparent, var(--accent, var(--red)), transparent);
-      opacity: 0.8;
-    }
-
-    .time-card::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(circle at 50% 0%, var(--accent-glow, rgba(225,29,72,0.18)), transparent 70%);
-      opacity: 0;
-      transition: opacity 0.4s;
-      z-index: -1;
-    }
-
-    .time-card:hover {
-      border-color: var(--accent, var(--red));
-      transform: translateY(-8px) scale(1.04);
-      box-shadow: 
-        0 20px 45px var(--accent-glow, rgba(225,29,72,0.4)),
-        inset 0 0 25px rgba(255,255,255,0.02);
-    }
-
-    .time-card:hover::after { opacity: 1; }
-
-    .time-card.days { --accent: var(--red); --accent-glow: rgba(225,29,72,0.45); }
-    .time-card.hours { --accent: var(--gold); --accent-glow: rgba(251,191,36,0.45); }
-    .time-card.mins { --accent: var(--cyan); --accent-glow: rgba(6,182,212,0.45); }
-    .time-card.secs { --accent: var(--purple); --accent-glow: rgba(139,92,246,0.45); }
-
-    .time-number {
-      display: block;
-      font-size: 3.6rem;
-      font-weight: 900;
-      line-height: 1;
-      letter-spacing: -2px;
-      font-variant-numeric: tabular-nums;
-      color: var(--accent, var(--red));
-      text-shadow: 
-        0 0 25px var(--accent-glow, rgba(225,29,72,0.9)),
-        0 0 50px var(--accent-glow, rgba(225,29,72,0.5));
-      transition: all 0.3s;
-      position: relative;
-      z-index: 2;
-    }
-
-    .time-number.tick {
-      animation: flipDigitIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-    }
-
-    @keyframes flipDigitIn {
-      0% { transform: perspective(500px) rotateX(-90deg); filter: brightness(2.2); }
-      60% { transform: perspective(500px) rotateX(12deg); }
-      100% { transform: perspective(500px) rotateX(0deg); filter: brightness(1); }
-    }
-
-    .time-label {
-      display: block;
-      font-size: 0.85rem;
-      color: var(--text-dim);
-      font-weight: 700;
-      margin-top: 10px;
-      letter-spacing: 1px;
-      position: relative;
-      z-index: 2;
-    }
-
-    /* ============================================
-       پیام پایین
-    ============================================ */
-    .dream-box {
-      position: relative;
-      padding: 24px 22px;
-      background: linear-gradient(135deg, rgba(225,29,72,0.1), rgba(139,92,246,0.08), rgba(251,191,36,0.06));
-      border: 1.5px dashed rgba(225,29,72,0.45);
-      border-radius: 20px;
-      overflow: hidden;
-      margin-top: 8px;
-    }
-
-    .dream-box::before {
-      content: '';
-      position: absolute;
-      top: -50%; left: -50%;
-      width: 200%; height: 200%;
-      background: conic-gradient(from 0deg, transparent, rgba(251,191,36,0.18), transparent);
-      animation: rotateBorder 7s linear infinite;
-      pointer-events: none;
-    }
-
-    .dream-text {
-      position: relative;
-      z-index: 1;
-      font-size: 1.6rem;
-      font-weight: 900;
-      letter-spacing: -0.5px;
-      background: linear-gradient(90deg, var(--red-light), var(--gold), var(--red-light));
-      background-size: 200% auto;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      animation: textShine 3s linear infinite;
-    }
-
-    .dream-sub {
-      position: relative;
-      z-index: 1;
-      font-size: 0.85rem;
-      color: var(--text-dim);
-      margin-top: 6px;
-    }
-
-    /* ============================================
-       نوار پیشرفت
-    ============================================ */
-    .progress-wrap {
-      margin-top: 4px;
-    }
-
-    .progress-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 12px;
-      font-size: 0.85rem;
-      color: var(--text-dim);
-      font-weight: 600;
-    }
-
-    .progress-header .label {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .progress-header .percent {
-      color: var(--gold);
-      font-weight: 900;
-      font-size: 1.1rem;
-      font-variant-numeric: tabular-nums;
-      text-shadow: 0 0 15px rgba(251,191,36,0.7);
-    }
-
-    .progress-bg {
-      height: 16px;
-      background: rgba(0,0,0,0.55);
-      border-radius: 50px;
-      overflow: hidden;
-      position: relative;
-      border: 1px solid var(--border);
-      box-shadow: inset 0 2px 8px rgba(0,0,0,0.6);
-    }
-
-    .progress-fill {
-      height: 100%;
-      background: linear-gradient(90deg, var(--red-dark), var(--red), var(--gold), var(--gold-light), var(--gold));
-      background-size: 200% 100%;
-      border-radius: 50px;
-      width: 0%;
-      transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
-      position: relative;
-      overflow: hidden;
-      box-shadow: 0 0 30px rgba(251,191,36,0.7);
-      animation: fillShine 3s linear infinite;
-    }
-
-    @keyframes fillShine {
-      0% { background-position: 0% 50%; }
-      100% { background-position: 200% 50%; }
-    }
-
-    .progress-fill::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
-      animation: barShine 2s linear infinite;
-    }
-
-    @keyframes barShine {
-      0% { transform: translateX(-100%); }
-      100% { transform: translateX(100%); }
-    }
-
-    .progress-dot {
-      position: absolute;
-      top: 50%;
-      right: 0;
-      width: 16px; height: 16px;
-      background: #fff;
-      border-radius: 50%;
-      transform: translate(50%, -50%);
-      animation: progressDotPulse 1.2s ease-in-out infinite;
-      z-index: 2;
-      box-shadow: 0 0 12px 4px rgba(255,255,255,0.9);
-    }
-
-    @keyframes progressDotPulse {
-      0%, 100% { box-shadow: 0 0 10px 4px rgba(255,255,255,0.8); transform: translate(50%, -50%) scale(1); }
-      50% { box-shadow: 0 0 22px 8px rgba(255,255,255,1); transform: translate(50%, -50%) scale(1.3); }
-    }
-
-    /* ============================================
-       کارت‌های آمار
-    ============================================ */
-    .stats-row {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-      margin-top: 6px;
-    }
-
-    .stat-box {
-      background: rgba(255,255,255,0.035);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 16px 8px;
-      text-align: center;
-      transition: all 0.3s;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .stat-box::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 50%;
-      transform: translateX(-50%);
-      width: 45%; height: 2px;
-      background: linear-gradient(90deg, transparent, var(--accent), transparent);
-      opacity: 0.7;
-    }
-
-    .stat-box:hover {
-      border-color: var(--accent);
-      background: rgba(255,255,255,0.06);
-      transform: translateY(-4px);
-    }
-
-    .stat-box.weeks { --accent: var(--red-light); }
-    .stat-box.months { --accent: var(--gold); }
-    .stat-box.percent { --accent: var(--green); }
-
-    .stat-value {
-      display: block;
-      font-size: 1.6rem;
-      font-weight: 900;
-      color: var(--accent);
-      line-height: 1;
-      font-variant-numeric: tabular-nums;
-      text-shadow: 0 0 18px currentColor;
-    }
-
-    .stat-label {
-      display: block;
-      font-size: 0.7rem;
-      color: var(--text-dim);
-      margin-top: 8px;
-      font-weight: 600;
-    }
-
-    /* ============================================
-       جمله انگیزشی
-    ============================================ */
-    .quote-box {
-      margin-top: 10px;
-      padding: 18px 22px;
-      background: rgba(0,0,0,0.35);
-      border-radius: 16px;
-      border-right: 4px solid var(--red);
-      text-align: right;
-      font-size: 0.9rem;
-      color: var(--text-dim);
-      line-height: 2;
-      position: relative;
-      overflow: hidden;
-      box-shadow: inset 0 0 30px rgba(0,0,0,0.3);
-    }
-
-    .quote-box::before {
-      content: '❝';
-      position: absolute;
-      top: 0; right: 14px;
-      font-size: 3.5rem;
-      color: var(--red);
-      opacity: 0.15;
-      line-height: 1;
-    }
-
-    .quote-text {
-      position: relative;
-      z-index: 1;
-    }
-
-    .cursor {
-      display: inline-block;
-      width: 2px;
-      height: 1em;
-      background: var(--red);
-      vertical-align: middle;
-      margin-right: 4px;
-      animation: cursorBlink 0.7s steps(2) infinite;
-    }
-
-    @keyframes cursorBlink {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0; }
-    }
-
-    /* ============================================
-       حالت جشن
-    ============================================ */
-    .celebrate-view {
-      display: none;
-      text-align: center;
-      padding: 50px 20px;
-      position: relative;
-      z-index: 2;
-    }
-
-    .celebrate-view.active {
-      display: block;
-      animation: celebrateIn 1.1s ease;
-    }
-
-    @keyframes celebrateIn {
-      0% { opacity: 0; transform: scale(0.4) rotate(-12deg); }
-      60% { transform: scale(1.12) rotate(6deg); }
-      100% { opacity: 1; transform: scale(1) rotate(0deg); }
-    }
-
-    .celebrate-icon {
-      font-size: 7rem;
-      animation: celebrateBounce 1.3s ease infinite;
-      filter: drop-shadow(0 0 40px rgba(251,191,36,0.9));
-    }
-
-    @keyframes celebrateBounce {
-      0%, 100% { transform: translateY(0) scale(1); }
-      50% { transform: translateY(-30px) scale(1.18); }
-    }
-
-    .celebrate-title {
-      font-size: 3.2rem;
-      font-weight: 900;
-      margin: 24px 0 12px;
-      background: linear-gradient(90deg, var(--gold), var(--red-light), var(--gold));
-      background-size: 200% auto;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      animation: textShine 2s linear infinite;
-      letter-spacing: -2px;
-    }
-
-    .celebrate-sub {
-      font-size: 1.2rem;
-      color: var(--text-dim);
-      line-height: 2;
-    }
-
-    .confetti {
-      position: fixed;
-      width: 12px; height: 12px;
-      top: -30px;
-      animation: confettiFall linear infinite;
-      opacity: 0.9;
-      z-index: 9999;
-      pointer-events: none;
-    }
-
-    @keyframes confettiFall {
-      0% {
-        transform: translateY(0) rotate(0deg);
-        opacity: 1;
-      }
-      100% {
-        transform: translateY(110vh) rotate(720deg);
-        opacity: 0;
-      }
-    }
-
-    /* ============================================
-       Responsive
-    ============================================ */
-    @media (max-width: 800px) {
-      .time-number { font-size: 2.8rem; }
-      .title { font-size: 1.8rem; }
-      .timer-grid { gap: 10px; }
-      .time-card { padding: 20px 8px; border-radius: 16px; }
-      .countdown-card { padding: 32px 24px; }
-    }
-
-    @media (max-width: 600px) {
-      body { padding: 12px; }
-      .countdown-card { padding: 26px 16px; border-radius: 20px; }
-      
-      .name-badge { padding: 8px 20px; }
-      .name-badge .name-text { font-size: 1rem; }
-      .name-badge .crown { font-size: 1.05rem; }
-      .name-badge .sparkle { font-size: 0.8rem; }
-      
-      .hero-icon-wrap { width: 76px; height: 76px; }
-      .hero-icon { font-size: 2.2rem; }
-      .hero-ring { inset: -10px; }
-      .hero-ring-2 { inset: -18px; }
-      
-      .title { font-size: 1.35rem; letter-spacing: -0.5px; }
-      .subtitle { font-size: 0.82rem; }
-      
-      .timer-grid { gap: 7px; }
-      .time-card { padding: 16px 5px; border-radius: 14px; }
-      .time-number { font-size: 1.9rem; letter-spacing: -1px; }
-      .time-label { font-size: 0.65rem; margin-top: 6px; letter-spacing: 0.5px; }
-      
-      .dream-text { font-size: 1.2rem; }
-      .dream-sub { font-size: 0.72rem; }
-      .dream-box { padding: 18px 14px; }
-      
-      .progress-header { font-size: 0.72rem; }
-      .progress-header .percent { font-size: 0.95rem; }
-      .progress-bg { height: 12px; }
-      
-      .stat-value { font-size: 1.3rem; }
-      .stat-label { font-size: 0.6rem; }
-      
-      .quote-box { padding: 14px 16px; font-size: 0.8rem; }
-      
-      .celebrate-icon { font-size: 4.5rem; }
-      .celebrate-title { font-size: 2.2rem; }
-      .celebrate-sub { font-size: 0.95rem; }
-      
-      .affirm-banner { font-size: 0.9rem; padding: 10px 18px; }
-    }
-
-    @media (max-width: 380px) {
-      .time-number { font-size: 1.6rem; }
-      .title { font-size: 1.15rem; }
-      .dream-text { font-size: 1.05rem; }
-      .stat-value { font-size: 1.1rem; }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>💊 دانیال — شمارش معکوس تا داروسازی</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap');
+
+:root {
+  --bg: #07070b;
+  --bg-2: #0f0f16;
+  --bg-3: #16161f;
+  --line: #24242f;
+  --line-2: #33333f;
+
+  --red: #e11d48;
+  --red-soft: #fb7185;
+  --red-deep: #9f1239;
+
+  --gold: #fbbf24;
+  --gold-soft: #fcd34d;
+  --gold-deep: #b45309;
+
+  --mint: #34d399;
+  --ice: #7dd3fc;
+
+  --text: #f4f4f6;
+  --dim: #8b8b95;
+  --dim-2: #5c5c66;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body { min-height: 100%; }
+
+body {
+  font-family: 'Vazirmatn', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px;
+  line-height: 1.6;
+  overflow-x: hidden;
+  background-image:
+    radial-gradient(ellipse 900px 500px at 50% -10%, rgba(225,29,72,0.10), transparent 60%),
+    radial-gradient(ellipse 700px 500px at 100% 100%, rgba(251,191,36,0.06), transparent 60%),
+    radial-gradient(ellipse 600px 400px at 0% 90%, rgba(159,18,57,0.08), transparent 60%);
+  background-attachment: fixed;
+}
+
+/* ============================================
+   کانتینر
+============================================ */
+.stage {
+  width: 100%;
+  max-width: 900px;
+  position: relative;
+}
+
+/* ============================================
+   نوار وضعیت زنده (بالا)
+============================================ */
+.status-bar {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 18px;
+  background: rgba(15,15,22,0.7);
+  border: 1px solid var(--line);
+  border-radius: 100px;
+  margin-bottom: 14px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--dim);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.status-bar .live {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--mint);
+  font-weight: 800;
+  letter-spacing: 0.4px;
+  font-size: 0.72rem;
+}
+
+.status-bar .live::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  background: var(--mint);
+  border-radius: 50%;
+  box-shadow: 0 0 0 0 rgba(52,211,153,0.7);
+  animation: pulseMint 1.8s ease-out infinite;
+}
+
+@keyframes pulseMint {
+  0% { box-shadow: 0 0 0 0 rgba(52,211,153,0.7); }
+  70% { box-shadow: 0 0 0 10px rgba(52,211,153,0); }
+  100% { box-shadow: 0 0 0 0 rgba(52,211,153,0); }
+}
+
+.status-bar .sep {
+  width: 1px;
+  height: 14px;
+  background: var(--line-2);
+}
+
+.status-bar .date-part {
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+
+.status-bar .clock-part {
+  color: var(--gold);
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.5px;
+}
+
+/* ============================================
+   کارت اصلی
+============================================ */
+.card {
+  position: relative;
+  background: linear-gradient(180deg, #0f0f16 0%, #0b0b11 100%);
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  padding: 40px 36px 36px;
+  overflow: hidden;
+  isolation: isolate;
+  box-shadow:
+    0 1px 0 rgba(255,255,255,0.03) inset,
+    0 30px 60px -30px rgba(0,0,0,0.9);
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 600px 300px at 50% 0%, rgba(225,29,72,0.12), transparent 65%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* لایه‌های پس‌زمینه */
+.bg-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.aurora {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.28;
+  will-change: transform;
+}
+
+.aurora.a1 {
+  width: 340px; height: 340px;
+  background: var(--red);
+  top: -120px; right: -100px;
+  animation: drift1 16s ease-in-out infinite;
+}
+
+.aurora.a2 {
+  width: 280px; height: 280px;
+  background: var(--gold-deep);
+  bottom: -120px; left: -80px;
+  animation: drift2 18s ease-in-out infinite;
+}
+
+@keyframes drift1 {
+  0%, 100% { transform: translate(0,0) scale(1); }
+  50% { transform: translate(-70px, 80px) scale(1.2); }
+}
+
+@keyframes drift2 {
+  0%, 100% { transform: translate(0,0) scale(1); }
+  50% { transform: translate(80px, -60px) scale(1.15); }
+}
+
+.star {
+  position: absolute;
+  width: 1.5px; height: 1.5px;
+  background: #fff;
+  border-radius: 50%;
+  opacity: 0.5;
+  animation: twinkle ease-in-out infinite;
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.15; }
+  50% { opacity: 0.9; }
+}
+
+/* ============================================
+   محتوای اصلی
+============================================ */
+.inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+  text-align: center;
+}
+
+/* برند — نام */
+.brand {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin: 0 auto;
+  padding: 8px 22px;
+  border: 1px solid rgba(251,191,36,0.35);
+  border-radius: 100px;
+  background: rgba(251,191,36,0.05);
+  font-size: 1rem;
+  font-weight: 900;
+  letter-spacing: 0.5px;
+}
+
+.brand .name {
+  background: linear-gradient(90deg, var(--gold-soft), var(--red-soft), var(--gold));
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shine 4s linear infinite;
+}
+
+@keyframes shine {
+  to { background-position: 200% center; }
+}
+
+.brand .dot {
+  width: 5px; height: 5px;
+  background: var(--gold);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--gold);
+}
+
+/* آیکون قهرمان */
+.hero {
+  position: relative;
+  width: 80px; height: 80px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero .ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1.5px solid rgba(251,191,36,0.25);
+}
+
+.hero .ring.r2 {
+  inset: -10px;
+  border: 1px dashed rgba(225,29,72,0.2);
+  animation: spin 24s linear infinite;
+}
+
+.hero .ring.r3 {
+  inset: -20px;
+  border: 1px solid rgba(251,191,36,0.08);
+  animation: spin 40s linear infinite reverse;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.hero .emoji {
+  font-size: 2.4rem;
+  filter: drop-shadow(0 0 16px rgba(225,29,72,0.6));
+  animation: floatHero 3.4s ease-in-out infinite;
+}
+
+@keyframes floatHero {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+/* عنوان */
+h1.title {
+  font-size: 1.9rem;
+  font-weight: 900;
+  letter-spacing: -0.6px;
+  line-height: 1.35;
+  background: linear-gradient(180deg, #fff 0%, #d4d4d8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.subtitle {
+  font-size: 0.9rem;
+  color: var(--dim);
+  margin-top: -12px;
+}
+
+.subtitle strong {
+  color: var(--gold);
+  font-weight: 800;
+}
+
+/* بیانیه */
+.claim {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 auto;
+  padding: 9px 20px;
+  border: 1px solid rgba(52,211,153,0.3);
+  background: rgba(52,211,153,0.06);
+  border-radius: 100px;
+  font-size: 0.88rem;
+  font-weight: 800;
+  color: var(--mint);
+  letter-spacing: -0.2px;
+}
+
+.claim .fire {
+  font-size: 0.95rem;
+}
+
+/* ============================================
+   تایمر
+============================================ */
+.timer {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-top: 6px;
+}
+
+.unit {
+  position: relative;
+  background: linear-gradient(180deg, rgba(255,255,255,0.025), rgba(255,255,255,0.005));
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 22px 8px 18px;
+  overflow: hidden;
+  transition: border-color 0.35s, transform 0.35s, background 0.35s;
+}
+
+.unit::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 15%; right: 15%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  opacity: 0.7;
+}
+
+.unit:hover {
+  border-color: var(--accent);
+  transform: translateY(-4px);
+  background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01));
+}
+
+.unit.d { --accent: var(--red); --glow: rgba(225,29,72,0.5); }
+.unit.h { --accent: var(--gold); --glow: rgba(251,191,36,0.5); }
+.unit.m { --accent: var(--ice); --glow: rgba(125,211,252,0.5); }
+.unit.s { --accent: var(--red-soft); --glow: rgba(251,113,133,0.5); }
+
+.num {
+  display: block;
+  font-size: 3.2rem;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -2px;
+  font-variant-numeric: tabular-nums;
+  color: var(--accent);
+  text-shadow: 0 0 20px var(--glow);
+}
+
+.num.tick {
+  animation: flipIn 0.5s cubic-bezier(0.2, 0.8, 0.3, 1);
+}
+
+@keyframes flipIn {
+  0% { transform: translateY(-14px); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+
+.lbl {
+  display: block;
+  font-size: 0.72rem;
+  color: var(--dim-2);
+  font-weight: 700;
+  margin-top: 10px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+/* ============================================
+   رویا
+============================================ */
+.dream {
+  position: relative;
+  padding: 20px;
+  border: 1px solid rgba(225,29,72,0.25);
+  background: linear-gradient(135deg, rgba(225,29,72,0.07), rgba(159,18,57,0.04));
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.dream::before {
+  content: '';
+  position: absolute;
+  top: -50%; right: -50%;
+  width: 200%; height: 200%;
+  background: conic-gradient(from 0deg, transparent, rgba(251,191,36,0.10), transparent 25%);
+  animation: spin 10s linear infinite;
+  pointer-events: none;
+}
+
+.dream .big {
+  position: relative;
+  z-index: 1;
+  font-size: 1.35rem;
+  font-weight: 900;
+  letter-spacing: -0.4px;
+  background: linear-gradient(90deg, var(--red-soft), var(--gold), var(--red-soft));
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shine 4s linear infinite;
+}
+
+.dream .small {
+  position: relative;
+  z-index: 1;
+  font-size: 0.78rem;
+  color: var(--dim);
+  margin-top: 5px;
+}
+
+/* ============================================
+   پیشرفت
+============================================ */
+.progress-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  font-size: 0.78rem;
+  color: var(--dim);
+  font-weight: 600;
+}
+
+.progress-head .pct {
+  color: var(--gold);
+  font-weight: 900;
+  font-size: 1rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.bar {
+  height: 12px;
+  background: rgba(0,0,0,0.6);
+  border: 1px solid var(--line);
+  border-radius: 100px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: inset 0 2px 6px rgba(0,0,0,0.5);
+}
+
+.bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--red-deep), var(--red), var(--gold));
+  background-size: 200% 100%;
+  border-radius: 100px;
+  width: 0%;
+  transition: width 1.1s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  box-shadow: 0 0 20px rgba(251,191,36,0.5);
+  animation: fillShift 3s linear infinite;
+}
+
+@keyframes fillShift {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+
+.bar-fill::after {
+  content: '';
+  position: absolute;
+  top: 50%; right: 0;
+  width: 12px; height: 12px;
+  background: #fff;
+  border-radius: 50%;
+  transform: translate(50%, -50%);
+  box-shadow: 0 0 12px 3px rgba(255,255,255,0.8);
+  animation: glowDot 1.6s ease-in-out infinite;
+}
+
+@keyframes glowDot {
+  0%, 100% { box-shadow: 0 0 10px 2px rgba(255,255,255,0.7); }
+  50% { box-shadow: 0 0 18px 5px rgba(255,255,255,1); }
+}
+
+/* ============================================
+   آمار
+============================================ */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.stat {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 14px 6px;
+  text-align: center;
+  transition: all 0.3s;
+}
+
+.stat:hover {
+  border-color: var(--accent);
+  background: rgba(255,255,255,0.04);
+  transform: translateY(-2px);
+}
+
+.stat.w { --accent: var(--red-soft); }
+.stat.mo { --accent: var(--gold); }
+.stat.dy { --accent: var(--mint); }
+
+.stat .v {
+  display: block;
+  font-size: 1.45rem;
+  font-weight: 900;
+  line-height: 1;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+  text-shadow: 0 0 14px currentColor;
+}
+
+.stat .k {
+  display: block;
+  font-size: 0.65rem;
+  color: var(--dim-2);
+  margin-top: 6px;
+  font-weight: 600;
+}
+
+/* ============================================
+   نقل قول
+============================================ */
+.quote {
+  position: relative;
+  padding: 16px 20px;
+  background: rgba(0,0,0,0.3);
+  border-right: 3px solid var(--red);
+  border-radius: 12px;
+  text-align: right;
+  font-size: 0.85rem;
+  color: var(--dim);
+  line-height: 1.9;
+  min-height: 62px;
+}
+
+.quote .q {
+  position: relative;
+  z-index: 1;
+}
+
+.quote .cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  background: var(--red);
+  vertical-align: middle;
+  margin-right: 4px;
+  animation: blink 0.8s steps(2) infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* ============================================
+   جشن
+============================================ */
+.party {
+  display: none;
+  text-align: center;
+  padding: 50px 20px;
+  position: relative;
+  z-index: 1;
+}
+
+.party.on {
+  display: block;
+  animation: pop 0.9s cubic-bezier(0.2, 0.8, 0.3, 1);
+}
+
+@keyframes pop {
+  0% { opacity: 0; transform: scale(0.9); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+.party .ic {
+  font-size: 5rem;
+  filter: drop-shadow(0 0 30px rgba(251,191,36,0.7));
+  animation: floatHero 2s ease-in-out infinite;
+}
+
+.party h2 {
+  font-size: 2.4rem;
+  font-weight: 900;
+  margin: 20px 0 10px;
+  background: linear-gradient(90deg, var(--gold), var(--red-soft), var(--gold));
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shine 3s linear infinite;
+  letter-spacing: -1.5px;
+}
+
+.party p {
+  font-size: 1rem;
+  color: var(--dim);
+  line-height: 2;
+}
+
+.confetti {
+  position: fixed;
+  width: 8px; height: 8px;
+  top: -20px;
+  z-index: 999;
+  pointer-events: none;
+  animation: fall linear infinite;
+}
+
+@keyframes fall {
+  0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+}
+
+/* ============================================
+   ریسپانسیو
+============================================ */
+@media (max-width: 640px) {
+  body { padding: 14px 10px; }
+  .card { padding: 28px 18px 24px; border-radius: 20px; }
+
+  .status-bar { font-size: 0.7rem; padding: 8px 14px; gap: 10px; }
+  .status-bar .sep { height: 12px; }
+  .status-bar .live { font-size: 0.65rem; }
+
+  .brand { padding: 6px 16px; font-size: 0.9rem; }
+
+  .hero { width: 64px; height: 64px; }
+  .hero .emoji { font-size: 1.9rem; }
+
+  h1.title { font-size: 1.3rem; letter-spacing: -0.4px; }
+  .subtitle { font-size: 0.78rem; }
+
+  .claim { font-size: 0.78rem; padding: 7px 16px; }
+
+  .timer { gap: 7px; }
+  .unit { padding: 16px 4px 14px; border-radius: 14px; }
+  .num { font-size: 1.85rem; letter-spacing: -1px; }
+  .lbl { font-size: 0.6rem; letter-spacing: 1px; margin-top: 7px; }
+
+  .dream { padding: 16px; }
+  .dream .big { font-size: 1.05rem; }
+  .dream .small { font-size: 0.7rem; }
+
+  .progress-head { font-size: 0.7rem; }
+  .progress-head .pct { font-size: 0.88rem; }
+  .bar { height: 10px; }
+
+  .stat .v { font-size: 1.15rem; }
+  .stat .k { font-size: 0.58rem; }
+
+  .quote { padding: 12px 14px; font-size: 0.76rem; }
+
+  .party .ic { font-size: 3.5rem; }
+  .party h2 { font-size: 1.7rem; }
+  .party p { font-size: 0.85rem; }
+}
+
+@media (max-width: 380px) {
+  .num { font-size: 1.55rem; }
+  h1.title { font-size: 1.1rem; }
+  .dream .big { font-size: 0.95rem; }
+  .status-bar { font-size: 0.62rem; padding: 7px 10px; }
+}
+</style>
 </head>
 <body>
 
-<div class="countdown-wrapper">
-  <div class="countdown-card" id="mainCard">
+<div class="stage">
 
-    <!-- لایه‌های انیمیشنی پس‌زمینه -->
-    <div class="aurora-layer">
-      <div class="aurora aurora-1"></div>
-      <div class="aurora aurora-2"></div>
-      <div class="aurora aurora-3"></div>
+  <!-- نوار وضعیت زنده -->
+  <div class="status-bar">
+    <span class="live">زنده</span>
+    <span class="sep"></span>
+    <span class="date-part" id="liveDate">—</span>
+    <span class="sep"></span>
+    <span class="clock-part" id="liveClock">--:--:--</span>
+  </div>
+
+  <!-- کارت اصلی -->
+  <div class="card" id="card">
+
+    <div class="bg-layer">
+      <div class="aurora a1"></div>
+      <div class="aurora a2"></div>
+      <div id="stars"></div>
     </div>
-    <div class="particles-layer" id="particlesLayer"></div>
-    <div class="stars-layer" id="starsLayer"></div>
-    <div class="meteors-layer" id="meteorsLayer"></div>
 
     <!-- ============ حالت شمارش ============ -->
-    <div class="content" id="countdownView">
+    <div class="inner" id="counting">
 
-      <!-- بج اسم دانیال -->
-      <div class="name-badge">
-        <span class="sparkle">✨</span>
-        <span class="crown">👑</span>
-        <span class="name-text">دانیال</span>
-        <span class="crown">👑</span>
-        <span class="sparkle">✨</span>
+      <div class="brand">
+        <span class="dot"></span>
+        <span class="name">دانیال</span>
+        <span class="dot"></span>
       </div>
 
-      <div class="header">
-        <div class="hero-icon-wrap">
-          <div class="hero-ring"></div>
-          <div class="hero-ring-2"></div>
-          <div class="hero-icon">💊</div>
-        </div>
-        <h1 class="title" id="mainTitle">شمارش معکوس تا داروسازی</h1>
-        <p class="subtitle">
-          روزی که می‌گم <span class="highlight">داروساز شدم</span> 💚
-        </p>
-        <div class="affirm-banner">
-          <span class="pin">🔥</span>
-          <span>من قطعاً داروساز خواهم شد</span>
-          <span class="pin">🔥</span>
-        </div>
+      <div class="hero">
+        <div class="ring r3"></div>
+        <div class="ring r2"></div>
+        <div class="ring"></div>
+        <div class="emoji">💊</div>
       </div>
 
-      <div class="timer-grid">
-        <div class="time-card days">
-          <span class="time-number" id="cd-days">۰</span>
-          <span class="time-label">روز</span>
+      <h1 class="title">شمارش معکوس تا داروسازی</h1>
+      <p class="subtitle">روزی که می‌گم <strong>داروساز شدم</strong> 💚</p>
+
+      <div class="claim">
+        <span class="fire">🔥</span>
+        <span>من قطعاً داروساز خواهم شد</span>
+        <span class="fire">🔥</span>
+      </div>
+
+      <div class="timer">
+        <div class="unit d">
+          <span class="num" id="days">۰</span>
+          <span class="lbl">روز</span>
         </div>
-        <div class="time-card hours">
-          <span class="time-number" id="cd-hours">۰</span>
-          <span class="time-label">ساعت</span>
+        <div class="unit h">
+          <span class="num" id="hours">۰</span>
+          <span class="lbl">ساعت</span>
         </div>
-        <div class="time-card mins">
-          <span class="time-number" id="cd-mins">۰</span>
-          <span class="time-label">دقیقه</span>
+        <div class="unit m">
+          <span class="num" id="mins">۰</span>
+          <span class="lbl">دقیقه</span>
         </div>
-        <div class="time-card secs">
-          <span class="time-number" id="cd-secs">۰</span>
-          <span class="time-label">ثانیه</span>
+        <div class="unit s">
+          <span class="num" id="secs">۰</span>
+          <span class="lbl">ثانیه</span>
         </div>
       </div>
 
-      <div class="dream-box">
-        <div class="dream-text">دانیال، داروساز می‌شه 💊✨</div>
-        <div class="dream-sub">هر لحظه، یه قدم نزدیک‌تر به این لحظه</div>
+      <div class="dream">
+        <div class="big">دانیال، داروساز می‌شه 💊✨</div>
+        <div class="small">هر لحظه، یه قدم نزدیک‌تر به این لحظه</div>
       </div>
 
-      <div class="progress-wrap">
-        <div class="progress-header">
-          <span class="label">📈 مسیر دانیال تا رسیدن</span>
-          <span class="percent" id="progressPercent">۰٪</span>
+      <div>
+        <div class="progress-head">
+          <span>📈 مسیر دانیال تا رسیدن</span>
+          <span class="pct" id="pct">۰٪</span>
         </div>
-        <div class="progress-bg">
-          <div class="progress-fill" id="progressFill">
-            <span class="progress-dot"></span>
-          </div>
+        <div class="bar">
+          <div class="bar-fill" id="barFill"></div>
         </div>
       </div>
 
-      <div class="stats-row">
-        <div class="stat-box weeks">
-          <span class="stat-value" id="statWeeks">۰</span>
-          <span class="stat-label">هفته باقی‌مانده</span>
+      <div class="stats">
+        <div class="stat w">
+          <span class="v" id="weeks">۰</span>
+          <span class="k">هفته باقی‌مانده</span>
         </div>
-        <div class="stat-box months">
-          <span class="stat-value" id="statMonths">۰</span>
-          <span class="stat-label">ماه باقی‌مانده</span>
+        <div class="stat mo">
+          <span class="v" id="months">۰</span>
+          <span class="k">ماه باقی‌مانده</span>
         </div>
-        <div class="stat-box percent">
-          <span class="stat-value" id="statDays">۰</span>
-          <span class="stat-label">روز باقی‌مانده</span>
+        <div class="stat dy">
+          <span class="v" id="statDays">۰</span>
+          <span class="k">روز باقی‌مانده</span>
         </div>
       </div>
 
-      <div class="quote-box">
-        <div class="quote-text" id="quoteText"></div><span class="cursor"></span>
+      <div class="quote">
+        <span class="q" id="quoteText"></span><span class="cursor"></span>
       </div>
+
     </div>
 
     <!-- ============ حالت جشن ============ -->
-    <div class="celebrate-view" id="celebrateView">
-      <div class="celebrate-icon">🎓</div>
-      <h2 class="celebrate-title">دانیال، داروساز شد!</h2>
-      <p class="celebrate-sub">آرزوت محقق شد 💚✨<br>به خودت افتخار کن، دانیال</p>
+    <div class="party" id="party">
+      <div class="ic">🎓</div>
+      <h2>دانیال، داروساز شد!</h2>
+      <p>آرزوت محقق شد 💚✨<br>به خودت افتخار کن، دانیال</p>
     </div>
+
   </div>
 </div>
 
 <script>
-  /* ============================================================
-     تاریخ‌ها
-     شروع: ۲۲ شهریور ۱۴۰۵ = 13 September 2026
-     هدف: ۱ آذر ۱۴۰۶ = 22 November 2027
-  ============================================================ */
-  const START_DATE = new Date(2026, 8, 13, 0, 0, 0);
-  const TARGET_DATE = new Date(2027, 10, 22, 0, 0, 0);
-  const TOTAL_DURATION = TARGET_DATE - START_DATE;
+/* ============================================================
+   تاریخ‌ها — شمسی دقیق
+   شروع: ۲۲ شهریور ۱۴۰۵
+   هدف : ۱ آذر ۱۴۰۶
+============================================================ */
+const START_J = [1405, 6, 22];
+const TARGET_J = [1406, 9, 1];
 
-  /* ============================================================
-     ابزار
-  ============================================================ */
-  function toPersian(n) {
-    return String(n).replace(/\d/g, d => '۰۱۲۳۴۵۶۷۸۹'[d]);
+/* تبدیل جلالی → میلادی (الگوریتم استاندارد) */
+function j2g(jy, jm, jd) {
+  jy += 1595;
+  let days = -355668 + 365 * jy + Math.floor(jy / 33) * 8 + Math.floor(((jy % 33) + 3) / 4) + jd;
+  days += (jm < 7) ? (jm - 1) * 31 : ((jm - 7) * 30) + 186;
+  let gy = 400 * Math.floor(days / 146097);
+  days %= 146097;
+  if (days > 36524) {
+    gy += 100 * Math.floor(--days / 36524);
+    days %= 36524;
+    if (days >= 365) days++;
   }
-
-  function pad2(n) {
-    return String(n).padStart(2, '0');
+  gy += 4 * Math.floor(days / 1461);
+  days %= 1461;
+  if (days > 365) {
+    gy += Math.floor((days - 1) / 365);
+    days = (days - 1) % 365;
   }
-
-  /* ============================================================
-     ساخت ذرات شناور
-  ============================================================ */
-  function createParticles() {
-    const container = document.getElementById('particlesLayer');
-    const icons = ['💊', '✨', '⭐', '💚', '🎯', '💫', '🌟', '🩺', '📚', '🎓', '🧪', '🔬'];
-    const colors = ['#e11d48', '#fbbf24', '#8b5cf6', '#3b82f6', '#06b6d4', '#10b981'];
-    
-    for (let i = 0; i < 45; i++) {
-      const p = document.createElement('div');
-      p.className = 'particle';
-      p.textContent = icons[Math.floor(Math.random() * icons.length)];
-      p.style.left = Math.random() * 100 + '%';
-      p.style.fontSize = (10 + Math.random() * 18) + 'px';
-      p.style.color = colors[Math.floor(Math.random() * colors.length)];
-      p.style.animationDuration = (9 + Math.random() * 12) + 's';
-      p.style.animationDelay = (Math.random() * 12) + 's';
-      container.appendChild(p);
-    }
+  let gd = days + 1;
+  const leap = (gy % 4 === 0 && gy % 100 !== 0) || (gy % 400 === 0);
+  const months = [31, leap ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+  let gm = 0;
+  for (gm = 1; gm <= 12; gm++) {
+    if (gd <= months[gm - 1]) break;
+    gd -= months[gm - 1];
   }
+  return new Date(gy, gm - 1, gd, 0, 0, 0);
+}
 
-  /* ============================================================
-     ساخت ستاره‌های چشمک‌زن
-  ============================================================ */
-  function createStars() {
-    const container = document.getElementById('starsLayer');
-    
-    for (let i = 0; i < 80; i++) {
-      const s = document.createElement('div');
-      s.className = 'star';
-      s.style.left = Math.random() * 100 + '%';
-      s.style.top = Math.random() * 100 + '%';
-      s.style.animationDelay = (Math.random() * 3) + 's';
-      s.style.animationDuration = (1.5 + Math.random() * 2.5) + 's';
-      
-      if (Math.random() > 0.65) {
-        const colors = ['#fbbf24', '#fb7185', '#a78bfa', '#34d399', '#38bdf8'];
-        const c = colors[Math.floor(Math.random() * colors.length)];
-        s.style.background = c;
-        s.style.boxShadow = `0 0 10px ${c}`;
-      }
-      
-      container.appendChild(s);
-    }
-  }
+const START_DATE = j2g(...START_J);
+const TARGET_DATE = j2g(...TARGET_J);
+const TOTAL = TARGET_DATE - START_DATE;
 
-  /* ============================================================
-     شهاب‌سنگ‌ها
-  ============================================================ */
-  function createMeteors() {
-    const container = document.getElementById('meteorsLayer');
-    if (!container) return;
-    for (let i = 0; i < 5; i++) {
-      const m = document.createElement('div');
-      m.className = 'meteor';
-      m.style.top = (Math.random() * 45) + '%';
-      m.style.left = (55 + Math.random() * 45) + '%';
-      m.style.animationDuration = (3 + Math.random() * 5) + 's';
-      m.style.animationDelay = (Math.random() * 7) + 's';
-      container.appendChild(m);
-    }
-  }
+/* ============================================================
+   ابزار
+============================================================ */
+const FA_DIGITS = ['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'];
+const fa = n => String(n).replace(/\d/g, d => FA_DIGITS[+d]);
+const p2 = n => String(n).padStart(2, '0');
 
-  /* ============================================================
-     جلوه‌ی خطای دیجیتال روی عنوان (Glitch)
-  ============================================================ */
-  function startTitleGlitch() {
-    const title = document.getElementById('mainTitle');
-    if (!title) return;
-    setInterval(() => {
-      title.classList.add('glitching');
-      setTimeout(() => title.classList.remove('glitching'), 400);
-    }, 5000);
-  }
+/* ============================================================
+   تاریخ و ساعت شمسی زنده
+============================================================ */
+const MONTHS_FA = ['فروردین','اردیبهشت','خرداد','تیر','مرداد','شهریور','مهر','آبان','آذر','دی','بهمن','اسفند'];
+const WEEKDAYS_FA = ['یکشنبه','دوشنبه','سه‌شنبه','چهارشنبه','پنجشنبه','جمعه','شنبه'];
 
-  /* ============================================================
-     تیلت سه‌بعدی کارت‌های تایمر (فقط دسکتاپ)
-  ============================================================ */
-  function initTilt() {
-    if (window.matchMedia('(hover: hover) and (pointer: fine)').matches !== true) return;
-    document.querySelectorAll('.time-card').forEach(card => {
-      card.addEventListener('mousemove', (e) => {
-        const r = card.getBoundingClientRect();
-        const px = (e.clientX - r.left) / r.width - 0.5;
-        const py = (e.clientY - r.top) / r.height - 0.5;
-        card.style.transform = `perspective(650px) rotateX(${(-py * 15).toFixed(2)}deg) rotateY(${(px * 15).toFixed(2)}deg) translateY(-8px) scale(1.04)`;
-      });
-      card.addEventListener('mouseleave', () => {
-        card.style.transform = '';
-      });
-    });
-  }
+const elDate = document.getElementById('liveDate');
+const elClock = document.getElementById('liveClock');
 
-  /* ============================================================
-     جرقه‌ی کلیک — بارش ایموجی انگیزشی
-  ============================================================ */
-  function emojiBurst(x, y) {
-    const icons = ['💊', '✨', '💚', '🔥', '⭐', '🎯', '💫', '🧪', '🔬', '🎓'];
-    for (let i = 0; i < 14; i++) {
-      const e = document.createElement('div');
-      e.textContent = icons[Math.floor(Math.random() * icons.length)];
-      e.style.position = 'fixed';
-      e.style.left = x + 'px';
-      e.style.top = y + 'px';
-      e.style.fontSize = (14 + Math.random() * 18) + 'px';
-      e.style.zIndex = 99999;
-      e.style.pointerEvents = 'none';
-      e.style.filter = 'drop-shadow(0 0 8px rgba(251,191,36,0.8))';
-      const dx = (Math.random() * 220 - 110) + 'px';
-      const dy = (100 + Math.random() * 150) + 'px';
-      const rot = (Math.random() * 720 - 360) + 'deg';
-      e.style.setProperty('--dx', dx);
-      e.style.setProperty('--dy', dy);
-      e.style.setProperty('--rot', rot);
-      e.style.animation = `emojiBurstFall ${0.8 + Math.random() * 0.7}s ease-in forwards`;
-      document.body.appendChild(e);
-      setTimeout(() => e.remove(), 1800);
-    }
-  }
+function updateLiveDateTime() {
+  const now = new Date();
 
-  // اضافه کردن keyframe در زمان اجرا برای انفجار ایموجی
-  (function addEmojiBurstKeyframes() {
-    const style = document.createElement('style');
-    style.textContent = `
-      @keyframes emojiBurstFall {
-        0% { transform: translate(0,0) rotate(0deg) scale(0.5); opacity: 1; }
-        100% { transform: translate(var(--dx,0px), var(--dy,150px)) rotate(var(--rot,360deg)) scale(1.2); opacity: 0; }
-      }
-    `;
-    document.head.appendChild(style);
-  })();
+  // تاریخ شمسی با Intl
+  const parts = new Intl.DateTimeFormat('en-US-u-ca-persian', {
+    year: 'numeric', month: 'numeric', day: 'numeric', weekday: 'long'
+  }).formatToParts(now);
 
-  document.addEventListener('DOMContentLoaded', () => {
-    const card = document.querySelector('.countdown-card');
-    if (card) {
-      card.addEventListener('click', (e) => emojiBurst(e.clientX, e.clientY));
-    }
-  });
+  const get = t => parts.find(p => p.type === t)?.value || '';
 
-  /* ============================================================
-     شمارش معکوس
-  ============================================================ */
-  const elDays = document.getElementById('cd-days');
-  const elHours = document.getElementById('cd-hours');
-  const elMins = document.getElementById('cd-mins');
-  const elSecs = document.getElementById('cd-secs');
-  const elPercent = document.getElementById('progressPercent');
-  const elFill = document.getElementById('progressFill');
-  const elWeeks = document.getElementById('statWeeks');
-  const elMonths = document.getElementById('statMonths');
-  const elStatDays = document.getElementById('statDays');
+  const jy = parseInt(get('year'), 10);
+  const jm = parseInt(get('month'), 10);
+  const jd = parseInt(get('day'), 10);
 
-  let lastSecs = -1;
-  let lastMins = -1;
-  let lastHours = -1;
-  let lastDays = -1;
+  // weekday — از Date مستقیم (پایدارتر)
+  const wd = WEEKDAYS_FA[now.getDay()];
 
-  function updateCountdown() {
-    const now = new Date();
-    const diff = TARGET_DATE - now;
-    
-    if (diff <= 0) {
-      document.getElementById('countdownView').style.display = 'none';
-      document.getElementById('celebrateView').classList.add('active');
+  elDate.textContent = `${wd} ${fa(jd)} ${MONTHS_FA[jm - 1]} ${fa(jy)}`;
+
+  // ساعت — به وقت محلی دستگاه
+  const hh = p2(now.getHours());
+  const mm = p2(now.getMinutes());
+  const ss = p2(now.getSeconds());
+  elClock.textContent = `${fa(hh)}:${fa(mm)}:${fa(ss)}`;
+}
+
+/* ============================================================
+   شمارش معکوس
+============================================================ */
+const $ = id => document.getElementById(id);
+
+const elDays = $('days'), elHours = $('hours'), elMins = $('mins'), elSecs = $('secs');
+const elPct = $('pct'), elBar = $('barFill');
+const elWeeks = $('weeks'), elMonths = $('months'), elStatDays = $('statDays');
+
+let lastD = -1, lastH = -1, lastM = -1, lastS = -1;
+let partyStarted = false;
+
+function flip(el) {
+  el.classList.remove('tick');
+  void el.offsetWidth;
+  el.classList.add('tick');
+}
+
+function updateCountdown() {
+  const now = new Date();
+  const diff = TARGET_DATE - now;
+
+  if (diff <= 0) {
+    if (!partyStarted) {
+      partyStarted = true;
+      $('counting').style.display = 'none';
+      $('party').classList.add('on');
       launchConfetti();
-      return;
     }
-    
-    const totalSecs = Math.floor(diff / 1000);
-    const days = Math.floor(totalSecs / 86400);
-    const hours = Math.floor((totalSecs % 86400) / 3600);
-    const mins = Math.floor((totalSecs % 3600) / 60);
-    const secs = totalSecs % 60;
-    
-    if (days !== lastDays) {
-      elDays.textContent = toPersian(days);
-      tick(elDays);
-      lastDays = days;
-      elStatDays.textContent = toPersian(days);
-    }
-    
-    if (hours !== lastHours) {
-      elHours.textContent = toPersian(pad2(hours));
-      tick(elHours);
-      lastHours = hours;
-    }
-    
-    if (mins !== lastMins) {
-      elMins.textContent = toPersian(pad2(mins));
-      tick(elMins);
-      lastMins = mins;
-    }
-    
-    if (secs !== lastSecs) {
-      elSecs.textContent = toPersian(pad2(secs));
-      tick(elSecs);
-      lastSecs = secs;
-    }
-    
-    const weeks = Math.floor(days / 7);
-    const months = Math.floor(days / 30);
-    elWeeks.textContent = toPersian(weeks);
-    elMonths.textContent = toPersian(months);
-    
-    const elapsed = now - START_DATE;
-    let percent = Math.max(0, Math.min(100, (elapsed / TOTAL_DURATION) * 100));
-    elPercent.textContent = toPersian(Math.floor(percent)) + '٪';
-    elFill.style.width = percent + '%';
+    return;
   }
 
-  function tick(el) {
-    el.classList.remove('tick');
-    void el.offsetWidth;
-    el.classList.add('tick');
-  }
+  const totalSec = Math.floor(diff / 1000);
+  const d = Math.floor(totalSec / 86400);
+  const h = Math.floor((totalSec % 86400) / 3600);
+  const m = Math.floor((totalSec % 3600) / 60);
+  const s = totalSec % 60;
 
-  /* ============================================================
-     جملات انگیزشی — مخصوص دانیال
-  ============================================================ */
-  const quotes = [
-    'دانیال، هر تست یه قدم به داروسازی نزدیک‌تره 💊',
-    'دانیال، تلاش امروز، لبخند فرداست ✨',
-    'دانیال، مسیر سخته ولی تو قوی‌تری 💪',
-    'دانیال، یه روز این لحظه رو با افتخار یاد می‌کنی 🏆',
-    'دانیال، تو می‌تونی، فقط ادامه بده 🔥',
-    'دانیال، هر صفحه یه پله به سمت رویاست 📚',
-    'دانیال، آرزوت بزرگ‌تر از سختی‌هاست ⭐',
-    'دانیال، وقتی خسته شدی یادت باشه چرا شروع کردی 💚',
-    'دانیال، این قطعیه، نه آرزو: داروساز می‌شی 🔥',
-    'دانیال، کنکور فقط یه پله‌ست، تو از پسش برمیای 🎯',
-    'دانیال، پشتکار تو، کلید آینده‌ی درخشانته 💊',
-    'دانیال، هر روز که می‌گذره، داری قوی‌تر می‌شی 🌟'
-  ];
+  if (d !== lastD) { elDays.textContent = fa(d); flip(elDays); lastD = d; elStatDays.textContent = fa(d); }
+  if (h !== lastH) { elHours.textContent = fa(p2(h)); flip(elHours); lastH = h; }
+  if (m !== lastM) { elMins.textContent = fa(p2(m)); flip(elMins); lastM = m; }
+  if (s !== lastS) { elSecs.textContent = fa(p2(s)); flip(elSecs); lastS = s; }
 
-  let currentQuote = '';
-  let quoteIndex = 0;
-  let charIndex = 0;
-  let isDeleting = false;
-  const quoteEl = document.getElementById('quoteText');
+  elWeeks.textContent = fa(Math.floor(d / 7));
+  elMonths.textContent = fa(Math.floor(d / 30));
 
-  function typeQuote() {
-    const fullQuote = quotes[quoteIndex];
-    
-    if (!isDeleting) {
-      currentQuote = fullQuote.substring(0, charIndex + 1);
-      charIndex++;
-      
-      if (charIndex === fullQuote.length) {
-        isDeleting = true;
-        setTimeout(typeQuote, 2800);
-        quoteEl.textContent = currentQuote;
-        return;
-      }
-    } else {
-      currentQuote = fullQuote.substring(0, charIndex - 1);
-      charIndex--;
-      
-      if (charIndex === 0) {
-        isDeleting = false;
-        quoteIndex = (quoteIndex + 1) % quotes.length;
-      }
+  const elapsed = now - START_DATE;
+  const pct = Math.max(0, Math.min(100, (elapsed / TOTAL) * 100));
+  elPct.textContent = fa(Math.floor(pct)) + '٪';
+  elBar.style.width = pct + '%';
+}
+
+/* ============================================================
+   ستاره‌های پس‌زمینه
+============================================================ */
+function createStars() {
+  const box = document.getElementById('stars');
+  for (let i = 0; i < 60; i++) {
+    const s = document.createElement('div');
+    s.className = 'star';
+    s.style.left = Math.random() * 100 + '%';
+    s.style.top = Math.random() * 100 + '%';
+    s.style.animationDuration = (1.8 + Math.random() * 2.5) + 's';
+    s.style.animationDelay = (Math.random() * 4) + 's';
+    if (Math.random() > 0.7) {
+      const c = ['#fbbf24', '#fb7185', '#7dd3fc', '#34d399'][Math.floor(Math.random() * 4)];
+      s.style.background = c;
+      s.style.boxShadow = `0 0 6px ${c}`;
     }
-    
-    quoteEl.textContent = currentQuote;
-    const speed = isDeleting ? 25 : 65;
-    setTimeout(typeQuote, speed);
+    box.appendChild(s);
   }
+}
 
-  /* ============================================================
-     جشن
-  ============================================================ */
-  function launchConfetti() {
-    const colors = ['#e11d48', '#fbbf24', '#8b5cf6', '#3b82f6', '#10b981', '#06b6d4', '#fb7185', '#fcd34d'];
-    
-    for (let i = 0; i < 120; i++) {
-      const c = document.createElement('div');
-      c.className = 'confetti';
-      c.style.left = Math.random() * 100 + '%';
-      c.style.background = colors[Math.floor(Math.random() * colors.length)];
-      c.style.animationDuration = (2 + Math.random() * 4) + 's';
-      c.style.animationDelay = (Math.random() * 3) + 's';
-      c.style.width = (6 + Math.random() * 10) + 'px';
-      c.style.height = (6 + Math.random() * 10) + 'px';
-      c.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
-      c.style.boxShadow = '0 0 10px rgba(255,255,255,0.3)';
-      document.body.appendChild(c);
+/* ============================================================
+   نقل قول ماشینی
+============================================================ */
+const QUOTES = [
+  'دانیال، هر تست یه قدم به داروسازی نزدیک‌تره 💊',
+  'دانیال، تلاش امروز، لبخند فرداست ✨',
+  'دانیال، مسیر سخته ولی تو قوی‌تری 💪',
+  'دانیال، یه روز این لحظه رو با افتخار یاد می‌کنی 🏆',
+  'دانیال، تو می‌تونی، فقط ادامه بده 🔥',
+  'دانیال، هر صفحه یه پله به سمت رویاست 📚',
+  'دانیال، آرزوت بزرگ‌تر از سختی‌هاست ⭐',
+  'دانیال، وقتی خسته شدی یادت باشه چرا شروع کردی 💚',
+  'دانیال، این قطعیه، نه آرزو: داروساز می‌شی 🔥',
+  'دانیال، کنکور فقط یه پله‌ست، تو از پسش برمیای 🎯'
+];
+
+let qi = 0, ci = 0, deleting = false;
+const qEl = document.getElementById('quoteText');
+
+function typeQuote() {
+  const full = QUOTES[qi];
+  if (!deleting) {
+    qEl.textContent = full.substring(0, ++ci);
+    if (ci === full.length) {
+      deleting = true;
+      return setTimeout(typeQuote, 2600);
+    }
+  } else {
+    qEl.textContent = full.substring(0, --ci);
+    if (ci === 0) {
+      deleting = false;
+      qi = (qi + 1) % QUOTES.length;
     }
   }
+  setTimeout(typeQuote, deleting ? 22 : 60);
+}
 
-  /* ============================================================
-     راه‌اندازی
-  ============================================================ */
-  createParticles();
-  createStars();
-  createMeteors();
-  initTilt();
-  startTitleGlitch();
+/* ============================================================
+   جشن
+============================================================ */
+function launchConfetti() {
+  const colors = ['#e11d48', '#fbbf24', '#8b5cf6', '#3b82f6', '#10b981', '#7dd3fc', '#fb7185'];
+  for (let i = 0; i < 100; i++) {
+    const c = document.createElement('div');
+    c.className = 'confetti';
+    c.style.left = Math.random() * 100 + '%';
+    c.style.background = colors[Math.floor(Math.random() * colors.length)];
+    c.style.animationDuration = (2.5 + Math.random() * 3.5) + 's';
+    c.style.animationDelay = (Math.random() * 2.5) + 's';
+    c.style.width = (5 + Math.random() * 8) + 'px';
+    c.style.height = (5 + Math.random() * 8) + 'px';
+    c.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+    document.body.appendChild(c);
+  }
+}
+
+/* ============================================================
+   راه‌اندازی
+============================================================ */
+createStars();
+updateLiveDateTime();
+updateCountdown();
+
+setInterval(() => {
+  updateLiveDateTime();
   updateCountdown();
-  setInterval(updateCountdown, 1000);
-  setTimeout(typeQuote, 900);
+}, 1000);
+
+setTimeout(typeQuote, 800);
 </script>
 </body>
 </html>
