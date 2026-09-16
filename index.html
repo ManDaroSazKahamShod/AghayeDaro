@@ -429,13 +429,7 @@ h1.title {
 .unit.s { --accent: var(--red-soft); --glow: rgba(251,113,133,0.55); }
 
 /* ============================================
-   🎓 تایمر نهایی — تم طلایی
-============================================ */
-.timer.gold .unit { border-color: rgba(251,191,36,0.2); }
-.timer.gold .unit:hover { border-color: var(--accent); }
-
-/* ============================================
-   📝 تایمر کنکور — تم قرمز
+   تایمر کنکور — تم قرمز
 ============================================ */
 .konkur-block {
   position: relative;
@@ -490,7 +484,6 @@ h1.title {
 .timer.red { position: relative; z-index: 1; }
 .timer.red .unit { background: rgba(0,0,0,0.35); border-color: rgba(225,29,72,0.3); }
 
-/* حالت پایان کنکور */
 .konkur-block.passed {
   border-color: rgba(52,211,153,0.45);
   background: linear-gradient(135deg, rgba(52,211,153,0.10), rgba(16,185,129,0.05));
@@ -608,39 +601,6 @@ h1.title {
 }
 
 /* ============================================
-   نقل قول
-============================================ */
-.quote {
-  position: relative;
-  padding: 16px 20px;
-  background: rgba(0,0,0,0.3);
-  border-right: 3px solid var(--red);
-  border-radius: 12px;
-  text-align: right;
-  font-size: 0.85rem;
-  color: var(--dim);
-  line-height: 1.9;
-  min-height: 62px;
-}
-
-.quote .q { position: relative; z-index: 1; }
-
-.quote .cursor {
-  display: inline-block;
-  width: 2px;
-  height: 1em;
-  background: var(--red);
-  vertical-align: middle;
-  margin-right: 4px;
-  animation: blink 0.8s steps(2) infinite;
-}
-
-@keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
-}
-
-/* ============================================
    جشن
 ============================================ */
 .party {
@@ -743,8 +703,6 @@ h1.title {
   .progress-head .pct { font-size: 0.88rem; }
   .bar { height: 10px; }
 
-  .quote { padding: 12px 14px; font-size: 0.76rem; }
-
   .party .ic { font-size: 3.5rem; }
   .party h2 { font-size: 1.7rem; }
   .party p { font-size: 0.85rem; }
@@ -762,7 +720,6 @@ h1.title {
 
 <div class="stage">
 
-  <!-- نوار وضعیت زنده -->
   <div class="status-bar">
     <span class="live">زنده</span>
     <span class="sep"></span>
@@ -771,7 +728,6 @@ h1.title {
     <span class="clock-part" id="liveClock">--:--:--</span>
   </div>
 
-  <!-- کارت اصلی -->
   <div class="card">
 
     <div class="bg-layer">
@@ -804,7 +760,7 @@ h1.title {
         <span class="fire">🔥</span>
       </div>
 
-      <!-- ============ تایمر ۱ — کنکور ۱۰ تیر ۱۴۰۶ ============ -->
+      <!-- ============ تایمر ۱ — کنکور ============ -->
       <div class="section-title konkur-tag">
         <span class="ic">📝</span>
         <span>کنکور سراسری تجربی — ۱۰ تیر ۱۴۰۶</span>
@@ -848,7 +804,7 @@ h1.title {
         </div>
       </div>
 
-      <!-- ============ تایمر ۲ — داروسازی ۱ آذر ۱۴۰۶ ============ -->
+      <!-- ============ تایمر ۲ — داروسازی ============ -->
       <div class="section-title final-tag">
         <span class="ic">🎓</span>
         <span>مقصد نهایی — ۱ آذر ۱۴۰۶</span>
@@ -900,13 +856,8 @@ h1.title {
         </div>
       </div>
 
-      <div class="quote">
-        <span class="q" id="quoteText"></span><span class="cursor"></span>
-      </div>
-
     </div>
 
-    <!-- حالت جشن -->
     <div class="party" id="party">
       <div class="ic">🎓</div>
       <h2>دانیال، داروساز شد!</h2>
@@ -967,54 +918,6 @@ const $ = id => document.getElementById(id);
 const MONTHS_FA = ['فروردین','اردیبهشت','خرداد','تیر','مرداد','شهریور','مهر','آبان','آذر','دی','بهمن','اسفند'];
 const WEEKDAYS_FA = ['یکشنبه','دوشنبه','سه‌شنبه','چهارشنبه','پنجشنبه','جمعه','شنبه'];
 
-/* ============================================================
-   تقسیم دقیق زمان به سال/ماه/هفته/روز/ساعت/دقیقه/ثانیه
-   (سال و ماه شمسی دقیق)
-============================================================ */
-function breakdown(targetDate) {
-  const now = new Date();
-
-  // اگر گذشته باشه
-  if (targetDate - now <= 0) {
-    return { y: 0, mo: 0, w: 0, d: 0, h: 0, m: 0, s: 0, passed: true };
-  }
-
-  // تاریخ شمسی امروز و هدف
-  const todayJ = getJalaliYMD(now);
-  const targetJ = getJalaliYMD(targetDate);
-
-  // اختلاف سال و ماه شمسی
-  let dy = targetJ.y - todayJ.y;
-  let dmo = targetJ.mo - todayJ.mo;
-
-  // اگر روز هدف کمتر از روز امروز، یه ماه کم می‌کنیم
-  if (targetJ.d < todayJ.d) dmo--;
-
-  // اگر ماه منفی شد، از سال کم می‌کنیم
-  if (dmo < 0) {
-    dmo += 12;
-    dy--;
-  }
-
-  // محاسبه‌ی روزهای باقی‌مونده بعد از کم کردن سال و ماه
-  // نقطه‌ی لنگر: امروز + dy سال + dmo ماه (شمسی)
-  const anchor = j2g(todayJ.y + dy, todayJ.mo + dmo, todayJ.d);
-
-  let restMs = targetDate - anchor;
-  if (restMs < 0) restMs = 0;
-
-  const totalRestSec = Math.floor(restMs / 1000);
-  const restDays = Math.floor(totalRestSec / 86400);
-  const h = Math.floor((totalRestSec % 86400) / 3600);
-  const m = Math.floor((totalRestSec % 3600) / 60);
-  const s = totalRestSec % 60;
-
-  const w = Math.floor(restDays / 7);
-  const d = restDays % 7;
-
-  return { y: dy, mo: dmo, w, d, h, m, s, passed: false };
-}
-
 /* گرفتن y/m/d شمسی از یه Date */
 function getJalaliYMD(date) {
   const parts = new Intl.DateTimeFormat('en-US-u-ca-persian', {
@@ -1026,6 +929,46 @@ function getJalaliYMD(date) {
     mo: parseInt(get('month'), 10),
     d: parseInt(get('day'), 10)
   };
+}
+
+/* ============================================================
+   🔧 تقسیم زمان به واحدهای شمسی — نسخه‌ی اصلاح‌شده
+============================================================ */
+function breakdown(targetDate) {
+  const now = new Date();
+  const diffMs = targetDate - now;
+
+  if (diffMs <= 0) {
+    return { y: 0, mo: 0, w: 0, d: 0, h: 0, m: 0, s: 0, passed: true };
+  }
+
+  // ۱) محاسبه‌ی سال و ماه شمسی
+  const todayJ = getJalaliYMD(now);
+  const targetJ = getJalaliYMD(targetDate);
+
+  let dy = targetJ.y - todayJ.y;
+  let dmo = targetJ.mo - todayJ.mo;
+
+  if (targetJ.d < todayJ.d) dmo--;
+  if (dmo < 0) { dmo += 12; dy--; }
+
+  // ۲) نقطه‌ی لنگر = امروز + dy سال + dmo ماه شمسی
+  const anchor = j2g(todayJ.y + dy, todayJ.mo + dmo, todayJ.d);
+
+  // ۳) باقی‌مونده‌ی زمان (میلی‌ثانیه) — این‌جا دقیق تقسیم می‌شه
+  let restMs = targetDate - anchor;
+  if (restMs < 0) restMs = 0;
+
+  const totalSec = Math.floor(restMs / 1000);
+  const totalDays = Math.floor(totalSec / 86400);
+  const h = Math.floor((totalSec % 86400) / 3600);
+  const m = Math.floor((totalSec % 3600) / 60);
+  const s = totalSec % 60;
+
+  const w = Math.floor(totalDays / 7);
+  const d = totalDays % 7;
+
+  return { y: dy, mo: dmo, w, d, h, m, s, passed: false };
 }
 
 /* ============================================================
@@ -1057,7 +1000,7 @@ function flip(el) {
 }
 
 /* ============================================================
-   رندر یه تایمر (۷ واحد)
+   رندر یه تایمر (۷ واحد) — زنده
 ============================================================ */
 function renderTimer(prefix, data) {
   const fields = ['y', 'mo', 'w', 'd', 'h', 'm', 's'];
@@ -1149,43 +1092,6 @@ function createStars() {
 }
 
 /* ============================================================
-   نقل قول ماشینی
-============================================================ */
-const QUOTES = [
-  'دانیال، هر تست یه قدم به داروسازی نزدیک‌تره 💊',
-  'دانیال، تلاش امروز، لبخند فرداست ✨',
-  'دانیال، مسیر سخته ولی تو قوی‌تری 💪',
-  'دانیال، یه روز این لحظه رو با افتخار یاد می‌کنی 🏆',
-  'دانیال، تو می‌تونی، فقط ادامه بده 🔥',
-  'دانیال، هر صفحه یه پله به سمت رویاست 📚',
-  'دانیال، آرزوت بزرگ‌تر از سختی‌هاست ⭐',
-  'دانیال، وقتی خسته شدی یادت باشه چرا شروع کردی 💚',
-  'دانیال، این قطعیه، نه آرزو: داروساز می‌شی 🔥',
-  'دانیال، کنکور فقط یه پله‌ست، تو از پسش برمیای 🎯'
-];
-
-let qi = 0, ci = 0, deleting = false;
-const qEl = $('quoteText');
-
-function typeQuote() {
-  const full = QUOTES[qi];
-  if (!deleting) {
-    qEl.textContent = full.substring(0, ++ci);
-    if (ci === full.length) {
-      deleting = true;
-      return setTimeout(typeQuote, 2600);
-    }
-  } else {
-    qEl.textContent = full.substring(0, --ci);
-    if (ci === 0) {
-      deleting = false;
-      qi = (qi + 1) % QUOTES.length;
-    }
-  }
-  setTimeout(typeQuote, deleting ? 22 : 60);
-}
-
-/* ============================================================
    جشن
 ============================================================ */
 function launchConfetti() {
@@ -1205,20 +1111,25 @@ function launchConfetti() {
 }
 
 /* ============================================================
-   راه‌اندازی
+   🚀 راه‌اندازی + آپدیت زنده هر ۱ ثانیه
 ============================================================ */
-createStars();
-updateLiveDateTime();
-updateKonkur();
-updateFinal();
-
-setInterval(() => {
+function tickAll() {
   updateLiveDateTime();
   updateKonkur();
   updateFinal();
-}, 1000);
+}
 
-setTimeout(typeQuote, 800);
+createStars();
+tickAll();
+
+// آپدیت هر ۱ ثانیه — همگام با ثانیه‌ی واقعی ساعت
+setInterval(tickAll, 1000);
+
+// آپدیت اضافی هر ۲۰۰ میلی‌ثانیه برای این‌که ثانیه دقیقاً سر وقت عوض شه
+setInterval(() => {
+  updateKonkur();
+  updateFinal();
+}, 200);
 </script>
 </body>
 </html>
