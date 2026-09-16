@@ -22,6 +22,7 @@
 
   --mint: #34d399;
   --ice: #7dd3fc;
+  --violet: #a78bfa;
 
   --text: #f4f4f6;
   --dim: #8b8b95;
@@ -52,7 +53,7 @@ body {
 
 .stage {
   width: 100%;
-  max-width: 920px;
+  max-width: 1000px;
   position: relative;
 }
 
@@ -129,7 +130,7 @@ body {
   background: linear-gradient(180deg, #0f0f16 0%, #0b0b11 100%);
   border: 1px solid var(--line);
   border-radius: 24px;
-  padding: 36px 32px 32px;
+  padding: 36px 30px 32px;
   overflow: hidden;
   isolation: isolate;
   box-shadow:
@@ -208,7 +209,7 @@ body {
   z-index: 1;
   display: flex;
   flex-direction: column;
-  gap: 22px;
+  gap: 20px;
   text-align: center;
 }
 
@@ -248,7 +249,7 @@ body {
 
 .hero {
   position: relative;
-  width: 80px; height: 80px;
+  width: 74px; height: 74px;
   margin: 0 auto;
   display: flex;
   align-items: center;
@@ -277,7 +278,7 @@ body {
 @keyframes spin { to { transform: rotate(360deg); } }
 
 .hero .emoji {
-  font-size: 2.4rem;
+  font-size: 2.2rem;
   filter: drop-shadow(0 0 16px rgba(225,29,72,0.6));
   animation: floatHero 3.4s ease-in-out infinite;
 }
@@ -288,7 +289,7 @@ body {
 }
 
 h1.title {
-  font-size: 1.9rem;
+  font-size: 1.8rem;
   font-weight: 900;
   letter-spacing: -0.6px;
   line-height: 1.35;
@@ -332,9 +333,9 @@ h1.title {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  margin: 0 auto;
-  padding: 6px 16px;
-  font-size: 0.8rem;
+  margin: 6px auto 0;
+  padding: 7px 18px;
+  font-size: 0.82rem;
   font-weight: 800;
   border-radius: 100px;
   letter-spacing: 0.3px;
@@ -359,16 +360,16 @@ h1.title {
 ============================================ */
 .timer {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 12px;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
 }
 
 .unit {
   position: relative;
   background: linear-gradient(180deg, rgba(255,255,255,0.025), rgba(255,255,255,0.005));
   border: 1px solid var(--line);
-  border-radius: 18px;
-  padding: 22px 8px 18px;
+  border-radius: 14px;
+  padding: 16px 4px 12px;
   overflow: hidden;
   transition: border-color 0.35s, transform 0.35s, background 0.35s;
 }
@@ -384,19 +385,19 @@ h1.title {
 
 .unit:hover {
   border-color: var(--accent);
-  transform: translateY(-4px);
+  transform: translateY(-3px);
   background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01));
 }
 
 .num {
   display: block;
-  font-size: 3rem;
+  font-size: 1.9rem;
   font-weight: 900;
   line-height: 1;
-  letter-spacing: -2px;
+  letter-spacing: -1.5px;
   font-variant-numeric: tabular-nums;
   color: var(--accent);
-  text-shadow: 0 0 20px var(--glow);
+  text-shadow: 0 0 18px var(--glow);
 }
 
 .num.tick {
@@ -404,33 +405,41 @@ h1.title {
 }
 
 @keyframes flipIn {
-  0% { transform: translateY(-14px); opacity: 0; }
+  0% { transform: translateY(-12px); opacity: 0; }
   100% { transform: translateY(0); opacity: 1; }
 }
 
 .lbl {
   display: block;
-  font-size: 0.72rem;
+  font-size: 0.6rem;
   color: var(--dim-2);
   font-weight: 700;
-  margin-top: 10px;
-  letter-spacing: 1.5px;
+  margin-top: 8px;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
 }
 
-/* ============================================
-   🎓 تایمر نهایی — طلایی
-============================================ */
-.timer.gold .unit.d { --accent: var(--gold); --glow: rgba(251,191,36,0.55); }
-.timer.gold .unit.h { --accent: var(--gold-soft); --glow: rgba(252,211,77,0.55); }
-.timer.gold .unit.m { --accent: var(--red-soft); --glow: rgba(251,113,133,0.55); }
-.timer.gold .unit.s { --accent: var(--gold); --glow: rgba(251,191,36,0.55); }
+/* رنگ‌های اختصاصی هر واحد */
+.unit.y { --accent: var(--violet); --glow: rgba(167,139,250,0.55); }
+.unit.mo { --accent: var(--gold); --glow: rgba(251,191,36,0.55); }
+.unit.w { --accent: var(--mint); --glow: rgba(52,211,153,0.55); }
+.unit.d { --accent: var(--red); --glow: rgba(225,29,72,0.55); }
+.unit.h { --accent: var(--gold-soft); --glow: rgba(252,211,77,0.55); }
+.unit.m { --accent: var(--ice); --glow: rgba(125,211,252,0.55); }
+.unit.s { --accent: var(--red-soft); --glow: rgba(251,113,133,0.55); }
 
 /* ============================================
-   📝 تایمر کنکور — قرمز
+   🎓 تایمر نهایی — تم طلایی
+============================================ */
+.timer.gold .unit { border-color: rgba(251,191,36,0.2); }
+.timer.gold .unit:hover { border-color: var(--accent); }
+
+/* ============================================
+   📝 تایمر کنکور — تم قرمز
 ============================================ */
 .konkur-block {
   position: relative;
-  padding: 22px 18px 20px;
+  padding: 20px 16px 18px;
   background: linear-gradient(135deg, rgba(225,29,72,0.10), rgba(159,18,57,0.05));
   border: 1.5px solid rgba(225,29,72,0.4);
   border-radius: 20px;
@@ -457,13 +466,13 @@ h1.title {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  margin-bottom: 4px;
+  margin-bottom: 14px;
   position: relative;
   z-index: 1;
 }
 
 .konkur-block .head .ic {
-  font-size: 1.1rem;
+  font-size: 1.05rem;
   animation: pulseIcon 1.8s ease-in-out infinite;
 }
 
@@ -473,36 +482,13 @@ h1.title {
 }
 
 .konkur-block .head .ttl {
-  font-size: 0.95rem;
+  font-size: 0.92rem;
   font-weight: 900;
   color: var(--red-soft);
 }
 
-.konkur-block .date-line {
-  font-size: 0.75rem;
-  color: var(--gold);
-  font-weight: 700;
-  margin-bottom: 14px;
-  position: relative;
-  z-index: 1;
-}
-
-.timer.red {
-  position: relative;
-  z-index: 1;
-}
-
-.timer.red .unit {
-  background: rgba(0,0,0,0.35);
-  border-color: rgba(225,29,72,0.3);
-}
-
-.timer.red .unit.d { --accent: var(--red); --glow: rgba(225,29,72,0.55); }
-.timer.red .unit.h { --accent: var(--red-soft); --glow: rgba(251,113,133,0.55); }
-.timer.red .unit.m { --accent: var(--ice); --glow: rgba(125,211,252,0.55); }
-.timer.red .unit.s { --accent: var(--red); --glow: rgba(225,29,72,0.55); }
-
-.timer.red .num { font-size: 2.6rem; }
+.timer.red { position: relative; z-index: 1; }
+.timer.red .unit { background: rgba(0,0,0,0.35); border-color: rgba(225,29,72,0.3); }
 
 /* حالت پایان کنکور */
 .konkur-block.passed {
@@ -513,14 +499,13 @@ h1.title {
 .konkur-block.passed::before { display: none; }
 .konkur-block.passed .head .ttl { color: var(--mint); }
 .konkur-block.passed .head .ic { animation: none; }
-.konkur-block.passed .date-line { color: var(--mint); }
 
 /* ============================================
    رویا
 ============================================ */
 .dream {
   position: relative;
-  padding: 20px;
+  padding: 18px;
   border: 1px solid rgba(225,29,72,0.25);
   background: linear-gradient(135deg, rgba(225,29,72,0.07), rgba(159,18,57,0.04));
   border-radius: 16px;
@@ -540,7 +525,7 @@ h1.title {
 .dream .big {
   position: relative;
   z-index: 1;
-  font-size: 1.35rem;
+  font-size: 1.3rem;
   font-weight: 900;
   letter-spacing: -0.4px;
   background: linear-gradient(90deg, var(--red-soft), var(--gold), var(--red-soft));
@@ -553,7 +538,7 @@ h1.title {
 .dream .small {
   position: relative;
   z-index: 1;
-  font-size: 0.78rem;
+  font-size: 0.76rem;
   color: var(--dim);
   margin-top: 5px;
 }
@@ -620,52 +605,6 @@ h1.title {
 @keyframes glowDot {
   0%, 100% { box-shadow: 0 0 10px 2px rgba(255,255,255,0.7); }
   50% { box-shadow: 0 0 18px 5px rgba(255,255,255,1); }
-}
-
-/* ============================================
-   آمار
-============================================ */
-.stats {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-}
-
-.stat {
-  background: rgba(255,255,255,0.02);
-  border: 1px solid var(--line);
-  border-radius: 14px;
-  padding: 14px 6px;
-  text-align: center;
-  transition: all 0.3s;
-}
-
-.stat:hover {
-  border-color: var(--accent);
-  background: rgba(255,255,255,0.04);
-  transform: translateY(-2px);
-}
-
-.stat.w { --accent: var(--red-soft); }
-.stat.mo { --accent: var(--gold); }
-.stat.dy { --accent: var(--mint); }
-
-.stat .v {
-  display: block;
-  font-size: 1.45rem;
-  font-weight: 900;
-  line-height: 1;
-  color: var(--accent);
-  font-variant-numeric: tabular-nums;
-  text-shadow: 0 0 14px currentColor;
-}
-
-.stat .k {
-  display: block;
-  font-size: 0.65rem;
-  color: var(--dim-2);
-  margin-top: 6px;
-  font-weight: 600;
 }
 
 /* ============================================
@@ -763,9 +702,14 @@ h1.title {
 /* ============================================
    ریسپانسیو
 ============================================ */
+@media (max-width: 900px) {
+  .timer { grid-template-columns: repeat(4, 1fr); }
+  .unit.y, .unit.mo, .unit.w { display: none; }
+}
+
 @media (max-width: 640px) {
   body { padding: 14px 10px; }
-  .card { padding: 26px 16px 22px; border-radius: 20px; }
+  .card { padding: 24px 14px 20px; border-radius: 20px; }
 
   .status-bar { font-size: 0.68rem; padding: 8px 14px; gap: 10px; }
   .status-bar .sep { height: 12px; }
@@ -773,36 +717,31 @@ h1.title {
 
   .brand { padding: 6px 16px; font-size: 0.9rem; }
 
-  .hero { width: 64px; height: 64px; }
-  .hero .emoji { font-size: 1.9rem; }
+  .hero { width: 60px; height: 60px; }
+  .hero .emoji { font-size: 1.8rem; }
 
-  h1.title { font-size: 1.3rem; letter-spacing: -0.4px; }
+  h1.title { font-size: 1.25rem; letter-spacing: -0.4px; }
   .subtitle { font-size: 0.78rem; }
 
   .claim { font-size: 0.78rem; padding: 7px 16px; }
 
   .section-title { font-size: 0.72rem; padding: 5px 14px; }
 
-  .timer { gap: 7px; }
-  .unit { padding: 16px 4px 14px; border-radius: 14px; }
-  .num { font-size: 1.85rem; letter-spacing: -1px; }
-  .timer.red .num { font-size: 1.7rem; }
-  .lbl { font-size: 0.6rem; letter-spacing: 1px; margin-top: 7px; }
+  .konkur-block { padding: 16px 10px 14px; border-radius: 16px; }
+  .konkur-block .head .ttl { font-size: 0.8rem; }
 
-  .konkur-block { padding: 16px 12px 14px; border-radius: 16px; }
-  .konkur-block .head .ttl { font-size: 0.85rem; }
-  .konkur-block .date-line { font-size: 0.7rem; margin-bottom: 10px; }
+  .timer { gap: 6px; }
+  .unit { padding: 12px 3px 10px; border-radius: 12px; }
+  .num { font-size: 1.5rem; letter-spacing: -1px; }
+  .lbl { font-size: 0.55rem; margin-top: 6px; letter-spacing: 0.2px; }
 
-  .dream { padding: 16px; }
-  .dream .big { font-size: 1.05rem; }
-  .dream .small { font-size: 0.7rem; }
+  .dream { padding: 14px; }
+  .dream .big { font-size: 1rem; }
+  .dream .small { font-size: 0.68rem; }
 
   .progress-head { font-size: 0.7rem; }
   .progress-head .pct { font-size: 0.88rem; }
   .bar { height: 10px; }
-
-  .stat .v { font-size: 1.15rem; }
-  .stat .k { font-size: 0.58rem; }
 
   .quote { padding: 12px 14px; font-size: 0.76rem; }
 
@@ -812,10 +751,9 @@ h1.title {
 }
 
 @media (max-width: 380px) {
-  .num { font-size: 1.55rem; }
-  .timer.red .num { font-size: 1.45rem; }
-  h1.title { font-size: 1.1rem; }
-  .dream .big { font-size: 0.95rem; }
+  .num { font-size: 1.3rem; }
+  h1.title { font-size: 1.05rem; }
+  .dream .big { font-size: 0.92rem; }
   .status-bar { font-size: 0.62rem; padding: 7px 10px; }
 }
 </style>
@@ -877,9 +815,20 @@ h1.title {
           <span class="ic">⏳</span>
           <span class="ttl">فاصله تا روز کنکور</span>
         </div>
-        <div class="date-line">۱۰ تیر ۱۴۰۶</div>
 
         <div class="timer red">
+          <div class="unit y">
+            <span class="num" id="ky">۰</span>
+            <span class="lbl">سال</span>
+          </div>
+          <div class="unit mo">
+            <span class="num" id="kmo">۰</span>
+            <span class="lbl">ماه</span>
+          </div>
+          <div class="unit w">
+            <span class="num" id="kw">۰</span>
+            <span class="lbl">هفته</span>
+          </div>
           <div class="unit d">
             <span class="num" id="kd">۰</span>
             <span class="lbl">روز</span>
@@ -906,20 +855,32 @@ h1.title {
       </div>
 
       <div class="timer gold">
+        <div class="unit y">
+          <span class="num" id="fy">۰</span>
+          <span class="lbl">سال</span>
+        </div>
+        <div class="unit mo">
+          <span class="num" id="fmo">۰</span>
+          <span class="lbl">ماه</span>
+        </div>
+        <div class="unit w">
+          <span class="num" id="fw">۰</span>
+          <span class="lbl">هفته</span>
+        </div>
         <div class="unit d">
-          <span class="num" id="days">۰</span>
+          <span class="num" id="fd">۰</span>
           <span class="lbl">روز</span>
         </div>
         <div class="unit h">
-          <span class="num" id="hours">۰</span>
+          <span class="num" id="fh">۰</span>
           <span class="lbl">ساعت</span>
         </div>
         <div class="unit m">
-          <span class="num" id="mins">۰</span>
+          <span class="num" id="fm">۰</span>
           <span class="lbl">دقیقه</span>
         </div>
         <div class="unit s">
-          <span class="num" id="secs">۰</span>
+          <span class="num" id="fs">۰</span>
           <span class="lbl">ثانیه</span>
         </div>
       </div>
@@ -936,21 +897,6 @@ h1.title {
         </div>
         <div class="bar">
           <div class="bar-fill" id="barFill"></div>
-        </div>
-      </div>
-
-      <div class="stats">
-        <div class="stat w">
-          <span class="v" id="weeks">۰</span>
-          <span class="k">هفته باقی‌مانده</span>
-        </div>
-        <div class="stat mo">
-          <span class="v" id="months">۰</span>
-          <span class="k">ماه باقی‌مانده</span>
-        </div>
-        <div class="stat dy">
-          <span class="v" id="statDays">۰</span>
-          <span class="k">روز باقی‌مانده</span>
         </div>
       </div>
 
@@ -1005,9 +951,9 @@ function j2g(jy, jm, jd) {
 /* ============================================================
    تاریخ‌های کلیدی
 ============================================================ */
-const START_DATE  = j2g(1405, 6, 22);   // ۲۲ شهریور ۱۴۰۵ — شروع
-const KONKUR_DATE = j2g(1406, 4, 10);   // ۱۰ تیر ۱۴۰۶ — کنکور
-const TARGET_DATE = j2g(1406, 9, 1);    // ۱ آذر ۱۴۰۶ — داروسازی
+const START_DATE  = j2g(1405, 6, 22);   // ۲۲ شهریور ۱۴۰۵
+const KONKUR_DATE = j2g(1406, 4, 10);   // ۱۰ تیر ۱۴۰۶
+const TARGET_DATE = j2g(1406, 9, 1);    // ۱ آذر ۱۴۰۶
 const TOTAL = TARGET_DATE - START_DATE;
 
 /* ============================================================
@@ -1022,6 +968,67 @@ const MONTHS_FA = ['فروردین','اردیبهشت','خرداد','تیر','م
 const WEEKDAYS_FA = ['یکشنبه','دوشنبه','سه‌شنبه','چهارشنبه','پنجشنبه','جمعه','شنبه'];
 
 /* ============================================================
+   تقسیم دقیق زمان به سال/ماه/هفته/روز/ساعت/دقیقه/ثانیه
+   (سال و ماه شمسی دقیق)
+============================================================ */
+function breakdown(targetDate) {
+  const now = new Date();
+
+  // اگر گذشته باشه
+  if (targetDate - now <= 0) {
+    return { y: 0, mo: 0, w: 0, d: 0, h: 0, m: 0, s: 0, passed: true };
+  }
+
+  // تاریخ شمسی امروز و هدف
+  const todayJ = getJalaliYMD(now);
+  const targetJ = getJalaliYMD(targetDate);
+
+  // اختلاف سال و ماه شمسی
+  let dy = targetJ.y - todayJ.y;
+  let dmo = targetJ.mo - todayJ.mo;
+
+  // اگر روز هدف کمتر از روز امروز، یه ماه کم می‌کنیم
+  if (targetJ.d < todayJ.d) dmo--;
+
+  // اگر ماه منفی شد، از سال کم می‌کنیم
+  if (dmo < 0) {
+    dmo += 12;
+    dy--;
+  }
+
+  // محاسبه‌ی روزهای باقی‌مونده بعد از کم کردن سال و ماه
+  // نقطه‌ی لنگر: امروز + dy سال + dmo ماه (شمسی)
+  const anchor = j2g(todayJ.y + dy, todayJ.mo + dmo, todayJ.d);
+
+  let restMs = targetDate - anchor;
+  if (restMs < 0) restMs = 0;
+
+  const totalRestSec = Math.floor(restMs / 1000);
+  const restDays = Math.floor(totalRestSec / 86400);
+  const h = Math.floor((totalRestSec % 86400) / 3600);
+  const m = Math.floor((totalRestSec % 3600) / 60);
+  const s = totalRestSec % 60;
+
+  const w = Math.floor(restDays / 7);
+  const d = restDays % 7;
+
+  return { y: dy, mo: dmo, w, d, h, m, s, passed: false };
+}
+
+/* گرفتن y/m/d شمسی از یه Date */
+function getJalaliYMD(date) {
+  const parts = new Intl.DateTimeFormat('en-US-u-ca-persian', {
+    year: 'numeric', month: 'numeric', day: 'numeric'
+  }).formatToParts(date);
+  const get = t => parts.find(p => p.type === t)?.value || '0';
+  return {
+    y: parseInt(get('year'), 10),
+    mo: parseInt(get('month'), 10),
+    d: parseInt(get('day'), 10)
+  };
+}
+
+/* ============================================================
    تاریخ و ساعت زنده
 ============================================================ */
 const elDate = $('liveDate');
@@ -1029,17 +1036,10 @@ const elClock = $('liveClock');
 
 function updateLiveDateTime() {
   const now = new Date();
-  const parts = new Intl.DateTimeFormat('en-US-u-ca-persian', {
-    year: 'numeric', month: 'numeric', day: 'numeric'
-  }).formatToParts(now);
-  const get = t => parts.find(p => p.type === t)?.value || '';
-
-  const jy = parseInt(get('year'), 10);
-  const jm = parseInt(get('month'), 10);
-  const jd = parseInt(get('day'), 10);
+  const j = getJalaliYMD(now);
   const wd = WEEKDAYS_FA[now.getDay()];
 
-  elDate.textContent = `${wd} ${fa(jd)} ${MONTHS_FA[jm - 1]} ${fa(jy)}`;
+  elDate.textContent = `${wd} ${fa(j.d)} ${MONTHS_FA[j.mo - 1]} ${fa(j.y)}`;
 
   const hh = p2(now.getHours());
   const mm = p2(now.getMinutes());
@@ -1048,56 +1048,60 @@ function updateLiveDateTime() {
 }
 
 /* ============================================================
-   تایمر کنکور — ۱۰ تیر ۱۴۰۶
+   انیمیشن tick
 ============================================================ */
-const elKd = $('kd'), elKh = $('kh'), elKm = $('km'), elKs = $('ks');
-const elKonkurBlock = $('konkurBlock');
-let lastKd = -1, lastKh = -1, lastKm = -1, lastKs = -1;
-
 function flip(el) {
   el.classList.remove('tick');
   void el.offsetWidth;
   el.classList.add('tick');
 }
 
-function updateKonkur() {
-  const now = new Date();
-  const diff = KONKUR_DATE - now;
+/* ============================================================
+   رندر یه تایمر (۷ واحد)
+============================================================ */
+function renderTimer(prefix, data) {
+  const fields = ['y', 'mo', 'w', 'd', 'h', 'm', 's'];
+  fields.forEach(f => {
+    const el = $(prefix + f);
+    if (!el) return;
+    const val = data[f];
+    const formatted = (f === 'h' || f === 'm' || f === 's') ? p2(val) : String(val);
+    const faVal = fa(formatted);
+    if (el.textContent !== faVal) {
+      el.textContent = faVal;
+      flip(el);
+    }
+  });
+}
 
-  if (diff <= 0) {
+/* ============================================================
+   تایمر کنکور
+============================================================ */
+const elKonkurBlock = $('konkurBlock');
+
+function updateKonkur() {
+  const data = breakdown(KONKUR_DATE);
+
+  if (data.passed) {
     if (!elKonkurBlock.classList.contains('passed')) {
       elKonkurBlock.classList.add('passed');
       elKonkurBlock.querySelector('.ttl').textContent = 'کنکور برگزار شد — موفق باشی دانیال ✅';
       elKonkurBlock.querySelector('.head .ic').textContent = '✅';
-      elKonkurBlock.querySelector('.date-line').textContent = '۱۰ تیر ۱۴۰۶ — انجام شد';
-      // صفر کردن همه
-      elKd.textContent = '۰';
-      elKh.textContent = '۰';
-      elKm.textContent = '۰';
-      elKs.textContent = '۰';
+      ['ky','kmo','kw','kd','kh','km','ks'].forEach(id => {
+        const el = $(id);
+        if (el) el.textContent = '۰';
+      });
     }
     return;
   }
 
-  const totalSec = Math.floor(diff / 1000);
-  const d = Math.floor(totalSec / 86400);
-  const h = Math.floor((totalSec % 86400) / 3600);
-  const m = Math.floor((totalSec % 3600) / 60);
-  const s = totalSec % 60;
-
-  if (d !== lastKd) { elKd.textContent = fa(d); flip(elKd); lastKd = d; }
-  if (h !== lastKh) { elKh.textContent = fa(p2(h)); flip(elKh); lastKh = h; }
-  if (m !== lastKm) { elKm.textContent = fa(p2(m)); flip(elKm); lastKm = m; }
-  if (s !== lastKs) { elKs.textContent = fa(p2(s)); flip(elKs); lastKs = s; }
+  renderTimer('k', data);
 }
 
 /* ============================================================
-   تایمر نهایی — ۱ آذر ۱۴۰۶
+   تایمر نهایی
 ============================================================ */
-const elDays = $('days'), elHours = $('hours'), elMins = $('mins'), elSecs = $('secs');
 const elPct = $('pct'), elBar = $('barFill');
-const elWeeks = $('weeks'), elMonths = $('months'), elStatDays = $('statDays');
-let lastD = -1, lastH = -1, lastM = -1, lastS = -1;
 let partyStarted = false;
 
 function updateFinal() {
@@ -1114,19 +1118,8 @@ function updateFinal() {
     return;
   }
 
-  const totalSec = Math.floor(diff / 1000);
-  const d = Math.floor(totalSec / 86400);
-  const h = Math.floor((totalSec % 86400) / 3600);
-  const m = Math.floor((totalSec % 3600) / 60);
-  const s = totalSec % 60;
-
-  if (d !== lastD) { elDays.textContent = fa(d); flip(elDays); lastD = d; elStatDays.textContent = fa(d); }
-  if (h !== lastH) { elHours.textContent = fa(p2(h)); flip(elHours); lastH = h; }
-  if (m !== lastM) { elMins.textContent = fa(p2(m)); flip(elMins); lastM = m; }
-  if (s !== lastS) { elSecs.textContent = fa(p2(s)); flip(elSecs); lastS = s; }
-
-  elWeeks.textContent = fa(Math.floor(d / 7));
-  elMonths.textContent = fa(Math.floor(d / 30));
+  const data = breakdown(TARGET_DATE);
+  renderTimer('f', data);
 
   const elapsed = now - START_DATE;
   const pct = Math.max(0, Math.min(100, (elapsed / TOTAL) * 100));
