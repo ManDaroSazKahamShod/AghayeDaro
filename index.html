@@ -493,6 +493,50 @@ h1.title {
 .konkur-block.passed .head .ic { animation: none; }
 
 /* ============================================
+   🆕 نوار پیشرفت داخل کنکور
+============================================ */
+.konkur-progress {
+  position: relative;
+  z-index: 1;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px dashed rgba(225,29,72,0.3);
+}
+
+.konkur-progress .progress-head {
+  color: rgba(251,113,133,0.85);
+}
+
+.konkur-progress .progress-head .pct {
+  color: var(--red-soft);
+  text-shadow: 0 0 12px rgba(251,113,133,0.6);
+}
+
+.konkur-progress .bar {
+  background: rgba(0,0,0,0.55);
+  border-color: rgba(225,29,72,0.3);
+}
+
+.konkur-progress .bar-fill {
+  background: linear-gradient(90deg, var(--red-deep), var(--red), var(--red-soft));
+  box-shadow: 0 0 20px rgba(225,29,72,0.6);
+}
+
+.konkur-block.passed .konkur-progress {
+  border-top-color: rgba(52,211,153,0.3);
+}
+
+.konkur-block.passed .konkur-progress .progress-head .pct {
+  color: var(--mint);
+  text-shadow: 0 0 12px rgba(52,211,153,0.6);
+}
+
+.konkur-block.passed .konkur-progress .bar-fill {
+  background: linear-gradient(90deg, #059669, var(--mint));
+  box-shadow: 0 0 20px rgba(52,211,153,0.6);
+}
+
+/* ============================================
    رویا
 ============================================ */
 .dream {
@@ -536,7 +580,7 @@ h1.title {
 }
 
 /* ============================================
-   پیشرفت
+   پیشرفت (اصلی — نهایی)
 ============================================ */
 .progress-head {
   display: flex;
@@ -749,7 +793,7 @@ h1.title {
 
       <div class="claim">
         <span class="fire">🔥</span>
-        <span>روز شمار اهداف مهم زندگی دانیال </span>
+        <span>روز شمار اهداف مهم زندگی دانیال</span>
         <span class="fire">🔥</span>
       </div>
 
@@ -793,6 +837,17 @@ h1.title {
           <div class="unit s">
             <span class="num" id="ks">۰</span>
             <span class="lbl">ثانیه</span>
+          </div>
+        </div>
+
+        <!-- 🆕 نوار پیشرفت کنکور -->
+        <div class="konkur-progress">
+          <div class="progress-head">
+            <span>📊 پیشرفت تا کنکور</span>
+            <span class="pct" id="konkurPct">۰.۰۰٪</span>
+          </div>
+          <div class="bar">
+            <div class="bar-fill" id="konkurBarFill"></div>
           </div>
         </div>
       </div>
@@ -898,7 +953,9 @@ function j2g(jy, jm, jd) {
 const START_DATE  = j2g(1405, 6, 22);
 const KONKUR_DATE = j2g(1406, 4, 10);
 const TARGET_DATE = j2g(1406, 9, 1);
-const TOTAL = TARGET_DATE - START_DATE;
+
+const TOTAL_KONKUR = KONKUR_DATE - START_DATE;   // مسیر تا کنکور
+const TOTAL_FINAL  = TARGET_DATE - START_DATE;   // مسیر تا داروسازی
 
 /* ============================================================
    ابزار
@@ -924,7 +981,7 @@ function getJalaliYMD(date) {
 }
 
 /* ============================================================
-   تقسیم زمان — ساعت/دقیقه/ثانیه از diffMs خام
+   تقسیم زمان
 ============================================================ */
 function breakdown(targetDate) {
   const now = new Date();
@@ -1006,11 +1063,14 @@ function renderTimer(prefix, data) {
 }
 
 /* ============================================================
-   تایمر کنکور
+   تایمر کنکور + نوار پیشرفت کنکور
 ============================================================ */
 const elKonkurBlock = $('konkurBlock');
+const elKonkurPct = $('konkurPct');
+const elKonkurBar = $('konkurBarFill');
 
 function updateKonkur() {
+  const now = new Date();
   const data = breakdown(KONKUR_DATE);
 
   if (data.passed) {
@@ -1022,11 +1082,23 @@ function updateKonkur() {
         const el = $(id);
         if (el) el.textContent = '۰';
       });
+      // نوار پر کن
+      elKonkurBar.style.width = '100%';
     }
     return;
   }
 
   renderTimer('k', data);
+
+  // 🆕 درصد پیشرفت کنکور
+  const elapsed = now - START_DATE;
+  const pct = Math.max(0, Math.min(100, (elapsed / TOTAL_KONKUR) * 100));
+
+  const pctStr = pct.toFixed(2);
+  const [intPart, decPart] = pctStr.split('.');
+  elKonkurPct.textContent = fa(intPart) + '.' + fa(decPart) + '٪';
+
+  elKonkurBar.style.width = pct + '%';
 }
 
 /* ============================================================
@@ -1053,9 +1125,8 @@ function updateFinal() {
   renderTimer('f', data);
 
   const elapsed = now - START_DATE;
-  const pct = Math.max(0, Math.min(100, (elapsed / TOTAL) * 100));
+  const pct = Math.max(0, Math.min(100, (elapsed / TOTAL_FINAL) * 100));
 
-  // 🆕 درصد با ۲ رقم اعشار
   const pctStr = pct.toFixed(2);
   const [intPart, decPart] = pctStr.split('.');
   elPct.textContent = fa(intPart) + '.' + fa(decPart) + '٪';
@@ -1115,7 +1186,6 @@ function tickAll() {
 createStars();
 tickAll();
 
-// هر ۲۵۰ میلی‌ثانیه → ثانیه دقیق و زنده
 setInterval(tickAll, 250);
 </script>
 </body>
