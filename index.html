@@ -551,8 +551,12 @@ h1.title {
 .progress-head .pct {
   color: var(--gold);
   font-weight: 900;
-  font-size: 1rem;
+  font-size: 1.1rem;
   font-variant-numeric: tabular-nums;
+  letter-spacing: 0.5px;
+  direction: ltr;
+  display: inline-block;
+  text-shadow: 0 0 12px rgba(251,191,36,0.5);
 }
 
 .bar {
@@ -571,7 +575,7 @@ h1.title {
   background-size: 200% 100%;
   border-radius: 100px;
   width: 0%;
-  transition: width 1.1s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: width 0.3s linear;
   position: relative;
   box-shadow: 0 0 20px rgba(251,191,36,0.5);
   animation: fillShift 3s linear infinite;
@@ -689,7 +693,7 @@ h1.title {
   .dream .big { font-size: 1rem; }
   .dream .small { font-size: 0.68rem; }
   .progress-head { font-size: 0.7rem; }
-  .progress-head .pct { font-size: 0.88rem; }
+  .progress-head .pct { font-size: 0.9rem; }
   .bar { height: 10px; }
   .party .ic { font-size: 3.5rem; }
   .party h2 { font-size: 1.7rem; }
@@ -701,6 +705,7 @@ h1.title {
   h1.title { font-size: 1.05rem; }
   .dream .big { font-size: 0.92rem; }
   .status-bar { font-size: 0.62rem; padding: 7px 10px; }
+  .progress-head .pct { font-size: 0.82rem; }
 }
 </style>
 </head>
@@ -740,11 +745,11 @@ h1.title {
       </div>
 
       <h1 class="title">شمارش معکوس تا داروسازی</h1>
-      <p class="subtitle">روزی که می‌گم <strong>داروساز شدم</strong> 💚</p>
+      <p class="subtitle">روزی که می‌گم بالاخره <strong>داروساز شدم</strong> 💚</p>
 
       <div class="claim">
         <span class="fire">🔥</span>
-        <span>من قطعاً داروساز خواهم شد</span>
+        <span>روز شمار اهداف مهم زندگی دانیال </span>
         <span class="fire">🔥</span>
       </div>
 
@@ -837,7 +842,7 @@ h1.title {
       <div>
         <div class="progress-head">
           <span>📈 مسیر دانیال تا رسیدن</span>
-          <span class="pct" id="pct">۰٪</span>
+          <span class="pct" id="pct">۰.۰۰٪</span>
         </div>
         <div class="bar">
           <div class="bar-fill" id="barFill"></div>
@@ -919,9 +924,7 @@ function getJalaliYMD(date) {
 }
 
 /* ============================================================
-   🎯 تقسیم زمان — نسخه‌ی کاملاً اصلاح‌شده
-   کلیدی: ساعت/دقیقه/ثانیه از diffMs خام حساب می‌شن،
-   سال/ماه/هفته/روز از تاریخ شمسی.
+   تقسیم زمان — ساعت/دقیقه/ثانیه از diffMs خام
 ============================================================ */
 function breakdown(targetDate) {
   const now = new Date();
@@ -932,13 +935,10 @@ function breakdown(targetDate) {
   }
 
   const totalSec = Math.floor(diffMs / 1000);
-
-  // ─── ساعت/دقیقه/ثانیه — مستقیم از ثانیه‌های باقی‌مونده (زنده) ───
   const h = Math.floor((totalSec % 86400) / 3600);
   const m = Math.floor((totalSec % 3600) / 60);
   const s = totalSec % 60;
 
-  // ─── سال و ماه شمسی ───
   const todayJ = getJalaliYMD(now);
   const targetJ = getJalaliYMD(targetDate);
 
@@ -948,10 +948,7 @@ function breakdown(targetDate) {
   if (targetJ.d < todayJ.d) dmo--;
   if (dmo < 0) { dmo += 12; dy--; }
 
-  // ─── نقطه‌ی لنگر = امروز + dy سال + dmo ماه ───
   const anchor = j2g(todayJ.y + dy, todayJ.mo + dmo, todayJ.d);
-
-  // باقی‌مونده از لنگر تا هدف (فقط برای هفته/روز)
   const restMs = Math.max(0, targetDate - anchor);
   const restTotalSec = Math.floor(restMs / 1000);
   const restDays = Math.floor(restTotalSec / 86400);
@@ -1033,7 +1030,7 @@ function updateKonkur() {
 }
 
 /* ============================================================
-   تایمر نهایی
+   تایمر نهایی + درصد اعشاری
 ============================================================ */
 const elPct = $('pct'), elBar = $('barFill');
 let partyStarted = false;
@@ -1057,7 +1054,12 @@ function updateFinal() {
 
   const elapsed = now - START_DATE;
   const pct = Math.max(0, Math.min(100, (elapsed / TOTAL) * 100));
-  elPct.textContent = fa(Math.floor(pct)) + '٪';
+
+  // 🆕 درصد با ۲ رقم اعشار
+  const pctStr = pct.toFixed(2);
+  const [intPart, decPart] = pctStr.split('.');
+  elPct.textContent = fa(intPart) + '.' + fa(decPart) + '٪';
+
   elBar.style.width = pct + '%';
 }
 
@@ -1102,7 +1104,7 @@ function launchConfetti() {
 }
 
 /* ============================================================
-   🚀 حلقه‌ی آپدیت — هر ۲۵۰ میلی‌ثانیه برای زنده‌بودن کامل
+   راه‌اندازی + آپدیت زنده
 ============================================================ */
 function tickAll() {
   updateLiveDateTime();
@@ -1113,7 +1115,7 @@ function tickAll() {
 createStars();
 tickAll();
 
-// هر ۲۵۰ میلی‌ثانیه → ثانیه‌شمار بدون تأخیر عوض می‌شه
+// هر ۲۵۰ میلی‌ثانیه → ثانیه دقیق و زنده
 setInterval(tickAll, 250);
 </script>
 </body>
